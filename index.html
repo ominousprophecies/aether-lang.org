@@ -9,347 +9,480 @@
 <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --black:       #050406;
-  --off-white:   #f0efeb;
-  --muted:       #888780;
-  --green:       #39ff14;
-  --green-dim:   #1a7a08;
-  --green-bg:    #0a1f06;
-  --amber:       #ffaa00;
-  --gold:        #ffcc33;
-  --border:      rgba(255,255,255,0.08);
-  --border-green:rgba(57,255,20,0.25);
-  --font-display:'Cinzel Decorative', serif;
-  --font-mono:   'Space Mono', monospace;
+  --black:        #050406;
+  --off-white:    #f0efeb;
+  --muted:        #888780;
+  --green:        #39ff14;
+  --green-dim:    #1a7a08;
+  --green-bg:     #0a1f06;
+  --amber:        #ffaa00;
+  --gold:         #ffcc33;
+  --border:       rgba(255,255,255,0.08);
+  --border-green: rgba(57,255,20,0.25);
+  --font-display: 'Cinzel Decorative', serif;
+  --font-mono:    'Space Mono', monospace;
 }
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-html { scroll-behavior: smooth; }
-
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
 body {
-  background: var(--black);
-  color: var(--off-white);
-  font-family: var(--font-mono);
-  font-size: 14px;
-  line-height: 1.7;
-  overflow-x: hidden;
+  background:var(--black);
+  color:var(--off-white);
+  font-family:var(--font-mono);
+  font-size:14px;
+  line-height:1.7;
+  overflow-x:hidden;
 }
 
-/* ── NAV ─────────────────────────────────────── */
+/* ── NAV ──────────────────────────────────────── */
 nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  padding: 1rem 2rem;
-  display: flex; align-items: center; justify-content: space-between;
-  border-bottom: 0.5px solid var(--border);
-  background: rgba(5,4,6,0.92);
-  backdrop-filter: blur(12px);
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  padding:1rem 2rem;
+  display:flex; align-items:center; justify-content:space-between;
+  border-bottom:0.5px solid var(--border);
+  background:rgba(5,4,6,0.92);
+  backdrop-filter:blur(12px);
 }
 .nav-mark {
-  font-family: var(--font-display);
-  font-size: 18px;
-  color: var(--green);
-  letter-spacing: .05em;
-  text-decoration: none;
+  font-family:var(--font-display);
+  font-size:18px; color:var(--green);
+  letter-spacing:.05em; text-decoration:none;
 }
-.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links { display:flex; gap:2rem; list-style:none; align-items:center; }
 .nav-links a {
-  color: var(--muted);
-  text-decoration: none;
-  font-size: 12px;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  transition: color .2s;
+  color:var(--muted); text-decoration:none;
+  font-size:12px; letter-spacing:.08em; text-transform:uppercase;
+  transition:color .2s;
 }
-.nav-links a:hover { color: var(--off-white); }
+.nav-links a:hover { color:var(--off-white); }
+.nav-internal-btn {
+  padding:.45rem 1rem;
+  border:0.5px solid var(--border-green);
+  color:var(--green);
+  font-family:var(--font-mono);
+  font-size:11px; letter-spacing:.08em; text-transform:uppercase;
+  cursor:pointer; background:transparent;
+  transition:background .2s, color .2s;
+}
+.nav-internal-btn:hover { background:rgba(57,255,20,.08); }
 
 /* ── HERO ─────────────────────────────────────── */
 .hero {
-  min-height: 100vh;
-  padding: 7rem 2rem 4rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-  align-items: center;
-  max-width: 1200px;
-  margin: 0 auto;
+  min-height:100vh; padding:7rem 2rem 4rem;
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:4rem; align-items:center;
+  max-width:1200px; margin:0 auto;
 }
-.hero-left { max-width: 560px; }
+.hero-left { max-width:560px; }
 .eyebrow {
-  font-size: 11px;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--green);
-  margin-bottom: 1.5rem;
-  display: flex; align-items: center; gap: 8px;
+  font-size:11px; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--green); margin-bottom:1.5rem;
+  display:flex; align-items:center; gap:8px;
 }
 .eyebrow::before {
-  content: '';
-  display: inline-block;
-  width: 24px; height: 1px;
-  background: var(--green);
+  content:''; display:inline-block;
+  width:24px; height:1px; background:var(--green);
 }
 h1 {
-  font-family: var(--font-display);
-  font-size: clamp(28px, 4vw, 48px);
-  font-weight: 700;
-  line-height: 1.15;
-  color: var(--off-white);
-  margin-bottom: 1.5rem;
+  font-family:var(--font-display);
+  font-size:clamp(28px,4vw,48px); font-weight:700;
+  line-height:1.15; color:var(--off-white); margin-bottom:1.5rem;
 }
-h1 span { color: var(--green); }
+h1 span { color:var(--green); }
 .hero-desc {
-  font-size: 15px;
-  color: var(--muted);
-  line-height: 1.8;
-  margin-bottom: 2.5rem;
-  max-width: 480px;
+  font-size:15px; color:var(--muted); line-height:1.8;
+  margin-bottom:2.5rem; max-width:480px;
 }
 .hero-stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  border: 0.5px solid var(--border);
-  margin-bottom: 2rem;
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:1px; border:0.5px solid var(--border); margin-bottom:2rem;
 }
 .stat-cell {
-  padding: 1rem;
-  border-right: 0.5px solid var(--border);
-  text-align: center;
+  padding:1rem; border-right:0.5px solid var(--border); text-align:center;
 }
-.stat-cell:last-child { border-right: none; }
+.stat-cell:last-child { border-right:none; }
 .stat-num {
-  font-family: var(--font-display);
-  font-size: 28px;
-  color: var(--gold);
-  display: block;
+  font-family:var(--font-display); font-size:28px;
+  color:var(--gold); display:block;
 }
 .stat-lbl {
-  font-size: 10px;
-  color: var(--muted);
-  letter-spacing: .06em;
-  text-transform: uppercase;
+  font-size:10px; color:var(--muted);
+  letter-spacing:.06em; text-transform:uppercase;
 }
-.cta-row { display: flex; gap: 1rem; flex-wrap: wrap; }
+.cta-row { display:flex; gap:1rem; flex-wrap:wrap; }
 .btn-primary {
-  padding: .75rem 1.5rem;
-  background: var(--green);
-  color: var(--black);
-  font-family: var(--font-mono);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: .05em;
-  border: none; cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
-  transition: opacity .2s;
+  padding:.75rem 1.5rem; background:var(--green); color:var(--black);
+  font-family:var(--font-mono); font-size:13px; font-weight:700;
+  letter-spacing:.05em; border:none; cursor:pointer;
+  text-decoration:none; display:inline-block; transition:opacity .2s;
 }
-.btn-primary:hover { opacity: .85; }
+.btn-primary:hover { opacity:.85; }
 .btn-ghost {
-  padding: .75rem 1.5rem;
-  background: transparent;
-  color: var(--off-white);
-  font-family: var(--font-mono);
-  font-size: 13px;
-  letter-spacing: .05em;
-  border: 0.5px solid var(--border);
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
-  transition: border-color .2s, color .2s;
+  padding:.75rem 1.5rem; background:transparent; color:var(--off-white);
+  font-family:var(--font-mono); font-size:13px; letter-spacing:.05em;
+  border:0.5px solid var(--border); cursor:pointer;
+  text-decoration:none; display:inline-block;
+  transition:border-color .2s, color .2s;
 }
-.btn-ghost:hover { border-color: var(--green); color: var(--green); }
+.btn-ghost:hover { border-color:var(--green); color:var(--green); }
 
 /* ── TERMINAL ─────────────────────────────────── */
 .terminal-wrap {
-  border: 0.5px solid var(--border-green);
-  background: var(--green-bg);
-  position: relative;
-  overflow: hidden;
+  border:0.5px solid var(--border-green);
+  background:var(--green-bg);
+  position:relative; overflow:hidden;
 }
 .term-header {
-  padding: .6rem 1rem;
-  border-bottom: 0.5px solid var(--border-green);
-  display: flex; align-items: center; gap: .5rem;
-  background: rgba(57,255,20,.04);
+  padding:.6rem 1rem; border-bottom:0.5px solid var(--border-green);
+  display:flex; align-items:center; gap:.5rem;
+  background:rgba(57,255,20,.04);
 }
-.term-dot { width: 10px; height: 10px; border-radius: 50%; }
-.td-r { background: #ff5f57; }
-.td-y { background: #febc2e; }
-.td-g { background: #28c840; }
-.term-title { font-size: 11px; color: var(--muted); margin-left: .5rem; letter-spacing: .06em; }
+.term-dot { width:10px; height:10px; border-radius:50%; }
+.td-r{background:#ff5f57} .td-y{background:#febc2e} .td-g{background:#28c840}
+.term-title { font-size:11px; color:var(--muted); margin-left:.5rem; letter-spacing:.06em; }
 .term-body {
-  padding: 1.25rem;
-  font-size: 12px;
-  line-height: 1.8;
-  min-height: 380px;
-  overflow-y: auto;
-  max-height: 520px;
+  padding:1.25rem; font-size:12px; line-height:1.8;
+  min-height:380px; overflow-y:auto; max-height:520px;
 }
-.t-cmd  { color: var(--green); }
-.t-pass { color: #28c840; }
-.t-warn { color: var(--amber); }
-.t-key  { color: var(--gold); }
-.t-val  { color: var(--off-white); }
-.t-dim  { color: var(--muted); }
-.t-manifest { color: #85b7eb; }
+.t-cmd{color:var(--green)} .t-pass{color:#28c840} .t-warn{color:var(--amber)}
+.t-key{color:var(--gold)} .t-val{color:var(--off-white)} .t-dim{color:var(--muted)}
+.t-manifest{color:#85b7eb}
 .cursor {
-  display: inline-block;
-  width: 8px; height: 14px;
-  background: var(--green);
-  animation: blink 1s step-end infinite;
-  vertical-align: middle;
+  display:inline-block; width:8px; height:14px;
+  background:var(--green); animation:blink 1s step-end infinite; vertical-align:middle;
 }
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 
 /* ── DIVIDER ──────────────────────────────────── */
 .divider {
-  max-width: 1200px; margin: 0 auto;
-  border: none; border-top: 0.5px solid var(--border);
-  padding: 0 2rem;
+  max-width:1200px; margin:0 auto;
+  border:none; border-top:0.5px solid var(--border); padding:0 2rem;
 }
 
 /* ── SECTIONS ─────────────────────────────────── */
-section { padding: 5rem 2rem; max-width: 1200px; margin: 0 auto; }
-
+section { padding:5rem 2rem; max-width:1200px; margin:0 auto; }
 .section-eyebrow {
-  font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
-  color: var(--green); margin-bottom: 1rem;
+  font-size:11px; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--green); margin-bottom:1rem;
 }
 .section-title {
-  font-family: var(--font-display);
-  font-size: clamp(22px, 3vw, 36px);
-  color: var(--off-white);
-  margin-bottom: 1rem;
-  line-height: 1.2;
+  font-family:var(--font-display);
+  font-size:clamp(22px,3vw,36px); color:var(--off-white);
+  margin-bottom:1rem; line-height:1.2;
 }
-.section-sub {
-  font-size: 14px; color: var(--muted); max-width: 600px; margin-bottom: 3rem;
-}
+.section-sub { font-size:14px; color:var(--muted); max-width:600px; margin-bottom:3rem; }
 
 /* ── PROBLEM GRID ─────────────────────────────── */
 .problem-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1px;
-  border: 0.5px solid var(--border);
-  margin-bottom: 3rem;
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:1px; border:0.5px solid var(--border); margin-bottom:3rem;
 }
 .problem-card {
-  padding: 2rem;
-  border-right: 0.5px solid var(--border);
-  position: relative;
+  padding:2rem; border-right:0.5px solid var(--border); position:relative;
 }
-.problem-card:last-child { border-right: none; }
+.problem-card:last-child { border-right:none; }
 .problem-number {
-  font-family: var(--font-display);
-  font-size: 48px;
-  color: rgba(57,255,20,.1);
-  position: absolute;
-  top: 1.5rem; right: 1.5rem;
-  line-height: 1;
+  font-family:var(--font-display); font-size:48px;
+  color:rgba(57,255,20,.1); position:absolute;
+  top:1.5rem; right:1.5rem; line-height:1;
 }
 .problem-label {
-  font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
-  color: var(--amber); margin-bottom: .75rem;
+  font-size:10px; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--amber); margin-bottom:.75rem;
 }
 .problem-title {
-  font-size: 16px; font-weight: 700; color: var(--off-white);
-  margin-bottom: .75rem; line-height: 1.3;
+  font-size:16px; font-weight:700; color:var(--off-white);
+  margin-bottom:.75rem; line-height:1.3;
 }
-.problem-desc { font-size: 13px; color: var(--muted); line-height: 1.7; }
+.problem-desc { font-size:13px; color:var(--muted); line-height:1.7; }
 .problem-fix {
-  margin-top: 1rem; padding: .75rem; background: rgba(57,255,20,.04);
-  border-left: 2px solid var(--green);
-  font-size: 12px; color: var(--off-white);
+  margin-top:1rem; padding:.75rem;
+  background:rgba(57,255,20,.04); border-left:2px solid var(--green);
+  font-size:12px; color:var(--off-white);
 }
 
 /* ── MANIFEST GRID ────────────────────────────── */
 .manifest-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1px;
-  border: 0.5px solid var(--border);
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:1px; border:0.5px solid var(--border);
 }
 .manifest-card {
-  padding: 1.25rem;
-  border-right: 0.5px solid var(--border);
-  border-bottom: 0.5px solid var(--border);
+  padding:1.25rem;
+  border-right:0.5px solid var(--border); border-bottom:0.5px solid var(--border);
 }
-.manifest-name {
-  font-size: 12px; color: var(--green); margin-bottom: .5rem;
-  font-weight: 700;
-}
-.manifest-standard { font-size: 11px; color: var(--muted); line-height: 1.5; }
+.manifest-name { font-size:12px; color:var(--green); margin-bottom:.5rem; font-weight:700; }
+.manifest-standard { font-size:11px; color:var(--muted); line-height:1.5; }
 
-/* ── STANDARDS TABLE ──────────────────────────── */
+/* ── STANDARDS GRID ───────────────────────────── */
 .standards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 1rem;
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:1rem;
 }
 .std-card {
-  padding: 1.25rem;
-  border: 0.5px solid var(--border);
-  transition: border-color .2s;
+  padding:1.25rem; border:0.5px solid var(--border); transition:border-color .2s;
 }
-.std-card:hover { border-color: var(--border-green); }
-.std-name {
-  font-size: 14px; font-weight: 700; color: var(--gold);
-  margin-bottom: .5rem;
-}
-.std-desc { font-size: 11px; color: var(--muted); }
+.std-card:hover { border-color:var(--border-green); }
+.std-name { font-size:14px; font-weight:700; color:var(--gold); margin-bottom:.5rem; }
+.std-desc { font-size:11px; color:var(--muted); }
 
 /* ── CTA SECTION ──────────────────────────────── */
 .cta-section {
-  padding: 5rem 2rem;
-  text-align: center;
-  border-top: 0.5px solid var(--border);
-  background: var(--green-bg);
+  padding:5rem 2rem; text-align:center;
+  border-top:0.5px solid var(--border); background:var(--green-bg);
 }
 .cta-title {
-  font-family: var(--font-display);
-  font-size: clamp(24px, 3vw, 40px);
-  color: var(--off-white);
-  margin-bottom: 1rem;
+  font-family:var(--font-display);
+  font-size:clamp(24px,3vw,40px); color:var(--off-white); margin-bottom:1rem;
 }
-.cta-sub { font-size: 14px; color: var(--muted); margin-bottom: 2.5rem; max-width: 560px; margin-left: auto; margin-right: auto; }
-.contact-grid {
-  display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;
-  margin-bottom: 2rem;
+.cta-sub {
+  font-size:14px; color:var(--muted); margin-bottom:2.5rem;
+  max-width:560px; margin-left:auto; margin-right:auto;
 }
-.contact-item { font-size: 13px; color: var(--off-white); }
-.contact-item a { color: var(--green); text-decoration: none; }
-.contact-item a:hover { text-decoration: underline; }
+.contact-grid { display:flex; gap:2rem; justify-content:center; flex-wrap:wrap; margin-bottom:2rem; }
+.contact-item { font-size:13px; color:var(--off-white); }
+.contact-item a { color:var(--green); text-decoration:none; }
+.contact-item a:hover { text-decoration:underline; }
 
 /* ── FOOTER ───────────────────────────────────── */
 footer {
-  padding: 2rem;
-  border-top: 0.5px solid var(--border);
-  display: flex; justify-content: space-between; align-items: center;
-  flex-wrap: wrap; gap: 1rem;
+  padding:2rem; border-top:0.5px solid var(--border);
+  display:flex; justify-content:space-between; align-items:center;
+  flex-wrap:wrap; gap:1rem;
 }
-.footer-mark { font-family: var(--font-display); font-size: 14px; color: var(--green); }
-.footer-copy { font-size: 11px; color: var(--muted); }
+.footer-mark { font-family:var(--font-display); font-size:14px; color:var(--green); }
+.footer-copy { font-size:11px; color:var(--muted); }
 
-/* ── BIOLUME GLOW ACCENT ──────────────────────── */
+/* ── GLOW ─────────────────────────────────────── */
 .glow-dot {
-  position: fixed; top: 20vh; right: 0;
-  width: 400px; height: 400px;
-  background: radial-gradient(circle, rgba(57,255,20,.06) 0%, transparent 70%);
-  pointer-events: none; z-index: 0;
+  position:fixed; top:20vh; right:0;
+  width:400px; height:400px;
+  background:radial-gradient(circle,rgba(57,255,20,.06) 0%,transparent 70%);
+  pointer-events:none; z-index:0;
 }
+
+/* ════════════════════════════════════════════════
+   INTERNAL PORTAL — OVERLAY
+════════════════════════════════════════════════ */
+#portal-overlay {
+  display:none;
+  position:fixed; inset:0; z-index:200;
+  background:rgba(5,4,6,0.97);
+  backdrop-filter:blur(20px);
+  overflow-y:auto;
+}
+#portal-overlay.active { display:block; }
+
+/* ── LOGIN SCREEN ─────────────────────────────── */
+#portal-login {
+  min-height:100vh;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  padding:2rem;
+}
+.login-mark {
+  font-family:var(--font-display); font-size:22px;
+  color:var(--green); margin-bottom:.5rem; letter-spacing:.05em;
+}
+.login-sub {
+  font-size:11px; color:var(--muted); letter-spacing:.1em;
+  text-transform:uppercase; margin-bottom:3rem;
+}
+.login-box {
+  width:100%; max-width:360px;
+  border:0.5px solid var(--border-green);
+  padding:2.5rem;
+  background:rgba(57,255,20,.02);
+}
+.login-label {
+  display:block; font-size:10px; color:var(--muted);
+  letter-spacing:.12em; text-transform:uppercase; margin-bottom:.75rem;
+}
+.login-input {
+  width:100%; padding:.75rem 1rem;
+  background:rgba(255,255,255,.04);
+  border:0.5px solid var(--border);
+  color:var(--off-white); font-family:var(--font-mono);
+  font-size:14px; letter-spacing:.1em;
+  outline:none; margin-bottom:1.25rem;
+  transition:border-color .2s;
+}
+.login-input:focus { border-color:var(--border-green); }
+.login-btn {
+  width:100%; padding:.85rem;
+  background:var(--green); color:var(--black);
+  font-family:var(--font-mono); font-size:13px;
+  font-weight:700; letter-spacing:.08em;
+  border:none; cursor:pointer; transition:opacity .2s;
+}
+.login-btn:hover { opacity:.85; }
+.login-err {
+  margin-top:1rem; font-size:12px; color:#ff5f57;
+  text-align:center; min-height:18px;
+}
+.login-close {
+  position:absolute; top:1.5rem; right:1.5rem;
+  background:none; border:none; color:var(--muted);
+  font-family:var(--font-mono); font-size:12px;
+  cursor:pointer; letter-spacing:.06em;
+  transition:color .2s;
+}
+.login-close:hover { color:var(--off-white); }
+
+/* ── PORTAL INNER ─────────────────────────────── */
+#portal-inner {
+  display:none; padding:0;
+}
+#portal-inner.active { display:block; }
+
+.portal-nav {
+  position:sticky; top:0; z-index:10;
+  padding:1rem 2rem;
+  display:flex; align-items:center; justify-content:space-between;
+  border-bottom:0.5px solid var(--border-green);
+  background:rgba(5,4,6,0.96);
+  backdrop-filter:blur(12px);
+}
+.portal-nav-mark {
+  font-family:var(--font-display); font-size:16px; color:var(--green);
+}
+.portal-nav-right { display:flex; align-items:center; gap:1.5rem; }
+.portal-badge {
+  font-size:10px; letter-spacing:.1em; text-transform:uppercase;
+  padding:.3rem .7rem;
+  border:0.5px solid var(--border-green); color:var(--green);
+}
+.portal-logout {
+  font-size:11px; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--muted); background:none; border:none;
+  font-family:var(--font-mono); cursor:pointer; transition:color .2s;
+}
+.portal-logout:hover { color:var(--off-white); }
+
+.portal-body { max-width:1200px; margin:0 auto; padding:3rem 2rem 6rem; }
+
+.portal-eyebrow {
+  font-size:10px; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--green); margin-bottom:.75rem;
+}
+.portal-title {
+  font-family:var(--font-display); font-size:clamp(20px,2.5vw,32px);
+  color:var(--off-white); margin-bottom:.75rem; line-height:1.2;
+}
+.portal-desc { font-size:13px; color:var(--muted); margin-bottom:3rem; max-width:640px; line-height:1.7; }
+
+.portal-section { margin-bottom:4rem; }
+.portal-section-title {
+  font-size:11px; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--amber); border-bottom:0.5px solid var(--border);
+  padding-bottom:.75rem; margin-bottom:1.5rem;
+}
+
+/* ── DOCUMENT GRID ────────────────────────────── */
+.doc-grid {
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:1rem;
+}
+.doc-card {
+  padding:1.5rem; border:0.5px solid var(--border);
+  transition:border-color .2s; cursor:default;
+  position:relative; overflow:hidden;
+}
+.doc-card::before {
+  content:''; position:absolute; top:0; left:0;
+  width:2px; height:0; background:var(--green);
+  transition:height .3s;
+}
+.doc-card:hover { border-color:var(--border-green); }
+.doc-card:hover::before { height:100%; }
+.doc-icon { font-size:20px; margin-bottom:1rem; color:var(--muted); }
+.doc-name { font-size:13px; font-weight:700; color:var(--off-white); margin-bottom:.5rem; }
+.doc-desc { font-size:11px; color:var(--muted); line-height:1.6; margin-bottom:1rem; }
+.doc-meta { font-size:10px; color:var(--green-dim); letter-spacing:.06em; text-transform:uppercase; }
+
+/* ── TRACK TABLE ──────────────────────────────── */
+.track-table { width:100%; border-collapse:collapse; font-size:12px; }
+.track-table th {
+  text-align:left; font-size:10px; color:var(--muted);
+  letter-spacing:.1em; text-transform:uppercase;
+  padding:.6rem 1rem; border-bottom:0.5px solid var(--border);
+  font-weight:400;
+}
+.track-table td {
+  padding:.6rem 1rem; border-bottom:0.5px solid var(--border);
+  vertical-align:top;
+}
+.track-table tr:last-child td { border-bottom:none; }
+.track-table tr:hover td { background:rgba(57,255,20,.02); }
+.tt-badge {
+  display:inline-block; padding:.2rem .55rem;
+  font-size:11px; font-weight:700; font-family:var(--font-mono);
+}
+.tt-t1{background:rgba(57,255,20,.12);color:var(--green)}
+.tt-t2{background:rgba(255,204,51,.12);color:var(--gold)}
+.tt-t3{background:rgba(255,170,0,.12);color:var(--amber)}
+.tt-t4{background:rgba(133,183,235,.1);color:#85b7eb}
+.tt-paper{background:rgba(136,135,128,.08);color:var(--muted);opacity:.7}
+.tt-name { color:var(--off-white); font-weight:700; margin-bottom:3px; }
+.tt-why { color:var(--muted); font-size:11px; line-height:1.5; }
+.tt-status { font-size:10px; color:var(--muted); letter-spacing:.04em; white-space:nowrap; }
+
+/* ── FLOW DIAGRAM EMBED ───────────────────────── */
+.diagram-grid {
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:1rem;
+}
+.diagram-card {
+  border:0.5px solid var(--border); padding:1.5rem;
+  transition:border-color .2s;
+}
+.diagram-card:hover { border-color:var(--border-green); }
+.diagram-thumb {
+  height:160px; background:var(--green-bg);
+  border:0.5px solid var(--border-green);
+  display:flex; align-items:center; justify-content:center;
+  margin-bottom:1rem; font-size:11px; color:var(--green-dim);
+  letter-spacing:.06em; text-transform:uppercase;
+  position:relative; overflow:hidden;
+}
+.diagram-thumb-art {
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  opacity:.35;
+}
+.diagram-name { font-size:13px; font-weight:700; color:var(--off-white); margin-bottom:.4rem; }
+.diagram-desc { font-size:11px; color:var(--muted); line-height:1.6; }
+
+/* ── SPEC CARDS ───────────────────────────────── */
+.spec-grid {
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:1px;
+  border:0.5px solid var(--border);
+}
+.spec-cell {
+  padding:1.25rem; border-right:0.5px solid var(--border);
+}
+.spec-cell:last-child { border-right:none; }
+.spec-num {
+  font-family:var(--font-display); font-size:24px;
+  color:var(--gold); display:block; margin-bottom:.25rem;
+}
+.spec-lbl { font-size:10px; color:var(--muted); letter-spacing:.06em; text-transform:uppercase; }
+.spec-sub { font-size:11px; color:var(--green-dim); margin-top:.25rem; }
+
+/* ── NOTICE BAR ───────────────────────────────── */
+.notice {
+  padding:1rem 1.5rem; margin-bottom:2rem;
+  border:0.5px solid rgba(255,170,0,.3);
+  border-left:3px solid var(--amber);
+  background:rgba(255,170,0,.04);
+  font-size:12px; color:var(--muted); line-height:1.7;
+}
+.notice strong { color:var(--off-white); }
 
 /* ── RESPONSIVE ───────────────────────────────── */
-@media (max-width: 768px) {
-  .hero { grid-template-columns: 1fr; gap: 2rem; padding-top: 5rem; }
-  .hero-left { max-width: 100%; }
-  .hero-stats { grid-template-columns: repeat(3, 1fr); }
-  .nav-links { display: none; }
+@media(max-width:768px){
+  .hero{grid-template-columns:1fr;gap:2rem;padding-top:5rem}
+  .hero-left{max-width:100%}
+  .nav-links{display:none}
+  .portal-nav-right .portal-badge{display:none}
 }
-
-@media (prefers-reduced-motion: reduce) {
-  .cursor { animation: none; opacity: 1; }
+@media(prefers-reduced-motion:reduce){
+  .cursor{animation:none;opacity:1}
 }
 </style>
 </head>
@@ -365,6 +498,7 @@ footer {
     <li><a href="#manifests">Manifests</a></li>
     <li><a href="#standards">Standards</a></li>
     <li><a href="#contact">Contact</a></li>
+    <li><button class="nav-internal-btn" onclick="openPortal()">[ internal ]</button></li>
   </ul>
 </nav>
 
@@ -377,16 +511,16 @@ footer {
 
     <div class="hero-stats">
       <div class="stat-cell">
-        <span class="stat-num">23</span>
+        <span class="stat-num">46</span>
         <span class="stat-lbl">patent tracks</span>
       </div>
       <div class="stat-cell">
-        <span class="stat-num">17</span>
+        <span class="stat-num">39</span>
         <span class="stat-lbl">cert manifests</span>
       </div>
       <div class="stat-cell">
-        <span class="stat-num">4.9ms</span>
-        <span class="stat-lbl">compile time</span>
+        <span class="stat-num">0.13ms</span>
+        <span class="stat-lbl">avg compile</span>
       </div>
     </div>
 
@@ -401,7 +535,7 @@ footer {
       <div class="term-dot td-r"></div>
       <div class="term-dot td-y"></div>
       <div class="term-dot td-g"></div>
-      <span class="term-title">aether v5.6 — GENXR_V5.6 / STRICT_MODE</span>
+      <span class="term-title">aether v7.3 — GENXR_V7.3 / STRICT_MODE</span>
     </div>
     <div class="term-body" id="terminal"></div>
   </div>
@@ -445,78 +579,49 @@ footer {
 <!-- MANIFESTS -->
 <section id="manifests">
   <div class="section-eyebrow">what aether produces</div>
-  <h2 class="section-title">17 certification manifests. One compilation. Under 5ms.</h2>
-  <p class="section-sub">Every Aether binary carries machine-verifiable certification manifest blocks. Each is independently verifiable. Each is cryptographically bound to the source.</p>
+  <h2 class="section-title">39 certification manifests. One compilation. Under 1ms.</h2>
+  <p class="section-sub">Every Aether binary carries machine-verifiable certification manifest blocks. Each is independently verifiable by the BPC verifier — without the compiler or source code.</p>
 
   <div class="manifest-grid">
-    <div class="manifest-card">
-      <div class="manifest-name">identity_manifest</div>
-      <div class="manifest-standard">Source fingerprint · tamper-evident chain</div>
-    </div>
-    <div class="manifest-card">
-      <div class="manifest-name">memory_manifest</div>
-      <div class="manifest-standard">MISRA-C Rule 20.4 · AUTOSAR M18-4-1</div>
-    </div>
-    <div class="manifest-card">
-      <div class="manifest-name">stack_manifest</div>
-      <div class="manifest-standard">MISRA-C Rule 17.2 · stack depth compile-time bound</div>
-    </div>
-    <div class="manifest-card">
-      <div class="manifest-name">wcet_manifest</div>
-      <div class="manifest-standard">DO-178C Level A · worst-case execution time</div>
-    </div>
-    <div class="manifest-card">
-      <div class="manifest-name">power_manifest</div>
-      <div class="manifest-standard">DO-160 · MIL-STD-461 · power envelope</div>
-    </div>
-    <div class="manifest-card">
-      <div class="manifest-name">interrupt_manifest</div>
-      <div class="manifest-standard">IEC 61508 SIL4 · ISO 26262 ASIL-D</div>
-    </div>
-    <div class="manifest-card">
-      <div class="manifest-name">mls_manifest</div>
-      <div class="manifest-standard">Bell-LaPadula + Biba · CC EAL6 · IEC 62443 SL4</div>
-    </div>
-    <div class="manifest-card">
-      <div class="manifest-name">smp_manifest</div>
-      <div class="manifest-standard">AUTOSAR AP · DO-178C partitioned systems</div>
-    </div>
-    <div class="manifest-card">
-      <div class="manifest-name">timing_manifest</div>
-      <div class="manifest-standard">FIPS 140-3 · NSA Suite B · CC EAL6+</div>
-    </div>
-    <div class="manifest-card">
-      <div class="manifest-name">network_manifest</div>
-      <div class="manifest-standard">NIST SP 800-53 SC-8 · NSA CNSSI 1253</div>
-    </div>
-    <div class="manifest-card">
-      <div class="manifest-name">verification_manifest</div>
-      <div class="manifest-standard">DO-333 FM · Common Criteria EAL7</div>
-    </div>
-    <div class="manifest-card">
-      <div class="manifest-name">attestation_manifest</div>
-      <div class="manifest-standard">NIST SP 800-193 · TCG TPM 2.0 · RFC 9334</div>
-    </div>
-    <div class="manifest-card">
-      <div class="manifest-name">operator_manifest</div>
-      <div class="manifest-standard">FIPS 201-3 · CCBP-v1.0 · NSA CNSSI 1253</div>
-    </div>
-    <div class="manifest-card">
-      <div class="manifest-name">infer_manifest</div>
-      <div class="manifest-standard">AI classification inference · Track 21</div>
-    </div>
-    <div class="manifest-card">
-      <div class="manifest-name">evidence_manifest</div>
-      <div class="manifest-standard">DO-178C evidence generation · Track 24</div>
-    </div>
-    <div class="manifest-card">
-      <div class="manifest-name">tensor_manifest</div>
-      <div class="manifest-standard">ML tensor classification · DoD AI Strategy 2023</div>
-    </div>
-    <div class="manifest-card">
-      <div class="manifest-name">cxx_annotation_manifest</div>
-      <div class="manifest-standard">C/C++ sidecar · existing firmware · no source modification</div>
-    </div>
+    <div class="manifest-card"><div class="manifest-name">identity_manifest</div><div class="manifest-standard">Source fingerprint · tamper-evident chain</div></div>
+    <div class="manifest-card"><div class="manifest-name">memory_manifest</div><div class="manifest-standard">MISRA-C Rule 20.4 · AUTOSAR M18-4-1</div></div>
+    <div class="manifest-card"><div class="manifest-name">stack_manifest</div><div class="manifest-standard">MISRA-C Rule 17.2 · stack depth bound</div></div>
+    <div class="manifest-card"><div class="manifest-name">wcet_manifest</div><div class="manifest-standard">DO-178C Level A · worst-case execution time</div></div>
+    <div class="manifest-card"><div class="manifest-name">power_manifest</div><div class="manifest-standard">DO-160 · MIL-STD-461 · power envelope</div></div>
+    <div class="manifest-card"><div class="manifest-name">interrupt_manifest</div><div class="manifest-standard">IEC 61508 SIL4 · ISO 26262 ASIL-D</div></div>
+    <div class="manifest-card"><div class="manifest-name">mls_manifest</div><div class="manifest-standard">Bell-LaPadula + Biba · CC EAL6 · IEC 62443 SL4</div></div>
+    <div class="manifest-card"><div class="manifest-name">smp_manifest</div><div class="manifest-standard">AUTOSAR AP · DO-178C partitioned systems</div></div>
+    <div class="manifest-card"><div class="manifest-name">timing_manifest</div><div class="manifest-standard">FIPS 140-3 · NSA Suite B · CC EAL6+</div></div>
+    <div class="manifest-card"><div class="manifest-name">network_manifest</div><div class="manifest-standard">NIST SP 800-53 SC-8 · NSA CNSSI 1253</div></div>
+    <div class="manifest-card"><div class="manifest-name">verification_manifest</div><div class="manifest-standard">DO-333 FM · Common Criteria EAL7</div></div>
+    <div class="manifest-card"><div class="manifest-name">attestation_manifest</div><div class="manifest-standard">NIST SP 800-193 · TCG TPM 2.0 · RFC 9334</div></div>
+    <div class="manifest-card"><div class="manifest-name">operator_manifest</div><div class="manifest-standard">FIPS 201-3 · CCBP-v1.0 · NSA CNSSI 1253</div></div>
+    <div class="manifest-card"><div class="manifest-name">tensor_manifest</div><div class="manifest-standard">ML tensor classification · DoD AI Strategy 2023</div></div>
+    <div class="manifest-card"><div class="manifest-name">adversarial_manifest</div><div class="manifest-standard">Adversarial taint · Track X</div></div>
+    <div class="manifest-card"><div class="manifest-name">federated_manifest</div><div class="manifest-standard">Federated learning · Bell-LaPadula gradient</div></div>
+    <div class="manifest-card"><div class="manifest-name">quantum_manifest</div><div class="manifest-standard">NIST FIPS 203/204/205 · post-quantum</div></div>
+    <div class="manifest-card"><div class="manifest-name">crypto_defense_manifest</div><div class="manifest-standard">Downgrade prevention · FIPS-140-3 · CNSA 2.0</div></div>
+    <div class="manifest-card"><div class="manifest-name">sbom_manifest</div><div class="manifest-standard">SPDX / CycloneDX · EO 14028 · NTIA</div></div>
+    <div class="manifest-card"><div class="manifest-name">rtos_manifest</div><div class="manifest-standard">Liu-Layland · POSIX 1003.1b · IEC 61508-3</div></div>
+    <div class="manifest-card"><div class="manifest-name">temporal_manifest</div><div class="manifest-standard">LTL call-graph ordering · DO-178C §6.3.4</div></div>
+    <div class="manifest-card"><div class="manifest-name">protocol_manifest</div><div class="manifest-standard">BFS reachability · ARINC 429 · DO-178C</div></div>
+    <div class="manifest-card"><div class="manifest-name">standards_manifest</div><div class="manifest-standard">Cross-standard compatibility lattice · Track II</div></div>
+    <div class="manifest-card"><div class="manifest-name">mte_manifest</div><div class="manifest-standard">ARM MTE v8.5-A · ISO 26262 ASIL-D</div></div>
+    <div class="manifest-card"><div class="manifest-name">bpc_manifest</div><div class="manifest-standard">Magic 0x41455448 · BPC-1.0 · RFC 9334</div></div>
+    <div class="manifest-card"><div class="manifest-name">privacy_manifest</div><div class="manifest-standard">Differential privacy · GDPR Art.5 · CCPA</div></div>
+    <div class="manifest-card"><div class="manifest-name">residency_manifest</div><div class="manifest-standard">GDPR Art.44 · CLOUD Act · data residency</div></div>
+    <div class="manifest-card"><div class="manifest-name">retention_manifest</div><div class="manifest-standard">GDPR Art.5(1)(e) · HIPAA · CCPA</div></div>
+    <div class="manifest-card"><div class="manifest-name">model_card_manifest</div><div class="manifest-standard">EU AI Act Art.13 · NIST AI RMF 1.0</div></div>
+    <div class="manifest-card"><div class="manifest-name">explainability_manifest</div><div class="manifest-standard">EU AI Act Art.17 · DoD AI Assurance 2023</div></div>
+    <div class="manifest-card"><div class="manifest-name">ai_output_manifest</div><div class="manifest-standard">Bell-LaPadula ML output · DoD AI Strategy</div></div>
+    <div class="manifest-card"><div class="manifest-name">provenance_manifest</div><div class="manifest-standard">SLSA Level 3 · NIST SP 800-218 · EO 14028</div></div>
+    <div class="manifest-card"><div class="manifest-name">dependency_manifest</div><div class="manifest-standard">EO 14028 · CISA SBOM · SLSA L3</div></div>
+    <div class="manifest-card"><div class="manifest-name">evidence_manifest ×3</div><div class="manifest-standard">DO-178C / DO-333 / CC clause mapping</div></div>
+    <div class="manifest-card"><div class="manifest-name">inference_manifest</div><div class="manifest-standard">AI invariant inference · Track RR · deterministic</div></div>
+    <div class="manifest-card"><div class="manifest-name">gap_manifest</div><div class="manifest-standard">10-rule gap detection · Track SS · fail_on_gaps</div></div>
+    <div class="manifest-card"><div class="manifest-name">correctness_certificate</div><div class="manifest-standard">Track TT · independently checkable · CompCert gap</div></div>
+    <div class="manifest-card"><div class="manifest-name">cxx_annotation_manifest</div><div class="manifest-standard">C/C++ sidecar · no source modification required</div></div>
+    <div class="manifest-card"><div class="manifest-name">infer_manifest</div><div class="manifest-standard">Track R · AI classification inference</div></div>
   </div>
 </section>
 
@@ -526,64 +631,34 @@ footer {
 <section id="standards">
   <div class="section-eyebrow">standards coverage</div>
   <h2 class="section-title">Every standard. One compiler.</h2>
-  <p class="section-sub">Aether's manifests map directly to the certification frameworks used across all NATO member nations.</p>
+  <p class="section-sub">Aether's manifests map directly to the certification frameworks used across all NATO member nations and major regulatory jurisdictions.</p>
 
   <div class="standards-grid">
-    <div class="std-card">
-      <div class="std-name">DO-178C Level A</div>
-      <div class="std-desc">Aviation software certification · FAA · EASA</div>
-    </div>
-    <div class="std-card">
-      <div class="std-name">ISO 26262 ASIL-D</div>
-      <div class="std-desc">Automotive functional safety · highest integrity level</div>
-    </div>
-    <div class="std-card">
-      <div class="std-name">IEC 62443 SL4</div>
-      <div class="std-desc">Industrial control system security · highest security level</div>
-    </div>
-    <div class="std-card">
-      <div class="std-name">IEC 61508 SIL4</div>
-      <div class="std-desc">Functional safety of E/E/PE systems</div>
-    </div>
-    <div class="std-card">
-      <div class="std-name">Common Criteria EAL6/7</div>
-      <div class="std-desc">IT security evaluation · formal verification</div>
-    </div>
-    <div class="std-card">
-      <div class="std-name">FIPS 140-3</div>
-      <div class="std-desc">Cryptographic module validation · US/Canada</div>
-    </div>
-    <div class="std-card">
-      <div class="std-name">NSA Suite B</div>
-      <div class="std-desc">Constant-time cryptography · CNSSI 1253</div>
-    </div>
-    <div class="std-card">
-      <div class="std-name">NIST SP 800-193</div>
-      <div class="std-desc">Platform firmware resilience · attestation</div>
-    </div>
-    <div class="std-card">
-      <div class="std-name">MIL-STD-461</div>
-      <div class="std-desc">Electromagnetic compatibility · defence systems</div>
-    </div>
-    <div class="std-card">
-      <div class="std-name">DO-333 FM</div>
-      <div class="std-desc">Formal methods supplement to DO-178C</div>
-    </div>
-    <div class="std-card">
-      <div class="std-name">MISRA-C 2012</div>
-      <div class="std-desc">Embedded C coding standard · safety-critical</div>
-    </div>
-    <div class="std-card">
-      <div class="std-name">AUTOSAR AP</div>
-      <div class="std-desc">Adaptive platform · multi-core automotive</div>
-    </div>
+    <div class="std-card"><div class="std-name">DO-178C Level A</div><div class="std-desc">Aviation software certification · FAA · EASA</div></div>
+    <div class="std-card"><div class="std-name">ISO 26262 ASIL-D</div><div class="std-desc">Automotive functional safety · highest integrity</div></div>
+    <div class="std-card"><div class="std-name">IEC 62443 SL4</div><div class="std-desc">Industrial control system security</div></div>
+    <div class="std-card"><div class="std-name">IEC 61508 SIL4</div><div class="std-desc">Functional safety of E/E/PE systems</div></div>
+    <div class="std-card"><div class="std-name">Common Criteria EAL6/7</div><div class="std-desc">IT security evaluation · formal verification</div></div>
+    <div class="std-card"><div class="std-name">FIPS 140-3</div><div class="std-desc">Cryptographic module validation · US/Canada</div></div>
+    <div class="std-card"><div class="std-name">NSA Suite B / CNSA 2.0</div><div class="std-desc">Constant-time cryptography · CNSSI 1253</div></div>
+    <div class="std-card"><div class="std-name">NIST FIPS 203/204/205</div><div class="std-desc">Post-quantum cryptography · PQC mandate</div></div>
+    <div class="std-card"><div class="std-name">NIST SP 800-193</div><div class="std-desc">Platform firmware resilience · attestation</div></div>
+    <div class="std-card"><div class="std-name">MIL-STD-461</div><div class="std-desc">Electromagnetic compatibility · defence</div></div>
+    <div class="std-card"><div class="std-name">DO-333 FM</div><div class="std-desc">Formal methods supplement to DO-178C</div></div>
+    <div class="std-card"><div class="std-name">MISRA-C 2012</div><div class="std-desc">Embedded C coding standard · safety-critical</div></div>
+    <div class="std-card"><div class="std-name">AUTOSAR AP</div><div class="std-desc">Adaptive platform · multi-core automotive</div></div>
+    <div class="std-card"><div class="std-name">EO 14028 / NTIA SBOM</div><div class="std-desc">US software supply chain security</div></div>
+    <div class="std-card"><div class="std-name">GDPR Art.5 / Art.44</div><div class="std-desc">EU data protection · residency · retention</div></div>
+    <div class="std-card"><div class="std-name">EU AI Act Art.13/17</div><div class="std-desc">AI transparency · explainability · model card</div></div>
+    <div class="std-card"><div class="std-name">SLSA Level 3</div><div class="std-desc">Build provenance · supply chain integrity</div></div>
+    <div class="std-card"><div class="std-name">ARM MTE v8.5-A</div><div class="std-desc">Memory tagging extension · spatial safety</div></div>
   </div>
 </section>
 
 <!-- CTA -->
 <div class="cta-section" id="contact">
   <h2 class="cta-title">Your C code. Aether certification.<br>No rewrites.</h2>
-  <p class="cta-sub">Add a sidecar declaration file alongside your existing C/C++ firmware. Aether enforces the properties you declare and produces a machine-verifiable certified binary in under 5 milliseconds.</p>
+  <p class="cta-sub">Add a sidecar declaration file alongside your existing C/C++ firmware. Aether enforces the properties you declare and produces a machine-verifiable certified binary in under one millisecond.</p>
   <div class="contact-grid">
     <div class="contact-item">email &nbsp;<a href="mailto:info@bruno-protocol.org">info@bruno-protocol.org</a></div>
     <div class="contact-item">phone &nbsp;<a href="tel:7782205112">778-220-5112</a></div>
@@ -597,74 +672,387 @@ footer {
 
 <footer>
   <span class="footer-mark">Æ AETHER</span>
-  <span class="footer-copy">© 2026 Emilio R. Bruno · Bruno Protocol Group · Kamloops, BC, Canada · Patent applications pending CA, US, EP, PCT · AI assistance (Claude/Anthropic) disclosed</span>
+  <span class="footer-copy">© 2026 Emilio R. Bruno · Aether-Lang.org Inc. (CBCA federal) · Kamloops, BC, Canada · Patent applications pending CA, US · AI assistance (Claude/Anthropic) disclosed</span>
 </footer>
 
+<!-- ════════════════════════════════════════════════
+     INTERNAL PORTAL OVERLAY
+════════════════════════════════════════════════ -->
+<div id="portal-overlay" role="dialog" aria-modal="true" aria-label="Internal portal">
+
+  <!-- LOGIN -->
+  <div id="portal-login">
+    <button class="login-close" onclick="closePortal()">[ close ✕ ]</button>
+    <div class="login-mark">Æ AETHER</div>
+    <div class="login-sub">internal access · authorised personnel only</div>
+    <div class="login-box">
+      <label class="login-label" for="pw-input">access code</label>
+      <input class="login-input" type="password" id="pw-input"
+        placeholder="············" autocomplete="off"
+        onkeydown="if(event.key==='Enter')tryLogin()">
+      <button class="login-btn" onclick="tryLogin()">enter</button>
+      <div class="login-err" id="login-err"></div>
+    </div>
+  </div>
+
+  <!-- PORTAL INNER -->
+  <div id="portal-inner">
+    <nav class="portal-nav">
+      <span class="portal-nav-mark">Æ AETHER — INTERNAL</span>
+      <div class="portal-nav-right">
+        <span class="portal-badge">v7.3 · RESTRICTED</span>
+        <button class="portal-logout" onclick="closePortal()">[ exit portal ]</button>
+      </div>
+    </nav>
+
+    <div class="portal-body">
+      <div class="portal-eyebrow">internal reference · june 2026</div>
+      <h2 class="portal-title">Aether v7.3 — Complete Internal Reference</h2>
+      <p class="portal-desc">Patent filings, technical documentation, capability logs, performance data, and flowcharts. Not for public distribution. All materials are pre-filing — do not share outside of Aether-Lang.org Inc. and authorised counsel.</p>
+
+      <div class="notice">
+        <strong>Pre-filing notice.</strong> All 46 patent tracks are pre-filing as of June 2026. Track B (Krapivin) provisional filing is first priority. Do not reference specific claims or prior art distinctions in any external communication until counsel advises otherwise. Paper-spec tracks S, T, V must not be described as implemented.
+      </div>
+
+      <!-- PERFORMANCE SNAPSHOT -->
+      <div class="portal-section">
+        <div class="portal-section-title">v7.3 confirmed performance snapshot</div>
+        <div class="spec-grid">
+          <div class="spec-cell"><span class="spec-num">154</span><span class="spec-lbl">fixtures</span><span class="spec-sub">all passing</span></div>
+          <div class="spec-cell"><span class="spec-num">0</span><span class="spec-lbl">failures</span><span class="spec-sub">0 warnings</span></div>
+          <div class="spec-cell"><span class="spec-num">108</span><span class="spec-lbl">operations</span><span class="spec-sub">confirmed</span></div>
+          <div class="spec-cell"><span class="spec-num">46</span><span class="spec-lbl">patent tracks</span><span class="spec-sub">A through TT</span></div>
+          <div class="spec-cell"><span class="spec-num">39</span><span class="spec-lbl">manifest types</span><span class="spec-sub">SEML format</span></div>
+          <div class="spec-cell"><span class="spec-num">0.094ms</span><span class="spec-lbl">p50 compile</span><span class="spec-sub">release mode</span></div>
+          <div class="spec-cell"><span class="spec-num">0.256ms</span><span class="spec-lbl">max clean run</span><span class="spec-sub">TT capstone</span></div>
+          <div class="spec-cell"><span class="spec-num">95W</span><span class="spec-lbl">benchmark TDP</span><span class="spec-sub">i7-2600 Sandy Bridge</span></div>
+        </div>
+      </div>
+
+      <!-- DOCUMENTS -->
+      <div class="portal-section">
+        <div class="portal-section-title">documents — v7.3 first editions</div>
+        <div class="doc-grid">
+
+          <div class="doc-card">
+            <div class="doc-icon">▤</div>
+            <div class="doc-name">Complete Reference</div>
+            <div class="doc-desc">Full technical specification: all 46 tracks, 39 manifests, pipeline, standards, workspace, trade secrets, roadmap. First edition v7.3.</div>
+            <div class="doc-meta">Aether_v73_Complete_Reference.docx</div>
+          </div>
+
+          <div class="doc-card">
+            <div class="doc-icon">▤</div>
+            <div class="doc-name">Capability Log</div>
+            <div class="doc-desc">Complete capability inventory: all implemented language features, type system, track table, standards coverage. First edition v7.3.</div>
+            <div class="doc-meta">Aether_v73_Capability_Log.docx</div>
+          </div>
+
+          <div class="doc-card">
+            <div class="doc-icon">▦</div>
+            <div class="doc-name">Patent Counsel Briefing</div>
+            <div class="doc-desc">For Max (Oyen Wiggs). Three questions, filing order, 46 tracks, Universal I/O priority, non-dilutive funding, investor roadmap, action items.</div>
+            <div class="doc-meta">Aether_v73_Patent_Counsel_Briefing.docx</div>
+          </div>
+
+          <div class="doc-card">
+            <div class="doc-icon">▦</div>
+            <div class="doc-name">Universal I/O Patent Memo</div>
+            <div class="doc-desc">Attorney-client memo: three-tier input/output architecture, 7 new claim directions (UI-1–4, UO-1–2, UC-1), prior art distinguished, filing urgency.</div>
+            <div class="doc-meta">Aether_v73_Universal_IO_Patent_Memo.docx</div>
+          </div>
+
+          <div class="doc-card">
+            <div class="doc-icon">▤</div>
+            <div class="doc-name">Human Verifier Manual</div>
+            <div class="doc-desc">Complete sign-off workflow for all three audience tiers: engineer, compliance officer, procurement/legal. 7 sections, sign-off record, standards cross-reference.</div>
+            <div class="doc-meta">Aether_v73_Verifier_Manual.docx + .pdf</div>
+          </div>
+
+          <div class="doc-card">
+            <div class="doc-icon">▣</div>
+            <div class="doc-name">DIANA Short-Form Proposal</div>
+            <div class="doc-desc">NATO DIANA 2027 Challenge Call submission. Operational Resilience in Contested Environments. Deadline July 3, 2026. Awaiting DUNS number.</div>
+            <div class="doc-meta">Aether_v73_DIANA_ShortForm.docx</div>
+          </div>
+
+          <div class="doc-card">
+            <div class="doc-icon">▣</div>
+            <div class="doc-name">Provisional Patent Draft</div>
+            <div class="doc-desc">Draft provisional with formal claims and drawings — Tracks A, B, C (Claims 1–17). For attorney review before filing. Not filed.</div>
+            <div class="doc-meta">Aether_Provisional_Patent_with_Drawings.docx</div>
+          </div>
+
+          <div class="doc-card">
+            <div class="doc-icon">◈</div>
+            <div class="doc-name">Verifier Quick Reference</div>
+            <div class="doc-desc">Interactive HTML sign-off tool. Role selector, 5-step checklist, live progress bar, deployment context matrix, fillable sign-off form.</div>
+            <div class="doc-meta">Aether_v73_Verifier_QuickRef.html</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- FLOWCHARTS -->
+      <div class="portal-section">
+        <div class="portal-section-title">technical flowcharts — v7.3</div>
+        <div class="diagram-grid">
+
+          <div class="diagram-card">
+            <div class="diagram-thumb">
+              <div class="diagram-thumb-art">
+                <svg width="200" height="120" viewBox="0 0 200 120">
+                  <rect x="70" y="8" width="60" height="20" rx="3" fill="none" stroke="#39ff14" stroke-width="0.5"/>
+                  <line x1="100" y1="28" x2="100" y2="42" stroke="#39ff14" stroke-width="0.5"/>
+                  <rect x="70" y="42" width="60" height="16" rx="3" fill="none" stroke="#888780" stroke-width="0.5"/>
+                  <line x1="100" y1="58" x2="100" y2="72" stroke="#888780" stroke-width="0.5"/>
+                  <rect x="50" y="72" width="100" height="20" rx="3" fill="none" stroke="#7f77dd" stroke-width="0.5"/>
+                  <line x1="100" y1="92" x2="100" y2="102" stroke="#7f77dd" stroke-width="0.5"/>
+                  <rect x="60" y="102" width="80" height="14" rx="3" fill="none" stroke="#1d9e75" stroke-width="0.5"/>
+                </svg>
+              </div>
+              <span>compiler pipeline</span>
+            </div>
+            <div class="diagram-name">Compiler pipeline — v7.3</div>
+            <div class="diagram-desc">10-stage end-to-end flow: source → lexer → parser → type checker → monomorphization → enforcement (A–TT) → GENXR codegen → RR → SS → TT → .aet output. Rejection paths at every stage.</div>
+          </div>
+
+          <div class="diagram-card">
+            <div class="diagram-thumb">
+              <div class="diagram-thumb-art">
+                <svg width="200" height="120" viewBox="0 0 200 120">
+                  <rect x="10" y="10" width="85" height="24" rx="3" fill="none" stroke="#ffcc33" stroke-width="0.5"/>
+                  <rect x="105" y="10" width="85" height="24" rx="3" fill="none" stroke="#1d9e75" stroke-width="0.5"/>
+                  <rect x="10" y="46" width="85" height="24" rx="3" fill="none" stroke="#7f77dd" stroke-width="0.5"/>
+                  <rect x="105" y="46" width="85" height="24" rx="3" fill="none" stroke="#d85a30" stroke-width="0.5"/>
+                  <rect x="10" y="82" width="85" height="24" rx="3" fill="none" stroke="#1d9e75" stroke-width="0.5"/>
+                  <rect x="105" y="82" width="85" height="24" rx="3" fill="none" stroke="#1d9e75" stroke-width="0.5"/>
+                  <text x="52" y="26" text-anchor="middle" font-size="7" fill="#ffcc33">A–E original</text>
+                  <text x="147" y="26" text-anchor="middle" font-size="7" fill="#1d9e75">F–J resource</text>
+                  <text x="52" y="62" text-anchor="middle" font-size="7" fill="#7f77dd">K–Q security</text>
+                  <text x="147" y="62" text-anchor="middle" font-size="7" fill="#d85a30">AI safety</text>
+                  <text x="52" y="98" text-anchor="middle" font-size="7" fill="#1d9e75">Supply chain</text>
+                  <text x="147" y="98" text-anchor="middle" font-size="7" fill="#1d9e75">RR+SS+TT ★</text>
+                </svg>
+              </div>
+              <span>46 tracks</span>
+            </div>
+            <div class="diagram-name">46 enforcement tracks — A through TT</div>
+            <div class="diagram-desc">All 46 tracks by domain: energy/security (A–E), resource budgets (F–J), security classification (K–Q), AI safety, supply chain, privacy/governance, AI correctness pipeline (RR+SS+TT). Crown jewels starred.</div>
+          </div>
+
+          <div class="diagram-card">
+            <div class="diagram-thumb">
+              <div class="diagram-thumb-art">
+                <svg width="200" height="120" viewBox="0 0 200 120">
+                  <rect x="8" y="12" width="54" height="32" rx="3" fill="none" stroke="#1d9e75" stroke-width="0.5"/>
+                  <rect x="8" y="52" width="54" height="32" rx="3" fill="none" stroke="#1d9e75" stroke-width="0.5"/>
+                  <rect x="8" y="92" width="54" height="22" rx="3" fill="none" stroke="#888780" stroke-width="0.5"/>
+                  <line x1="62" y1="28" x2="78" y2="58" stroke="#39ff14" stroke-width="0.5"/>
+                  <line x1="62" y1="68" x2="78" y2="58" stroke="#39ff14" stroke-width="0.5"/>
+                  <line x1="62" y1="103" x2="78" y2="58" stroke="#888780" stroke-width="0.5" stroke-dasharray="3 2"/>
+                  <rect x="78" y="44" width="58" height="28" rx="3" fill="none" stroke="#7f77dd" stroke-width="0.5"/>
+                  <line x1="136" y1="58" x2="150" y2="58" stroke="#39ff14" stroke-width="0.5"/>
+                  <rect x="150" y="44" width="42" height="14" rx="3" fill="none" stroke="#378add" stroke-width="0.5"/>
+                  <rect x="150" y="62" width="42" height="14" rx="3" fill="none" stroke="#888780" stroke-width="0.5" stroke-dasharray="2 1"/>
+                  <text x="35" y="32" text-anchor="middle" font-size="6" fill="#1d9e75">Tier 1</text>
+                  <text x="35" y="40" text-anchor="middle" font-size="6" fill="#888780">.bru</text>
+                  <text x="35" y="72" text-anchor="middle" font-size="6" fill="#1d9e75">Tier 2</text>
+                  <text x="35" y="80" text-anchor="middle" font-size="6" fill="#888780">C/C++</text>
+                  <text x="35" y="107" text-anchor="middle" font-size="6" fill="#888780">Tier 3 →v8</text>
+                  <text x="107" y="62" text-anchor="middle" font-size="6" fill="#7f77dd">AST</text>
+                  <text x="171" y="54" text-anchor="middle" font-size="6" fill="#378add">.aet</text>
+                  <text x="171" y="72" text-anchor="middle" font-size="6" fill="#888780">v8.0→</text>
+                </svg>
+              </div>
+              <span>universal I/O</span>
+            </div>
+            <div class="diagram-name">Universal I/O architecture</div>
+            <div class="diagram-desc">Three input tiers → AST boundary → language-agnostic enforcement engine → format-agnostic .aet manifest → output tiers. Patent claim directions UI-1 through UC-1. UI-3 sidecar filing priority.</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- PATENT TRACK RANKING -->
+      <div class="portal-section">
+        <div class="portal-section-title">patent tracks — ranked by importance (A–TT designators)</div>
+        <table class="track-table">
+          <thead>
+            <tr>
+              <th style="width:70px">track</th>
+              <th style="width:100px">tier</th>
+              <th>name &amp; rationale</th>
+              <th style="width:120px">status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="tt-badge tt-t1">B</span></td><td><span class="tt-badge tt-t1">Crown jewel</span></td><td><div class="tt-name">Krapivin Secret-context hash-map invariant</div><div class="tt-why">No direct prior art — 3 independent searches. Dual-trigger is the novel element. File first.</div></td><td class="tt-status">Provisional pending</td></tr>
+            <tr><td><span class="tt-badge tt-t1">TT</span></td><td><span class="tt-badge tt-t1">Crown jewel</span></td><td><div class="tt-name">Structured correctness certificate</div><div class="tt-why">AI-synthesised machine-verifiable certificate. Independently checkable. Addresses CompCert gap. Three independent claims with RR+SS.</div></td><td class="tt-status">Not filed — file with RR+SS</td></tr>
+            <tr><td><span class="tt-badge tt-t1">RR</span></td><td><span class="tt-badge tt-t1">Crown jewel</span></td><td><div class="tt-name">AI invariant inference engine</div><div class="tt-why">Deterministic deduction over verified manifest chain. 9 rules. Novel AI/compiler intersection. No prior art.</div></td><td class="tt-status">Not filed — file with SS+TT</td></tr>
+            <tr><td><span class="tt-badge tt-t1">SS</span></td><td><span class="tt-badge tt-t1">Crown jewel</span></td><td><div class="tt-name">Compile-time structural gap detection</div><div class="tt-why">10 cross-track rules. fail_on_gaps:true. Novel: no prior system detects multi-track manifest chain gaps at compile time.</div></td><td class="tt-status">Not filed — file with RR+TT</td></tr>
+            <tr><td><span class="tt-badge tt-t2">A</span></td><td><span class="tt-badge tt-t2">Original five</span></td><td><div class="tt-name">Energy/security type system</div><div class="tt-why">Low+Secret = unconditional compile error. Foundational claim. Distinguished from Cohen OOPSLA 2012.</div></td><td class="tt-status">In provisional — expand</td></tr>
+            <tr><td><span class="tt-badge tt-t2">C</span></td><td><span class="tt-badge tt-t2">Original five</span></td><td><div class="tt-name">Energy-state monomorphization</div><div class="tt-why">Specialisation keyed on inherited energy-state context, not data type. Cap: 4 instantiations. Novel axis.</div></td><td class="tt-status">In provisional — expand</td></tr>
+            <tr><td><span class="tt-badge tt-t2">D</span></td><td><span class="tt-badge tt-t2">Original five</span></td><td><div class="tt-name">Cross-energy spawn capture check</div><div class="tt-why">Strict spawn across energy domain boundaries = compile error. Concurrency analogue of Track A.</div></td><td class="tt-status">In provisional — expand</td></tr>
+            <tr><td><span class="tt-badge tt-t2">E</span></td><td><span class="tt-badge tt-t2">Original five</span></td><td><div class="tt-name">Compile-time epoch-key binding</div><div class="tt-why">Secret&lt;T,EpochId&gt; mismatch = compile error. Multi-hop laundering caught. Distinguished from US12,137,121.</div></td><td class="tt-status">In provisional — expand</td></tr>
+            <tr><td><span class="tt-badge tt-t3">F–J</span></td><td><span class="tt-badge tt-t3">Safety budgets</span></td><td><div class="tt-name">WCET · zero-heap · stack depth · power envelope · interrupt latency</div><div class="tt-why">DO-178C Level A / IEC 61508 / ISO 26262. Structurally impossible to violate. File as group.</div></td><td class="tt-status">Not filed</td></tr>
+            <tr><td><span class="tt-badge tt-t3">K–Q</span></td><td><span class="tt-badge tt-t3">Security layer</span></td><td><div class="tt-name">MLS · SMP · constant-time · network · formal verify · attestation · CCBP</div><div class="tt-why">CC EAL6/7 / FIPS-140-3 / NSA Suite B. File as security group.</div></td><td class="tt-status">Not filed</td></tr>
+            <tr><td><span class="tt-badge tt-t3">Z · AA</span></td><td><span class="tt-badge tt-t3">Post-quantum</span></td><td><div class="tt-name">Post-quantum enforcement · cryptographic defense</div><div class="tt-why">NIST FIPS 203/204/205. Harvest-now-decrypt-later blocked. Government mandates live — market timing excellent.</div></td><td class="tt-status">Not filed</td></tr>
+            <tr><td><span class="tt-badge tt-t3">BB · PP · QQ</span></td><td><span class="tt-badge tt-t3">Supply chain</span></td><td><div class="tt-name">SBOM · compiler provenance · dependency classification</div><div class="tt-why">EO 14028 / SLSA L3 / CISA. Strong US government market. File as supply chain group.</div></td><td class="tt-status">Not filed</td></tr>
+            <tr><td><span class="tt-badge tt-t4">W · X · Y · MM · NN · OO</span></td><td><span class="tt-badge tt-t4">AI safety</span></td><td><div class="tt-name">ML tensor · adversarial taint · federated · model card · explainability · AI output</div><div class="tt-why">EU AI Act / DoD AI Strategy / NIST AI RMF. File as AI safety group.</div></td><td class="tt-status">Not filed</td></tr>
+            <tr><td><span class="tt-badge tt-t4">FF · KK · LL</span></td><td><span class="tt-badge tt-t4">Privacy</span></td><td><div class="tt-name">Differential privacy · data residency · retention binding</div><div class="tt-why">GDPR Art.5 / Art.44 / HIPAA / CCPA. Novel structural enforcement — not runtime. File as privacy group.</div></td><td class="tt-status">Not filed</td></tr>
+            <tr><td><span class="tt-badge tt-t4">CC · DD · EE · HH · II · JJ</span></td><td><span class="tt-badge tt-t4">Protocol/RT</span></td><td><div class="tt-name">RTOS · protocol SM · ARM MTE · BPC protocol · cross-standard · temporal LTL</div><div class="tt-why">DO-178C / IEC 61508 / ARM v8.5-A / RFC 9334. File as real-time + protocol group.</div></td><td class="tt-status">Not filed</td></tr>
+            <tr><td><span class="tt-badge tt-paper">S · T · V</span></td><td><span class="tt-badge tt-paper">Paper-spec</span></td><td><div class="tt-name">AI threat model · cross-manifest consistency · behavioral attestation</div><div class="tt-why">Specified. No token, parser, or enforcer. Must not be claimed as implemented anywhere.</div></td><td class="tt-status">Do not file</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- CORPORATE / IP -->
+      <div class="portal-section">
+        <div class="portal-section-title">corporate structure &amp; IP status</div>
+        <div class="doc-grid">
+          <div class="doc-card">
+            <div class="doc-name">Aether-Lang.org Inc.</div>
+            <div class="doc-desc">CBCA federal incorporation. Incorporated June 26, 2026. Operating company. IP currently held personally by Emilio R. Bruno — no transfer documents signed pending counsel advice.</div>
+            <div class="doc-meta">Corporation number · CBCA federal · June 26 2026</div>
+          </div>
+          <div class="doc-card">
+            <div class="doc-name">Bruno IP Holdings Ltd.</div>
+            <div class="doc-desc">BC Registry incorporation pending. Planned holdco structure. Three questions for patent counsel: (1) which entity files, (2) assignment vs licence, (3) consideration for transfer.</div>
+            <div class="doc-meta">BC Registry · incorporation pending</div>
+          </div>
+          <div class="doc-card">
+            <div class="doc-name">Patent counsel — Oyen Wiggs</div>
+            <div class="doc-desc">Maxwell Guld, Oyen Wiggs Green &amp; Mutala LLP, Vancouver BC. Meeting June 30, 2026. No IP transfer documents to be signed before counsel advises on structure.</div>
+            <div class="doc-meta">Meeting June 30 2026 · pre-filing</div>
+          </div>
+          <div class="doc-card">
+            <div class="doc-name">Filing order</div>
+            <div class="doc-desc">1. Track B (Krapivin) · 2. Tracks RR+SS+TT · 3. UI-3+UI-1 (Universal I/O sidecar — file before v8.0) · 4. Tracks A+C expand provisional · 5. Remaining tracks by domain group.</div>
+            <div class="doc-meta">Track B · file immediately</div>
+          </div>
+          <div class="doc-card">
+            <div class="doc-name">Non-dilutive pipeline</div>
+            <div class="doc-desc">NATO DIANA (July 3 deadline — awaiting DUNS) · SR&amp;ED · NRC IRAP · Mitacs · BC Innovates. Investor path: Track B → Telus anchor → angels → VC seed 12–18mo (BDC, Real Ventures, Panache).</div>
+            <div class="doc-meta">DIANA deadline July 3 2026</div>
+          </div>
+          <div class="doc-card">
+            <div class="doc-name">Team onboarding gate</div>
+            <div class="doc-desc">Founders Agreement required before any work begins with Todd Horie, Ernie Bruno, Brandon Bruno, or Michael Bruno. Do not onboard without signed agreement.</div>
+            <div class="doc-meta">Founders Agreement first</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="notice" style="margin-top:1rem">
+        <strong>Access reminder.</strong> This portal is client-side only — no server authentication. Do not bookmark or share the URL as a secure access mechanism. For distribution to counsel or investors, provide documents directly from the outputs folder. AI assistance (Claude/Anthropic) disclosed per standard practice.
+      </div>
+
+    </div><!-- /portal-body -->
+  </div><!-- /portal-inner -->
+</div><!-- /portal-overlay -->
+
 <script>
+/* ── TERMINAL ─────────────────────────────────────── */
 const LINES = [
-  { t: 'cmd',      s: '$ cargo run --release' },
-  { t: 'dim',      s: '   Compiling aether-lexer v5.6.0 ...' },
-  { t: 'dim',      s: '   Finished release profile in 1.2s' },
-  { t: 'dim',      s: '' },
-  { t: 'dim',      s: '===== PROCESSING: missile_guidance.aether =====' },
-  { t: 'pass',     s: '  [✓] C/C++ Sidecar Mode             source: missile_guidance.c  4 declaration(s)' },
-  { t: 'pass',     s: '  [✓] Parser Phase Complete              0.066ms' },
-  { t: 'pass',     s: '  [✓] Type-Checker Verification Passed  0.009ms' },
-  { t: 'pass',     s: '  [✓] Monomorphization Resolved    0.014ms  (5 instantiation(s))' },
-  { t: 'pass',     s: '  [✓] Identity Binding Verified     classifier: TopSecret  authority: "Raytheon-Guidance-2026"' },
-  { t: 'pass',     s: '  [✓] Zero-Heap Invariant Certified  heap: 0 bytes  MISRA-C Rule 20.4' },
-  { t: 'pass',     s: '  [✓] Stack Depth Verified           estimated 320 bytes ≤ budget 2048 bytes' },
-  { t: 'pass',     s: '  [✓] Power Envelope Verified        projected 475.0mW ≤ budget 1000.0mW' },
-  { t: 'pass',     s: '  [✓] Interrupt Latency Verified     estimated 3.5μs ≤ budget 50.0μs' },
-  { t: 'pass',     s: '  [✓] MLS Lattice Verified           Bell-LaPadula+Biba: PASS' },
-  { t: 'pass',     s: '  [✓] Constant-Time Verified         no secret-dependent branches  FIPS-140-3: PASS' },
-  { t: 'pass',     s: '  [✓] Network Classification Verified  max: TOP_SECRET  NIST-SP-800-53: PASS' },
-  { t: 'pass',     s: '  [✓] Formal Verification Bridge      6 proof obligations discharged  CC-EAL7: PASS' },
-  { t: 'pass',     s: '  [✓] Runtime Attestation Generated  token: 0x1c31f4507ef99bba  NIST-SP-800-193: PASS' },
-  { t: 'pass',     s: '  [✓] CCBP Challenge Generated       clearance: TOP_SECRET  FIPS-201-3: PASS' },
-  { t: 'pass',     s: '  [✓] Certification Evidence Generated  9 evidence items  DO-178C-LevelA: PASS' },
-  { t: 'pass',     s: '  [✓] GENXR Codegen Emit                0.073ms' },
-  { t: 'dim',      s: '  ─────────────────────────────────────────────' },
-  { t: 'key',      s: '  Total: 0.171ms  (17 manifests · 8,367 aet bytes)' },
-  { t: 'dim',      s: '' },
-  { t: 'manifest', s: '// AETHER PROTOCOL COMPILED TARGET MANIFEST' },
-  { t: 'manifest', s: '// GENERATOR ENGINE: GENXR_V5.6 / STRICT_MODE' },
-  { t: 'manifest', s: '' },
-  { t: 'manifest', s: 'attestation_manifest {' },
-  { t: 'manifest', s: '  attestation_token:  0x1c31f4507ef99bba' },
-  { t: 'manifest', s: '  chain_depth:        9' },
-  { t: 'manifest', s: '  standard:           NIST_SP_800-193 / TCG_TPM2.0' },
-  { t: 'manifest', s: '}' },
+  {t:'cmd',      s:'$ cargo run --release'},
+  {t:'dim',      s:'   Compiling aether-lexer v7.3.0 ...'},
+  {t:'dim',      s:'   Finished release profile in 1.1s'},
+  {t:'dim',      s:''},
+  {t:'dim',      s:'===== PROCESSING: tests/fixtures\\168_group1_full_stack.bru ====='},
+  {t:'pass',     s:'  [✓] Parser Phase Complete              0.083ms'},
+  {t:'pass',     s:'  [✓] Type-Checker Verification Passed  0.008ms'},
+  {t:'pass',     s:'  [✓] Monomorphization Resolved    0.009ms  (3 instantiation(s))'},
+  {t:'pass',     s:'  [✓] Identity Binding Verified     classifier: Secret  authority: "Raytheon-Guidance-2026"'},
+  {t:'pass',     s:'  [✓] Zero-Heap Invariant Certified  heap: 0 bytes  MISRA-C Rule 20.4: PASS'},
+  {t:'pass',     s:'  [✓] Stack Depth Verified           192 bytes (3 frames) ≤ budget 2048 bytes'},
+  {t:'pass',     s:'  [✓] Power Envelope Verified        285.0mW ≤ budget 500.0mW  MIL-STD-461: PASS'},
+  {t:'pass',     s:'  [✓] Interrupt Latency Verified     2.500μs ≤ budget 50.000μs  IEC-61508: PASS'},
+  {t:'pass',     s:'  [✓] Constant-Time Verified         no secret-dependent branches  FIPS-140-3: PASS'},
+  {t:'pass',     s:'  [✓] Formal Verification Bridge      3 proof obligations discharged  DO-333/CC-EAL7: PASS'},
+  {t:'pass',     s:'  [✓] Runtime Attestation Generated  token: 0x5ce1beb75a928c4c  RFC-9334: PASS'},
+  {t:'pass',     s:'      chain: identity+memory+stack+power+interrupt+timing+verification'},
+  {t:'pass',     s:'  [✓] GENXR Codegen Emit                0.073ms'},
+  {t:'dim',      s:'  ─────────────────────────────────────────────────────────'},
+  {t:'key',      s:'  Total: 0.164ms  (7 manifests · 7,110 aet bytes)'},
+  {t:'dim',      s:''},
+  {t:'manifest', s:'// AETHER PROTOCOL COMPILED TARGET MANIFEST'},
+  {t:'manifest', s:'// GENERATOR ENGINE: GENXR_V7.3 / STRICT_MODE'},
+  {t:'manifest', s:''},
+  {t:'manifest', s:'attestation_manifest {'},
+  {t:'manifest', s:'  hardware_profile:   "ARM-Cortex-A72-TrustZone"'},
+  {t:'manifest', s:'  attestation_token:  0x5ce1beb75a928c4c'},
+  {t:'manifest', s:'  chain_depth:        7'},
+  {t:'manifest', s:'  standard:           NIST_SP_800-193 / TCG_TPM2.0 / IETF_RFC_9334'},
+  {t:'manifest', s:'}'},
 ];
 
 const term = document.getElementById('terminal');
 let idx = 0;
-
 function addLine(line) {
   const el = document.createElement('div');
-  const cls = {
-    cmd: 't-cmd', pass: 't-pass', warn: 't-warn',
-    key: 't-key', val: 't-val', dim: 't-dim', manifest: 't-manifest'
-  }[line.t] || 't-dim';
+  const cls = {cmd:'t-cmd',pass:'t-pass',warn:'t-warn',key:'t-key',val:'t-val',dim:'t-dim',manifest:'t-manifest'}[line.t]||'t-dim';
   el.className = cls;
   el.textContent = line.s || '\u00A0';
   term.appendChild(el);
   term.scrollTop = term.scrollHeight;
 }
-
 function tick() {
   if (idx < LINES.length) {
     addLine(LINES[idx++]);
-    const delay = LINES[idx-1].t === 'dim' ? 40 : LINES[idx-1].t === 'manifest' ? 60 : 80;
-    setTimeout(tick, delay);
+    const d = LINES[idx-1].t==='dim'?40:LINES[idx-1].t==='manifest'?60:80;
+    setTimeout(tick, d);
   } else {
     const cur = document.createElement('span');
     cur.className = 'cursor';
     term.appendChild(cur);
   }
 }
-
 setTimeout(tick, 800);
+
+/* ── PORTAL ───────────────────────────────────────── */
+const PASS_HASH = '8027af3aa1f1392fac6da0decadd358c6d9fa12ae0293e1f41853bd2adb36799';
+
+async function sha256(msg) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+function openPortal() {
+  const overlay = document.getElementById('portal-overlay');
+  overlay.classList.add('active');
+  document.getElementById('portal-login').style.display = 'flex';
+  document.getElementById('portal-inner').classList.remove('active');
+  document.body.style.overflow = 'hidden';
+  setTimeout(()=>document.getElementById('pw-input').focus(), 100);
+}
+
+function closePortal() {
+  document.getElementById('portal-overlay').classList.remove('active');
+  document.body.style.overflow = '';
+  document.getElementById('pw-input').value = '';
+  document.getElementById('login-err').textContent = '';
+}
+
+async function tryLogin() {
+  const val = document.getElementById('pw-input').value.trim();
+  if (!val) return;
+  const hash = await sha256(val);
+  if (hash === PASS_HASH) {
+    document.getElementById('portal-login').style.display = 'none';
+    document.getElementById('portal-inner').classList.add('active');
+  } else {
+    const err = document.getElementById('login-err');
+    err.textContent = 'incorrect access code';
+    document.getElementById('pw-input').value = '';
+    document.getElementById('pw-input').focus();
+    setTimeout(()=>{ err.textContent=''; }, 3000);
+  }
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closePortal();
+});
 </script>
 </body>
 </html>
