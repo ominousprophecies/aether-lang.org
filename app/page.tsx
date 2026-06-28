@@ -143,8 +143,8 @@ export default function Home() {
           <Image
             src="/aetc.png"
             alt="Aether logomark"
-            width={36}
-            height={36}
+            width={200}
+            height={200}
             className="rail-logo"
           />
         </div>
