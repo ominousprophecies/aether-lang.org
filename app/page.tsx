@@ -140,7 +140,12 @@ export default function Home() {
 
       {/* NAV */}
       <nav className="main-nav">
-        <a href="#" className="nav-mark">Æ AETHER</a>
+        <a href="#" className="nav-mark" style={{lineHeight:'1.2'}}>
+          Æ AETHER
+          <span style={{display:'block',fontSize:'9px',letterSpacing:'.18em',color:'var(--green)',opacity:.7,textTransform:'uppercase',fontWeight:400,marginTop:'2px'}}>
+            Proven correct. Before it runs. Every time.
+          </span>
+        </a>
         <ul className="nav-links">
           <li><a href="#how">How it works</a></li>
           <li><a href="#manifests">Manifests</a></li>
@@ -162,10 +167,7 @@ export default function Home() {
       {/* HERO */}
       <div className="hero">
         <div className="hero-left">
-          <div className="eyebrow">compile-time certification</div>
-          <div style={{marginBottom:"1.5rem"}}>
-            <img src="/aetc.png" alt="Æ/t→c — Aether over time approaches the speed of light" style={{height:"120px",width:"auto",marginBottom:"0.5rem"}} />
-          </div>
+          <div className="eyebrow">Proven correct. Before it runs. Every time.</div>
           <h1>The software is <span>either certified</span> or it does not compile.</h1>
           <p className="hero-desc">
             Aether enforces safety, security, and reliability as structural invariants before
@@ -243,7 +245,7 @@ export default function Home() {
       {/* MANIFESTS */}
       <section id="manifests">
         <div className="section-eyebrow">what aether produces</div>
-        <h2 className="section-title">39 certification manifests. One compilation. Sub-millisecond.</h2>
+        <h2 className="section-title">39 certification manifests.One compilation.Sub-millisecond.</h2>
         <p className="section-sub">Every Aether binary carries machine-verifiable certification manifest blocks, each independently verifiable by the open BPC verifier — without the compiler or source code.</p>
         <div className="manifest-grid">
           {MANIFESTS.map(([name, std]) => (
