@@ -140,9 +140,7 @@ export default function Home() {
 
       {/* NAV */}
       <nav className="main-nav">
-       <a href="#" className="nav-mark">
-  <img src="/aetc.png" alt="Aether" style={{height:'36px', width:'auto', display:'block'}} />
-</a>
+        <a href="#" className="nav-mark"><img src="/aetc.png" alt="Aether" style={{height:"36px",width:"auto",display:"block"}} /></a>
         <ul className="nav-links">
           <li><a href="#how">How it works</a></li>
           <li><a href="#manifests">Manifests</a></li>
@@ -242,7 +240,7 @@ export default function Home() {
       {/* MANIFESTS */}
       <section id="manifests">
         <div className="section-eyebrow">what aether produces</div>
-        <h2 className="section-title">39 certification manifests.One compilation.Sub-millisecond.</h2>
+        <h2 className="section-title">39 certification manifests. One compilation. Sub-millisecond.</h2>
         <p className="section-sub">Every Aether binary carries machine-verifiable certification manifest blocks, each independently verifiable by the open BPC verifier — without the compiler or source code.</p>
         <div className="manifest-grid">
           {MANIFESTS.map(([name, std]) => (
@@ -318,8 +316,8 @@ export default function Home() {
         </div>
       </div>
 
-      <footer>
-        <span className="footer-mark">Æ AETHER</span>
+      <footer style={{flexDirection:"column",textAlign:"center"}}>
+        <img src="/aetc.png" alt="Aether" style={{height:"28px",width:"auto",opacity:0.9,marginBottom:".5rem"}} />
         <span className="footer-copy">© 2026 Emilio R. Bruno · Aether-Lang.org Inc. (CBCA federal) · Kamloops, BC, Canada · Patent applications pending CA, US · AI assistance (Claude/Anthropic) disclosed</span>
       </footer>
     </>
