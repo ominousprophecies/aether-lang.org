@@ -331,7 +331,7 @@ footer {
 /* ── LEFT RAIL ───────────────────────────────────────── */
 .page-layout {
   display: grid;
-  grid-template-columns: 56px 1fr;
+  grid-template-columns: 12.5vw 1fr;
   min-height: 100vh;
 }
 .left-rail {
@@ -349,8 +349,8 @@ footer {
   padding: 1rem 0;
 }
 .rail-logo {
-  width: 36px;
-  height: 36px;
+  width: 9vw;
+  height: 9vw;
   object-fit: contain;
   opacity: 0.85;
   transition: opacity .2s;
