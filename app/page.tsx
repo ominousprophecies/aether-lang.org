@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 const TERM_LINES = [
   { t: 'cmd',      s: '$ cargo run --release' },
@@ -135,7 +136,21 @@ export default function Home() {
   }
 
   return (
-    <>
+    <div className="page-layout">
+      {/* LEFT RAIL */}
+      <aside className="left-rail" aria-hidden="true">
+        <div className="left-rail-inner">
+          <Image
+            src="/aetc.png"
+            alt="Aether logomark"
+            width={36}
+            height={36}
+            className="rail-logo"
+          />
+        </div>
+      </aside>
+
+      <div className="page-content">
       <div className="glow-dot" aria-hidden="true" />
 
       {/* NAV */}
@@ -325,6 +340,7 @@ export default function Home() {
         <span className="footer-mark">Æ AETHER</span>
         <span className="footer-copy">© 2026 Emilio R. Bruno · Aether-Lang.org Inc. (CBCA federal) · Kamloops, BC, Canada · Patent applications pending CA, US · AI assistance (Claude/Anthropic) disclosed</span>
       </footer>
-    </>
+      </div>
+    </div>
   )
 }
