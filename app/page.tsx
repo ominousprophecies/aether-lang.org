@@ -140,7 +140,9 @@ export default function Home() {
 
       {/* NAV */}
       <nav className="main-nav">
-        <a href="#" className="nav-mark">Æ AETHER</a>
+       <a href="#" className="nav-mark">
+  <img src="/aetc.png" alt="Aether" style={{height:'36px', width:'auto', display:'block'}} />
+</a>
         <ul className="nav-links">
           <li><a href="#how">How it works</a></li>
           <li><a href="#manifests">Manifests</a></li>
