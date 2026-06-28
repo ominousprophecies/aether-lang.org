@@ -328,6 +328,36 @@ footer {
 .login-btn:hover { opacity: .85; }
 .login-err { margin-top: 1rem; font-size: 13px; color: #ff5f57; min-height: 18px; }
 
+/* ── LEFT RAIL ───────────────────────────────────────── */
+.page-layout {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  min-height: 100vh;
+}
+.left-rail {
+  position: relative;
+  border-right: 0.5px solid var(--border);
+}
+.left-rail-inner {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 0;
+}
+.rail-logo {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  opacity: 0.85;
+  transition: opacity .2s;
+}
+.rail-logo:hover { opacity: 1; }
+.page-content { min-width: 0; }
+
 /* ── GLOW ────────────────────────────────────────────── */
 .glow-dot {
   position: fixed; top: 20vh; right: 0;
@@ -338,6 +368,8 @@ footer {
 
 /* ── RESPONSIVE ──────────────────────────────────────── */
 @media (max-width: 768px) {
+  .page-layout { grid-template-columns: 1fr; }
+  .left-rail { display: none; }
   .hero { grid-template-columns: 1fr; gap: 2rem; padding-top: 5rem; }
   .hero-left { max-width: 100%; }
   .nav-links { display: none; }
