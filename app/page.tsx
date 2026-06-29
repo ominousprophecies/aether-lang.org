@@ -186,10 +186,9 @@ export default function Home() {
           <div className="eyebrow">Proven correct. Before it runs. Every time.</div>
           <h1>The software is <span>either certified</span> or it does not compile.</h1>
           <p className="hero-desc">
-            Aether enforces safety, security, and reliability as structural invariants before
-            a single byte of machine code is generated. A program that violates a declared
-            property cannot be compiled. There is no runtime check. There is no advisory
-            warning. The violation is architecturally impossible.
+            Other compilers reason about program behavior.<br/>
+            Aether reasons about physical consequences.<br/>
+            That is a different foundation.
           </p>
           <div className="hero-stats">
             <div className="stat-cell">
@@ -232,7 +231,7 @@ export default function Home() {
       <section id="how">
         <div className="section-eyebrow">the problem</div>
         <h2 className="section-title">Three vectors. One compiler. Zero runtime.</h2>
-        <p className="section-sub">In contested environments, adversaries exploit three software attack vectors. Aether eliminates all three structurally — before the binary exists.</p>
+        <p className="section-sub">The adjacent work is not in type theory or formal verification. It is in hardware design, power management, and side-channel research. None of those fields have a compiler. Aether does.</p>
         <div className="problem-grid">
           {[
             ['01','Binary tampering after certification',
