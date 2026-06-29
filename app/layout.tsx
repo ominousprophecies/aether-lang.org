@@ -3,8 +3,12 @@ import './globals.css'
 
 export const metadata: Metadata = {
   title: 'Aether — Compile-Time Certification for Safety-Critical Software',
-  description: 'Aether enforces safety, security, and reliability as structural invariants before a single byte of machine code is generated. 46 patent tracks. 39 certification manifests. Under 1ms.',
+  description: 'Aether enforces safety, security, and reliability as structural invariants before a single byte of machine code is generated. 49 patent tracks. 39 certification manifests. Under 1ms.',
   keywords: 'compile-time certification, DO-178C, ISO 26262, safety-critical software, formal verification, Aether compiler',
+  icons: {
+    icon: '/aetc.png',
+    apple: '/aetc.png',
+  },
   openGraph: {
     title: 'Aether — Compile-Time Certification',
     description: 'The software is either certified or it does not compile.',
