@@ -325,13 +325,13 @@ export default function Home() {
                 disabled={formState==='sending'}>
                 {formState==='sending' ? 'sending...' : 'send message'}
               </button>
-              {formState==='err' && <p className="form-error">Something went wrong. Email us directly at info@bruno-protocol.org</p>}
+              {formState==='err' && <p className="form-error">Something went wrong. Email us directly at contact@aether-lang.org</p>}
             </form>
           )}
         </div>
 
         <div style={{display:'flex',gap:'2rem',justifyContent:'center',flexWrap:'wrap',marginTop:'2rem',fontSize:'13px'}}>
-          <span>email&nbsp;<a href="mailto:info@bruno-protocol.org" style={{color:'var(--green)'}}>info@bruno-protocol.org</a></span>
+          <span>email&nbsp;<a href="mailto:contact@aether-lang.org" style={{color:'var(--green)'}}>contact@aether-lang.org</a></span>
           <span>phone&nbsp;<a href="tel:7782205112" style={{color:'var(--green)'}}>778-220-5112</a></span>
         </div>
       </div>
