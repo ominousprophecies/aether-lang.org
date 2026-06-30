@@ -192,7 +192,7 @@ export default function Home() {
           </p>
           <div className="hero-stats">
             <div className="stat-cell">
-              <span className="stat-num">42</span>
+              <span className="stat-num">44</span>
               <span className="stat-lbl">patent tracks</span>
             </div>
             <div className="stat-cell">
@@ -323,11 +323,11 @@ export default function Home() {
 
           <div className="milestone-card milestone-confirmed">
             <span className="milestone-badge badge-confirmed">CONFIRMED</span>
-            <h3 className="milestone-heading">42 patent tracks</h3>
+            <h3 className="milestone-heading">44 patent tracks</h3>
             <p className="milestone-body">
-              Core IP drafted as provisional application with 42 tracks and Umbrella Claim 0,
-              plus two newly-drafted tracks (post-quantum algorithm enforcement, cryptographic
-              downgrade defense) pending counsel review and prior art search.
+              Core IP drafted as provisional application with 44 tracks and Umbrella Claim 0,
+              including newly-drafted post-quantum algorithm enforcement and cryptographic
+              downgrade defense tracks, pending counsel review and prior art search.
               Track B (Secret-Context Hash-Map Invariant): no direct prior art found in
               three independent searches. Track TT (correctness certificate) is the
               capstone. Tracks RR/SS/TT form the AI correctness pipeline.
@@ -432,7 +432,7 @@ export default function Home() {
 
       <footer>
         <span className="footer-mark">Æ AETHER</span>
-        <span className="footer-copy">© 2026 Emilio R. Bruno · Aether-Lang.org Inc. (CBCA federal) · Kamloops, BC, Canada · Patent applications pending CA, US · AI assistance (Claude/Anthropic) disclosed</span>
+        <span className="footer-copy">© 2026 Emilio R. Bruno · Aether-Lang.org Inc. (CBCA federal) · Kamloops, BC, Canada · Patent applications in preparation · AI assistance (Claude/Anthropic) disclosed</span>
       </footer>
       </div>
     </div>
