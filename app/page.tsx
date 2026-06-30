@@ -192,7 +192,7 @@ export default function Home() {
           </p>
           <div className="hero-stats">
             <div className="stat-cell">
-              <span className="stat-num">49</span>
+              <span className="stat-num">42</span>
               <span className="stat-lbl">patent tracks</span>
             </div>
             <div className="stat-cell">
@@ -323,9 +323,11 @@ export default function Home() {
 
           <div className="milestone-card milestone-confirmed">
             <span className="milestone-badge badge-confirmed">CONFIRMED</span>
-            <h3 className="milestone-heading">49 patent tracks</h3>
+            <h3 className="milestone-heading">42 patent tracks</h3>
             <p className="milestone-body">
-              Core IP filed as provisional application with 49 tracks and Umbrella Claim 0.
+              Core IP drafted as provisional application with 42 tracks and Umbrella Claim 0,
+              plus two newly-drafted tracks (post-quantum algorithm enforcement, cryptographic
+              downgrade defense) pending counsel review and prior art search.
               Track B (Secret-Context Hash-Map Invariant): no direct prior art found in
               three independent searches. Track TT (correctness certificate) is the
               capstone. Tracks RR/SS/TT form the AI correctness pipeline.
@@ -360,7 +362,7 @@ export default function Home() {
             <h3 className="milestone-heading">NATO DIANA submission</h3>
             <p className="milestone-body">
               Defense Innovation Accelerator for the North Atlantic — dual-use
-              deep-tech cohort. Application deadline July 3, 2026.
+              deep-tech cohort. Targeting next available application cycle.
             </p>
           </div>
 
