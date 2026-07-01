@@ -383,7 +383,7 @@ export default function Home() {
       {/* CONTACT */}
       <div className="cta-section" id="contact">
         <h2 className="cta-title">Your C code. Aether certification.<br/>No rewrites.</h2>
-        <p className="cta-sub">Add a sidecar declaration file alongside your existing C/C++ firmware. Aether enforces the properties you declare and produces a machine-verifiable certified binary in under one millisecond.</p>
+   <p className="cta-sub">Add a sidecar declaration file alongside your existing C/C++ firmware. Aether enforces the properties you declare and produces a machine-verifiable certified binary in milliseconds.</p>
 
         <div className="contact-form">
           {formState === 'ok' ? (
