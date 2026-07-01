@@ -336,7 +336,7 @@ export default function Home() {
 
           <div className="milestone-card milestone-confirmed">
             <span className="milestone-badge badge-confirmed">CONFIRMED</span>
-            <h3 className="milestone-heading">Sub-millisecond certification</h3>
+            <h3 className="milestone-heading">Millisecond-scale certification</h3>
             <p className="milestone-body">
               Aetherate v0.2.0 achieves 2.2ms median certification latency across
               the Core 10 tracks — below the 13ms human unconscious perception threshold.
