@@ -260,7 +260,7 @@ export default function Home() {
       {/* MANIFESTS */}
       <section id="manifests">
         <div className="section-eyebrow">what aether produces</div>
-        <h2 className="section-title">39 certification manifests.One compilation.Sub-millisecond.</h2>
+       + <h2 className="section-title">39 certification manifests.One compilation.Milliseconds, not runtime.</h2>
         <p className="section-sub">Every Aether binary carries machine-verifiable certification manifest blocks, each independently verifiable by the open BPC verifier — without the compiler or source code.</p>
         <div className="manifest-grid">
           {MANIFESTS.map(([name, std]) => (
