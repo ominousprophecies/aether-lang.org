@@ -337,14 +337,11 @@ export default function Home() {
           <div className="milestone-card milestone-confirmed">
             <span className="milestone-badge badge-confirmed">CONFIRMED</span>
             <h3 className="milestone-heading">Millisecond-scale certification</h3>
-            <p className="milestone-body">
-              Aetherate v0.2.0 achieves 2.2ms median certification latency across
-              the Core 10 tracks — below the 13ms human unconscious perception threshold.
-              Full pipeline: <code>.bru</code> source → Thumb-2 assembly → assembled
-              objects → linked ELF → flashable binary.
+             <p className="milestone-body">
+    Aetherate v0.2.0 achieves 2.2ms median certification latency across
+    the Core 10 tracks — below the 13ms human unconscious perception threshold.
             </p>
           </div>
-
           <div className="milestone-card milestone-pending">
             <span className="milestone-badge badge-pending">IN PROGRESS</span>
             <h3 className="milestone-heading">v8.0 — extern contracts</h3>
