@@ -153,7 +153,6 @@ export default function Home() {
             </span>
           </a>
           <ul className="nav-links">
-            {/* Added semantic jump anchor targets to standard architecture targets */}
             <li><a href="#how">How it works</a></li>
             <li><a href="#manifests">Manifests</a></li>
             <li><a href="#standards">Standards</a></li>
@@ -170,7 +169,7 @@ export default function Home() {
               >
                 [ internal ]
               </Link>
-            </td>
+            </li>
           </ul>
         </nav>
 
@@ -331,100 +330,4 @@ export default function Home() {
               <span className="milestone-badge badge-confirmed">CONFIRMED</span>
               <h3 className="milestone-heading">Millisecond-scale certification</h3>
               <p className="milestone-body">
-                Aetherate v0.2.0 achieves 2.2ms median certification latency across
-                the Core 10 tracks — below the 13ms human unconscious perception threshold.
-              </p>
-            </div>
-
-            <div className="milestone-card milestone-pending">
-              <span className="milestone-badge badge-pending">IN PROGRESS</span>
-              <h3 className="milestone-heading">v8.0 — extern contracts</h3>
-              <p className="milestone-body">
-                <code>#extern_contract</code> directive binding HAL stubs to certification
-                manifests. Real register allocation (current emission uses placeholder
-                moves; WFI and control flow are real). Standalone <code>aether-verify</code>
-                binary for TT correctness certificates independently checkable without
-                the compiler.
-              </p>
-            </div>
-
-            <div className="milestone-card milestone-pending">
-              <span className="milestone-badge badge-pending">IN PROGRESS</span>
-              <h3 className="milestone-heading">NATO DIANA submission</h3>
-              <p className="milestone-body">
-                Defense Innovation Accelerator for the North Atlantic — dual-use
-                deep-tech cohort. Targeting next available application cycle.
-              </p>
-            </div>
-          </div>
-
-          <div className="milestone-proof">
-            <div className="proof-label">MACHINE CODE PROOF — v7.3 DISASSEMBLY EXCERPT</div>
-            <pre className="proof-code">{`08000010: bf30  wfi
-0800004e: bf30  wfi
-08000070: bf30  wfi
-080001c8: bf30  wfi
-0800023a: bf30  wfi`}</pre>
-            <div className="proof-meta">
-              Target: STM32F4xx · Cortex-M4 · FLASH 0x08000000 ·
-              Toolchain: arm-gnu-toolchain 15.2.Rel1 ·
-              Engine: GENXR_V7.3
-            </div>
-          </div>
-        </section>
-
-        {/* CONTACT */}
-        <div className="cta-section" id="contact">
-          <h2 className="cta-title">Your C code. Aether certification.<br/>No rewrites.</h2>
-          <p className="cta-sub">Add a sidecar declaration file alongside your existing C/C++ firmware. Aether enforces the properties you declare and produces a machine-verifiable certified binary in milliseconds.</p>
-
-          <div className="contact-form">
-            {formState === 'ok' ? (
-              <p className="form-success">✓ Message received. We'll be in touch within one business day.</p>
-            ) : (
-              <form onSubmit={submitContact}>
-                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'1rem'}}>
-                  <div className="form-field">
-                    <label className="form-label">name</label>
-                    <input className="form-input" required value={formData.name}
-                      onChange={e=>setFormData(p=>({...p,name:e.target.value}))} />
-                  </div>
-                  <div className="form-field">
-                    <label className="form-label">email</label>
-                    <input className="form-input" type="email" required value={formData.email}
-                      onChange={e=>setFormData(p=>({...p,email:e.target.value}))} />
-                  </div>
-                </div>
-                <div className="form-field">
-                  <label className="form-label">organisation</label>
-                  <input className="form-input" value={formData.org}
-                    onChange={e=>setFormData(p=>({...p,org:e.target.value}))} />
-                </div>
-                <div className="form-field">
-                  <label className="form-label">message</label>
-                  <textarea className="form-textarea" required value={formData.message}
-                    onChange={e=>setFormData(p=>({...p,message:e.target.value}))} />
-                </div>
-                <button className="btn-primary" type="submit" style={{width:'100%'}}
-                  disabled={formState==='sending'}>
-                  {formState==='sending' ? 'sending...' : 'send message'}
-                </button>
-                {formState==='err' && <p className="form-error">Something went wrong. Email us directly at contact@aether-lang.org</p>}
-              </form>
-            )}
-          </div>
-
-          <div style={{display:'flex',gap:'2rem',justifyContent:'center',flexWrap:'wrap',marginTop:'2rem',fontSize:'13px'}}>
-            <span>email&nbsp;<a href="mailto:contact@aether-lang.org" style={{color:'var(--green)'}}>contact@aether-lang.org</a></span>
-            <span>phone&nbsp;<a href="tel:7782205112" style={{color:'var(--green)'}}>778-220-5112</a></span>
-          </div>
-        </div>
-
-        <footer>
-          <span className="footer-mark">Æ AETHER</span>
-          <span className="footer-copy">© 2026 Emilio R. Bruno · Aether-Lang.org Inc. (CBCA federal) · Kamloops, BC, Canada · Patent applications in preparation · AI assistance (Claude/Anthropic) disclosed</span>
-        </footer>
-      </div>
-    </div>
-  )
-}
+                Aetherrate v0.2.0 achieves
