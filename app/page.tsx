@@ -16,8 +16,7 @@ const TERM_LINES = [
   { t: 'pass',     s: '  [✓] Power Verified        285mW ≤ 500mW  MIL-STD-461' },
   { t: 'pass',     s: '  [✓] Interrupt Verified    2.5μs ≤ 50μs  IEC-61508' },
   { t: 'pass',     s: '  [✓] Constant-Time         no secret branches  FIPS-140-3' },
-  { t: 'pass',     s: '  [✓] MLS Lattice           Bell-LaPadula+Biba  CC-EAL6' },
-  { t: 'pass',     s: '  [✓] Post-Quantum          NIST FIPS 203/204/205  PASS' },
+  { t: 'pass',     s: '  [✓] MLS Lattice           Bell-LaPadula+Biba model' },
   { t: 'pass',     s: '  [✓] Attestation Token     0x5ce1beb75a928c4c  RFC-9334' },
   { t: 'pass',     s: '  [✓] Correctness Cert (TT) machine-verifiable  PASS' },
   { t: 'pass',     s: '  [✓] GENXR Codegen Emit    0.073ms' },
@@ -32,6 +31,12 @@ const TERM_LINES = [
   { t: 'manifest', s: '}' },
 ]
 
+// NOTE (honesty audit): the manifest labels below name the framework each
+// manifest block *references*. They are compile-time evidence artifacts, not
+// third-party certifications. Entries backed by name-only tracks with no
+// implementation evidence yet — quantum_manifest (Track Z), infer_manifest
+// (Track R), evidence_manifest (Track U) — are FLAGGED for review: either back
+// them with real logic or mark them "declared" before relying on them externally.
 const MANIFESTS = [
   ['identity_manifest',       'Source fingerprint · tamper-evident chain'],
   ['memory_manifest',         'MISRA-C Rule 20.4 · AUTOSAR M18-4-1'],
@@ -168,12 +173,12 @@ export default function Home() {
             Aether enforces safety, security, and reliability as structural invariants before
             a single byte of machine code is generated. A program that violates a declared
             property cannot be compiled. There is no runtime check. There is no advisory
-            warning. The violation is architecturally impossible.
+            warning. The program does not compile.
           </p>
           <div className="hero-stats">
             <div className="stat-cell">
               <span className="stat-num">46</span>
-              <span className="stat-lbl">patent tracks</span>
+              <span className="stat-lbl">patent-track drafts</span>
             </div>
             <div className="stat-cell">
               <span className="stat-num">39</span>
@@ -211,15 +216,15 @@ export default function Home() {
       <section id="how">
         <div className="section-eyebrow">the problem</div>
         <h2 className="section-title">Three vectors. One compiler. Zero runtime.</h2>
-        <p className="section-sub">In contested environments, adversaries exploit three software attack vectors. Aether eliminates all three structurally — before the binary exists.</p>
+        <p className="section-sub">In contested environments, adversaries exploit three software attack vectors. Aether addresses all three at compile time — before the binary exists.</p>
         <div className="problem-grid">
           {[
             ['01','Binary tampering after certification',
              'An adversary modifies firmware after it leaves the build environment. Existing toolchains have no mechanism to detect post-compilation modification at deployment.',
-             '→ Aether: cryptographic attestation token covers the complete manifest chain. Any modification invalidates the token. Detected before execution.'],
+             '→ Aether: an attestation token (a keyed integrity hash over the complete manifest chain) is emitted at compile time. Any modification invalidates the token. Detected before execution.'],
             ['02','Operator impersonation and privilege escalation',
              'Captured or compromised hardware is operated by personnel without the required clearance. No existing compiler binds operator identity to the binary itself.',
-             '→ Aether: CCBP embeds a PKI challenge at compile time. Operator clearance below data classification is rejected. Cannot be bypassed at runtime.'],
+             '→ Aether: CCBP binds an operator-clearance check at compile time; clearance below the data classification is rejected before codegen. (Reference implementation — the challenge/response flow is defined; PKI signing is not yet implemented.)'],
             ['03','Information leakage across classification boundaries',
              'Classified sensor data flows to unclassified telemetry channels. Timing side-channels leak cryptographic keys. No existing compiler enforces information flow at the type level.',
              '→ Aether: Bell-LaPadula + Biba enforced at variable binding level. Classified data cannot flow to under-classified destinations. Constant-time execution enforced structurally.'],
@@ -240,8 +245,8 @@ export default function Home() {
       {/* MANIFESTS */}
       <section id="manifests">
         <div className="section-eyebrow">what aether produces</div>
-        <h2 className="section-title">39 certification manifests.One compilation.Sub-millisecond.</h2>
-        <p className="section-sub">Every Aether binary carries machine-verifiable certification manifest blocks, each independently verifiable by the open BPC verifier — without the compiler or source code.</p>
+        <h2 className="section-title">39 certification manifests. One compilation. Sub-millisecond.</h2>
+        <p className="section-sub">Every Aether binary carries machine-verifiable certification manifest blocks, each independently checkable by the standalone verifier (aether-verify) — without the compiler or source code. Manifests are compile-time evidence artifacts, not third-party certifications.</p>
         <div className="manifest-grid">
           {MANIFESTS.map(([name, std]) => (
             <div className="manifest-card" key={name}>
@@ -257,8 +262,8 @@ export default function Home() {
       {/* STANDARDS */}
       <section id="standards">
         <div className="section-eyebrow">standards coverage</div>
-        <h2 className="section-title">Every standard. One compiler.</h2>
-        <p className="section-sub">Aether's manifests map directly to the certification frameworks used across all NATO member nations and major regulatory jurisdictions.</p>
+        <h2 className="section-title">Mapped to the standards that matter.</h2>
+        <p className="section-sub">Aether's manifests reference the certification frameworks used across NATO member nations and major regulatory jurisdictions. These references are compile-time evidence — Aether has not been qualified or certified under these standards, and manifest emission is not a substitute for tool qualification (e.g. DO-330, ISO 26262).</p>
         <div className="standards-grid">
           {STANDARDS.map(([name, desc]) => (
             <div className="std-card" key={name}>
@@ -271,8 +276,8 @@ export default function Home() {
 
       {/* CONTACT */}
       <div className="cta-section" id="contact">
-        <h2 className="cta-title">Your C code. Aether certification.<br/>No rewrites.</h2>
-        <p className="cta-sub">Add a sidecar declaration file alongside your existing C/C++ firmware. Aether enforces the properties you declare and produces a machine-verifiable certified binary in under one millisecond.</p>
+        <h2 className="cta-title">Your C code. Aether certification manifests.<br/>No rewrites.</h2>
+        <p className="cta-sub">Add a sidecar declaration file alongside your existing C/C++ firmware. Aether enforces the properties you declare and produces a machine-verifiable certification manifest in under one millisecond.</p>
 
         <div className="contact-form">
           {formState === 'ok' ? (
@@ -305,20 +310,20 @@ export default function Home() {
                 disabled={formState==='sending'}>
                 {formState==='sending' ? 'sending...' : 'send message'}
               </button>
-              {formState==='err' && <p className="form-error">Something went wrong. Email us directly at info@bruno-protocol.org</p>}
+              {formState==='err' && <p className="form-error">Something went wrong. Email us directly at contact@aether-lang.org</p>}
             </form>
           )}
         </div>
 
         <div style={{display:'flex',gap:'2rem',justifyContent:'center',flexWrap:'wrap',marginTop:'2rem',fontSize:'13px'}}>
-          <span>email&nbsp;<a href="mailto:info@bruno-protocol.org" style={{color:'var(--green)'}}>info@bruno-protocol.org</a></span>
+          <span>email&nbsp;<a href="mailto:contact@aether-lang.org" style={{color:'var(--green)'}}>contact@aether-lang.org</a></span>
           <span>phone&nbsp;<a href="tel:7782205112" style={{color:'var(--green)'}}>778-220-5112</a></span>
         </div>
       </div>
 
       <footer>
         <span className="footer-mark">Æ AETHER</span>
-        <span className="footer-copy">© 2026 Emilio R. Bruno · Aether-Lang.org Inc. (CBCA federal) · Kamloops, BC, Canada · Patent applications pending CA, US · AI assistance (Claude/Anthropic) disclosed</span>
+        <span className="footer-copy">© 2026 Emilio R. Bruno · Aether-Lang.org Inc. (CBCA federal) · Kamloops, BC, Canada · Patent applications in preparation (CA, US — not yet filed) · AI assistance (Claude/Anthropic) disclosed</span>
       </footer>
     </>
   )
