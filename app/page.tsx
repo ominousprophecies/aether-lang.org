@@ -137,6 +137,25 @@ export default function Home() {
     <>
       <div className="glow-dot" aria-hidden="true" />
 
+      {/* FLOATING AETC LOGO */}
+      <div style={{
+        position: 'fixed',
+        left: '1.5rem',
+        top: '50%',
+        transform: 'translateY(-50%)',
+        zIndex: 50,
+        opacity: 0.82,
+        filter: 'drop-shadow(0 0 10px rgba(57,255,20,0.5))',
+        pointerEvents: 'none',
+        userSelect: 'none',
+      }} aria-hidden="true">
+        <img
+          src="/aetc.png"
+          alt=""
+          style={{ width: '72px', height: 'auto', display: 'block' }}
+        />
+      </div>
+
       {/* NAV */}
       <nav className="main-nav">
         <a href="#" className="nav-mark">Æ AETHER</a>
@@ -359,6 +378,45 @@ export default function Home() {
           <span>email&nbsp;<a href="mailto:contact@aether-lang.org" style={{color:'var(--green)'}}>contact@aether-lang.org</a></span>
           <span>phone&nbsp;<a href="tel:7782205112" style={{color:'var(--green)'}}>778-220-5112</a></span>
         </div>
+      </div>
+
+      <div style={{
+        textAlign: 'center',
+        padding: '4rem 2rem 3rem',
+        borderTop: '1px solid rgba(57,255,20,0.06)',
+      }}>
+        <div style={{
+          fontFamily: "'Space Mono', monospace",
+          fontSize: 'clamp(2.4rem, 6vw, 4.2rem)',
+          color: 'var(--green)',
+          textShadow: '0 0 32px rgba(57,255,20,0.45)',
+          letterSpacing: '0.08em',
+          lineHeight: 1.1,
+        }}>
+          <span style={{fontSize:'0.6em', verticalAlign:'middle', opacity:.7}}>lim</span>
+          {' '}
+          <span style={{fontSize:'0.55em', verticalAlign:'middle', opacity:.5}}>t → ∞</span>
+          {' '}
+          <span style={{margin:'0 0.5em', verticalAlign:'middle', fontSize:'1.1em'}}>Æ / t</span>
+          <span style={{verticalAlign:'middle', opacity:.6, margin:'0 0.4em'}}>→</span>
+          <span style={{verticalAlign:'middle', fontStyle:'italic'}}>c</span>
+        </div>
+        <p style={{
+          marginTop: '1.4rem',
+          fontFamily: "'Space Mono', monospace",
+          fontSize: '12px',
+          color: 'var(--silver)',
+          letterSpacing: '0.1em',
+          maxWidth: '520px',
+          margin: '1.4rem auto 0',
+          lineHeight: 1.7,
+          opacity: 0.7,
+        }}>
+          As compile time <em style={{color:'var(--green)',fontStyle:'normal'}}>t</em> approaches
+          zero, the ratio of Aether work <em style={{color:'var(--green)',fontStyle:'normal'}}>Æ</em> to
+          time converges toward <em style={{color:'var(--green)',fontStyle:'normal'}}>c</em> —
+          the speed of light. Every compiler generation closes the gap.
+        </p>
       </div>
 
       <footer>
