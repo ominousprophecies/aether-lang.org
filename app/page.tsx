@@ -4,14 +4,14 @@ import Link from 'next/link'
 
 const TERM_LINES = [
   { t: 'cmd',      s: '$ cargo run --release' },
-  { t: 'dim',      s: '   Compiling aether-lexer v7.3.0 ...' },
+  { t: 'dim',      s: '   Compiling aether-lexer v8.0.0 ...' },
   { t: 'dim',      s: '   Finished release profile in 1.1s' },
   { t: 'dim',      s: '' },
   { t: 'dim',      s: '===== PROCESSING: missile_guidance.bru =====' },
   { t: 'pass',     s: '  [✓] Parser Phase Complete              0.083ms' },
   { t: 'pass',     s: '  [✓] Type-Checker: Low+Secret = REJECTED before codegen' },
   { t: 'pass',     s: '  [✓] Monomorphization   0.009ms  (3 instantiation(s))' },
-  { t: 'pass',     s: '  [✓] Zero-Heap Certified   0 bytes  MISRA-C Rule 20.4' },
+  { t: 'pass',     s: '  [✓] Zero-Heap Certified   0 bytes  MISRA-C Dir 4.12/21.3' },
   { t: 'pass',     s: '  [✓] Stack Depth Verified  192b ≤ 2048b budget' },
   { t: 'pass',     s: '  [✓] Power Verified        285mW ≤ 500mW  MIL-STD-461' },
   { t: 'pass',     s: '  [✓] Interrupt Verified    2.5μs ≤ 50μs  IEC-61508' },
@@ -23,7 +23,7 @@ const TERM_LINES = [
   { t: 'dim',      s: '  ──────────────────────────────────────────' },
   { t: 'key',      s: '  Total: 0.164ms  (39 manifests · 7,110 aet bytes)' },
   { t: 'dim',      s: '' },
-  { t: 'manifest', s: '// GENXR_V7.3 / STRICT_MODE' },
+  { t: 'manifest', s: '// GENXR_V8.0 / STRICT_MODE' },
   { t: 'manifest', s: 'attestation_manifest {' },
   { t: 'manifest', s: '  token:    0x5ce1beb75a928c4c' },
   { t: 'manifest', s: '  chain:    39 blocks · depth 7' },
@@ -31,15 +31,16 @@ const TERM_LINES = [
   { t: 'manifest', s: '}' },
 ]
 
-// NOTE (honesty audit): the manifest labels below name the framework each
-// manifest block *references*. They are compile-time evidence artifacts, not
+// NOTE (honesty audit, applied 2026-07-03): manifest labels name the framework
+// each block *references*; they are compile-time evidence artifacts, not
 // third-party certifications. Entries backed by name-only tracks with no
-// implementation evidence yet — quantum_manifest (Track Z), infer_manifest
-// (Track R), evidence_manifest (Track U) — are FLAGGED for review: either back
-// them with real logic or mark them "declared" before relying on them externally.
-const MANIFESTS = [
+// implementation evidence carry a third field 'declared' and render with a
+// visible "declared — not yet implemented" badge, so a visitor cannot mistake
+// them for implemented checks. Flagged set: quantum_manifest (Track Z),
+// infer_manifest (Track R), evidence_manifest (Track U).
+const MANIFESTS: [string, string, ('declared')?][] = [
   ['identity_manifest',       'Source fingerprint · tamper-evident chain'],
-  ['memory_manifest',         'MISRA-C Rule 20.4 · AUTOSAR M18-4-1'],
+  ['memory_manifest',         'MISRA-C Dir 4.12 / Rule 21.3 · AUTOSAR M18-4-1'],
   ['stack_manifest',          'MISRA-C Rule 17.2 · stack depth bound'],
   ['wcet_manifest',           'DO-178C Level A · worst-case execution time'],
   ['power_manifest',          'DO-160 · MIL-STD-461 · power envelope'],
@@ -54,7 +55,7 @@ const MANIFESTS = [
   ['tensor_manifest',         'ML tensor classification · DoD AI Strategy 2023'],
   ['adversarial_manifest',    'Adversarial taint · Track X'],
   ['federated_manifest',      'Federated learning · Bell-LaPadula gradient'],
-  ['quantum_manifest',        'NIST FIPS 203/204/205 · post-quantum'],
+  ['quantum_manifest',        'NIST FIPS 203/204/205 · post-quantum', 'declared'],
   ['crypto_defense_manifest', 'Downgrade prevention · FIPS-140-3 · CNSA 2.0'],
   ['sbom_manifest',           'SPDX / CycloneDX · EO 14028 · NTIA'],
   ['rtos_manifest',           'Liu-Layland · POSIX 1003.1b · IEC 61508-3'],
@@ -71,12 +72,12 @@ const MANIFESTS = [
   ['ai_output_manifest',      'Bell-LaPadula ML output · DoD AI Strategy'],
   ['provenance_manifest',     'SLSA Level 3 · NIST SP 800-218 · EO 14028'],
   ['dependency_manifest',     'EO 14028 · CISA SBOM · SLSA L3'],
-  ['evidence_manifest',       'DO-178C / DO-333 / CC clause mapping'],
+  ['evidence_manifest',       'DO-178C / DO-333 / CC clause mapping', 'declared'],
   ['inference_manifest',      'AI invariant inference · Track RR'],
   ['gap_manifest',            'Structural gap detection · Track SS'],
   ['correctness_certificate', 'Track TT · independently checkable'],
   ['cxx_annotation_manifest', 'C/C++ sidecar · no source modification'],
-  ['infer_manifest',          'Track R · AI classification inference'],
+  ['infer_manifest',          'Track R · AI classification inference', 'declared'],
 ]
 
 const STANDARDS = [
@@ -150,6 +151,7 @@ export default function Home() {
           <li><a href="#how">How it works</a></li>
           <li><a href="#manifests">Manifests</a></li>
           <li><a href="#standards">Standards</a></li>
+          <li><a href="#verification">Verification</a></li>
           <li><a href="#contact">Contact</a></li>
           <li>
             <Link href="/internal/login" style={{
@@ -199,7 +201,7 @@ export default function Home() {
         <div className="terminal-wrap">
           <div className="term-header">
             <div className="term-dot td-r" /><div className="term-dot td-y" /><div className="term-dot td-g" />
-            <span className="term-title">aether v7.3 — GENXR_V7.3 / STRICT_MODE</span>
+            <span className="term-title">aether v8.0 — GENXR_V8.0 / STRICT_MODE</span>
           </div>
           <div className="term-body" ref={termRef}>
             {lines.map((l, i) => (
@@ -248,10 +250,17 @@ export default function Home() {
         <h2 className="section-title">39 certification manifests. One compilation. Sub-millisecond.</h2>
         <p className="section-sub">Every Aether binary carries machine-verifiable certification manifest blocks, each independently checkable by the standalone verifier (aether-verify) — without the compiler or source code. Manifests are compile-time evidence artifacts, not third-party certifications.</p>
         <div className="manifest-grid">
-          {MANIFESTS.map(([name, std]) => (
-            <div className="manifest-card" key={name}>
+          {MANIFESTS.map(([name, std, declared]) => (
+            <div className="manifest-card" key={name} style={declared ? {opacity:.75} : undefined}>
               <div className="manifest-name">{name}</div>
               <div className="manifest-standard">{std}</div>
+              {declared && (
+                <div style={{
+                  marginTop:'.45rem', display:'inline-block', padding:'.15rem .5rem',
+                  border:'0.5px solid rgba(255,196,0,.5)', color:'rgba(255,196,0,.9)',
+                  fontSize:'10px', letterSpacing:'.08em', textTransform:'uppercase',
+                }}>declared — not yet implemented</div>
+              )}
             </div>
           ))}
         </div>
@@ -272,6 +281,44 @@ export default function Home() {
             </div>
           ))}
         </div>
+      </section>
+
+      <hr className="divider" />
+
+      {/* VERIFICATION — every claim below maps to a hash-chained build serial */}
+      <section id="verification">
+        <div className="section-eyebrow">verified, not asserted</div>
+        <h2 className="section-title">Four verification tiers. Two independent environments.</h2>
+        <p className="section-sub">
+          Every claim in this section is backed by an immutable, hash-chained build serial
+          (SHA-256, each archive carrying its full source, fixtures, outputs, and a written
+          validation-evidence record). Verification status as of July 3, 2026:
+        </p>
+        <div className="standards-grid">
+          {[
+            ['Tier 1 — Deterministic hashes',
+             'Every emitted artifact is byte-hashed. Nine consecutive builds byte-identical across two platforms (Linux container and Windows/WSL2) — cross-platform reproducibility measured, not assumed.'],
+            ['Tier 2 — Register-level traces',
+             'Emitted Thumb-2 is hand-verified register-by-register per change, with worked traces recorded in each serial’s validation evidence.'],
+            ['Tier 3 — Reference assembler',
+             'The complete emitted-assembly corpus (52 files) assembles clean under GNU arm-none-eabi-as, machine-checked on every gate — output validity is not an eyeball claim.'],
+            ['Tier 4 — Execution on target architecture',
+             '28 runtime value assertions pass on emulated Cortex-M4 (QEMU mps2-an386): arithmetic, bounds-proven array loops, struct operations, comparisons, control flow, and calls — every documented computation executed and checked, reproduced in both environments.'],
+          ].map(([name, desc]) => (
+            <div className="std-card" key={name}>
+              <div className="std-name">{name}</div>
+              <div className="std-desc">{desc}</div>
+            </div>
+          ))}
+        </div>
+        <p className="section-sub" style={{marginTop:'1.5rem'}}>
+          The language core these tiers verify: nested expressions, arrays and loops with
+          compile-time bounds proofs (a for-range is itself the proof — no runtime checks),
+          structs with initialization-completeness and field-existence proofs, functions with
+          parse-time arity- and type-proven calls, and by-reference struct passing observed
+          live at runtime. Emulated-target results are not silicon results; hardware
+          calibration is a stated, pending step.
+        </p>
       </section>
 
       {/* CONTACT */}
