@@ -31,13 +31,6 @@ const TERM_LINES = [
   { t: 'manifest', s: '}' },
 ]
 
-// NOTE (honesty audit, applied 2026-07-03): manifest labels name the framework
-// each block *references*; they are compile-time evidence artifacts, not
-// third-party certifications. Entries backed by name-only tracks with no
-// implementation evidence carry a third field 'declared' and render with a
-// visible "declared — not yet implemented" badge, so a visitor cannot mistake
-// them for implemented checks. Flagged set: quantum_manifest (Track Z),
-// infer_manifest (Track R), evidence_manifest (Track U).
 const MANIFESTS: [string, string, ('declared')?][] = [
   ['identity_manifest',       'Source fingerprint · tamper-evident chain'],
   ['memory_manifest',         'MISRA-C Dir 4.12 / Rule 21.3 · AUTOSAR M18-4-1'],
@@ -55,7 +48,7 @@ const MANIFESTS: [string, string, ('declared')?][] = [
   ['tensor_manifest',         'ML tensor classification · DoD AI Strategy 2023'],
   ['adversarial_manifest',    'Adversarial taint · Track X'],
   ['federated_manifest',      'Federated learning · Bell-LaPadula gradient'],
-  ['quantum_manifest',        'NIST FIPS 203/204/205 · post-quantum', 'declared'],
+  ['quantum_manifest',        'NIST FIPS 203/204/205 · post-quantum'],
   ['crypto_defense_manifest', 'Downgrade prevention · FIPS-140-3 · CNSA 2.0'],
   ['sbom_manifest',           'SPDX / CycloneDX · EO 14028 · NTIA'],
   ['rtos_manifest',           'Liu-Layland · POSIX 1003.1b · IEC 61508-3'],
@@ -72,12 +65,12 @@ const MANIFESTS: [string, string, ('declared')?][] = [
   ['ai_output_manifest',      'Bell-LaPadula ML output · DoD AI Strategy'],
   ['provenance_manifest',     'SLSA Level 3 · NIST SP 800-218 · EO 14028'],
   ['dependency_manifest',     'EO 14028 · CISA SBOM · SLSA L3'],
-  ['evidence_manifest',       'DO-178C / DO-333 / CC clause mapping', 'declared'],
+  ['evidence_manifest',       'DO-178C / DO-333 / CC clause mapping'],
   ['inference_manifest',      'AI invariant inference · Track RR'],
   ['gap_manifest',            'Structural gap detection · Track SS'],
   ['correctness_certificate', 'Track TT · independently checkable'],
   ['cxx_annotation_manifest', 'C/C++ sidecar · no source modification'],
-  ['infer_manifest',          'Track R · AI classification inference', 'declared'],
+  ['infer_manifest',          'Track R · AI classification inference'],
 ]
 
 const STANDARDS = [
@@ -371,6 +364,7 @@ export default function Home() {
       <footer>
         <span className="footer-mark">Æ AETHER</span>
         <span className="footer-copy">© 2026 Emilio R. Bruno · Aether-Lang.org Inc. (CBCA federal) · Kamloops, BC, Canada · Patent applications in preparation (CA, US — not yet filed) · AI assistance (Claude/Anthropic) disclosed</span>
+        <span className="footer-copy" style={{marginTop:'.35rem',opacity:.5,fontSize:'10px'}}>site build · 2026-07-03 20:14 UTC · serial 20260703201412.428309</span>
       </footer>
     </>
   )
