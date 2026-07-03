@@ -21,7 +21,7 @@ const TERM_LINES = [
   { t: 'pass',     s: '  [✓] Correctness Cert (TT) machine-verifiable  PASS' },
   { t: 'pass',     s: '  [✓] GENXR Codegen Emit    0.073ms' },
   { t: 'dim',      s: '  ──────────────────────────────────────────' },
-  { t: 'key',      s: '  Total: 0.164ms  (39 manifests · 7,110 aet bytes)' },
+  { t: 'key',      s: '  Total: 0.165ms  (39 manifests · 434,535 aet bytes · 123 ops)' },
   { t: 'dim',      s: '' },
   { t: 'manifest', s: '// GENXR_V8.0 / STRICT_MODE' },
   { t: 'manifest', s: 'attestation_manifest {' },
@@ -180,7 +180,7 @@ export default function Home() {
               <span className="stat-lbl">cert manifests</span>
             </div>
             <div className="stat-cell">
-              <span className="stat-num">0.13ms</span>
+              <span className="stat-num">37μs</span>
               <span className="stat-lbl">avg compile</span>
             </div>
           </div>
@@ -285,18 +285,18 @@ export default function Home() {
         <p className="section-sub">
           Every claim in this section is backed by an immutable, hash-chained build serial
           (SHA-256, each archive carrying its full source, fixtures, outputs, and a written
-          validation-evidence record). Verification status as of July 3, 2026:
+          validation-evidence record). Verification status as of serial 20260703201412.428309 — July 3, 2026:
         </p>
         <div className="standards-grid">
           {[
             ['Tier 1 — Deterministic hashes',
-             'Every emitted artifact is byte-hashed. Nine consecutive builds byte-identical across two platforms (Linux container and Windows/WSL2) — cross-platform reproducibility measured, not assumed.'],
+             'Every emitted artifact is byte-hashed. Fourteen consecutive builds byte-identical across two platforms (Linux container and Windows/WSL2) — cross-platform reproducibility measured, not assumed.'],
             ['Tier 2 — Register-level traces',
              'Emitted Thumb-2 is hand-verified register-by-register per change, with worked traces recorded in each serial’s validation evidence.'],
             ['Tier 3 — Reference assembler',
-             'The complete emitted-assembly corpus (52 files) assembles clean under GNU arm-none-eabi-as, machine-checked on every gate — output validity is not an eyeball claim.'],
+             'The complete emitted-assembly corpus (52 files, 124 golden manifest hashes) assembles clean under GNU arm-none-eabi-as, machine-checked on every gate — output validity is not an eyeball claim.'],
             ['Tier 4 — Execution on target architecture',
-             '28 runtime value assertions pass on emulated Cortex-M4 (QEMU mps2-an386): arithmetic, bounds-proven array loops, struct operations, comparisons, control flow, and calls — every documented computation executed and checked, reproduced in both environments.'],
+             '28 runtime value assertions pass on emulated Cortex-M4 (QEMU mps2-an386): arithmetic, bounds-proven array loops, struct operations, comparisons, control flow, and calls — every documented computation executed and checked, reproduced in both environments. 177 fixtures total: 117 pass · 52 reject · 8 parse-error.'],
           ].map(([name, desc]) => (
             <div className="std-card" key={name}>
               <div className="std-name">{name}</div>
