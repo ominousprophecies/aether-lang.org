@@ -386,20 +386,24 @@ export default function Home() {
         borderTop: '1px solid rgba(57,255,20,0.06)',
       }}>
         <div style={{
-          fontFamily: "'Space Mono', monospace",
           fontSize: 'clamp(2.4rem, 6vw, 4.2rem)',
           color: 'var(--green)',
           textShadow: '0 0 32px rgba(57,255,20,0.45)',
           letterSpacing: '0.08em',
           lineHeight: 1.1,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '0.35em',
+          flexWrap: 'wrap',
         }}>
-          <span style={{fontSize:'0.6em', verticalAlign:'middle', opacity:.7}}>lim</span>
-          {' '}
-          <span style={{fontSize:'0.55em', verticalAlign:'middle', opacity:.5}}>t → ∞</span>
-          {' '}
-          <span style={{margin:'0 0.5em', verticalAlign:'middle', fontSize:'1.1em'}}>Æ / t</span>
-          <span style={{verticalAlign:'middle', opacity:.6, margin:'0 0.4em'}}>→</span>
-          <span style={{verticalAlign:'middle', fontStyle:'italic'}}>c</span>
+          <span style={{fontFamily:"'Space Mono', monospace", fontSize:'0.6em', opacity:.7}}>lim</span>
+          <span style={{fontFamily:"'Cinzel', serif", fontSize:'0.5em', opacity:.5}}>t → ∞</span>
+          <span style={{fontFamily:"'Cinzel Decorative', serif", fontSize:'1.1em', letterSpacing:'0.05em'}}>Æ</span>
+          <span style={{fontFamily:"'Cinzel', serif", opacity:.5}}>/</span>
+          <span style={{fontFamily:"'Cinzel', serif", fontStyle:'italic'}}>t</span>
+          <span style={{fontFamily:"'Space Mono', monospace", opacity:.6}}>→</span>
+          <span style={{fontFamily:"'Cinzel', serif", fontStyle:'italic'}}>c</span>
         </div>
         <p style={{
           marginTop: '1.4rem',
