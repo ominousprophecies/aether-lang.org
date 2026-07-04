@@ -304,12 +304,12 @@ export default function Home() {
         <p className="section-sub">
           Every claim in this section is backed by an immutable, hash-chained build serial
           (SHA-256, each archive carrying its full source, fixtures, outputs, and a written
-          validation-evidence record). Verification status as of serial 20260704020340.807766 — July 4, 2026:
+          validation-evidence record). Verification status as of serial 20260704023843.650787 — July 4, 2026:
         </p>
         <div className="standards-grid">
           {[
             ['Tier 1 — Deterministic hashes',
-             'Every emitted artifact is byte-hashed. Twenty-one consecutive builds byte-identical across two platforms (Linux container and Windows/WSL2), with the Rust toolchain pinned via rust-toolchain.toml — cross-platform reproducibility is now an enforced invariant, not just an empirical one.'],
+             'Every emitted artifact is byte-hashed. Twenty-two consecutive builds byte-identical across two platforms (Linux container and Windows/WSL2), with the Rust toolchain pinned via rust-toolchain.toml — cross-platform reproducibility is now an enforced invariant, not just an empirical one.'],
             ['Tier 2 — Register-level traces',
              'Emitted Thumb-2 is hand-verified register-by-register per change, with worked traces recorded in each serial’s validation evidence.'],
             ['Tier 3 — Reference assembler',
@@ -336,11 +336,18 @@ export default function Home() {
           calibration is a stated, pending step.
         </p>
         <p className="section-sub" style={{marginTop:'1.5rem'}}>
-          Discriminating power is itself measured: a mutation-testing probe deliberately
-          corrupts emitted assembly (add → sub) before rebuilding the harness, and the runtime
+          Discriminating power is itself measured: mutation-testing probes deliberately
+          corrupt emitted assembly before rebuilding the harness, and the runtime
           assertions must fail. If a mutated build passes, the assertions were tautologies.
-          Current status: the mutation probe fails when it should — the assertions have proven
-          discriminating power on that corpus, not just green checkmarks.
+          Current status: four independent assertion classes have proven discriminating power
+          across arithmetic, comparison codes, array bounds offsets, and struct field offsets —
+          not just green checkmarks.
+        </p>
+        <p className="section-sub" style={{marginTop:'1.5rem', opacity:0.9}}>
+          Every compile emits over 8,600 lines of verification output — parser phase, type-checker,
+          monomorphization, twelve manifest blocks, round-trip decompilation, hardware constraint
+          lint, and formal-methods proof obligations, each with a machine-verifiable pass or fail.
+          Aether does not ask you to trust the output; it produces the evidence.
         </p>
       </section>
 
@@ -437,7 +444,7 @@ export default function Home() {
       <footer>
         <span className="footer-mark">Æ AETHER</span>
         <span className="footer-copy">© 2026 Emilio R. Bruno · Aether-Lang.org Inc. (CBCA federal) · Kamloops, BC, Canada · Patent applications in preparation (CA, US — not yet filed) · AI assistance (Claude/Anthropic) disclosed</span>
-        <span className="footer-copy" style={{marginTop:'.35rem',opacity:.5,fontSize:'10px'}}>site build · 2026-07-04 02:03 UTC · serial 20260704020340.807766</span>
+        <span className="footer-copy" style={{marginTop:'.35rem',opacity:.5,fontSize:'10px'}}>site build · 2026-07-04 02:38 UTC · serial 20260704023843.650787</span>
       </footer>
     </>
   )
