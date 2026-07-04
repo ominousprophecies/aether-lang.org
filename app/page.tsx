@@ -345,8 +345,9 @@ export default function Home() {
         </p>
         <p className="section-sub" style={{marginTop:'1.5rem', opacity:0.9}}>
           Every compile emits over 8,600 lines of verification output — parser phase, type-checker,
-          monomorphization, twelve manifest blocks, round-trip decompilation, hardware constraint
-          lint, and formal-methods proof obligations, each with a machine-verifiable pass or fail.
+          monomorphization, the full certification manifest chain, round-trip decompilation,
+          hardware constraint lint, and formal-methods proof obligations, each with a
+          machine-verifiable pass or fail.
           Aether does not ask you to trust the output; it produces the evidence.
         </p>
       </section>
@@ -444,7 +445,7 @@ export default function Home() {
       <footer>
         <span className="footer-mark">Æ AETHER</span>
         <span className="footer-copy">© 2026 Emilio R. Bruno · Aether-Lang.org Inc. (CBCA federal) · Kamloops, BC, Canada · Patent applications in preparation (CA, US — not yet filed) · AI assistance (Claude/Anthropic) disclosed</span>
-        <span className="footer-copy" style={{marginTop:'.35rem',opacity:.5,fontSize:'10px'}}>site build · 2026-07-04 02:38 UTC · serial 20260704023843.650787</span>
+        <span className="footer-copy" style={{marginTop:'.35rem',opacity:.5,fontSize:'10px'}}>site build · 2026-07-04 03:17 UTC · serial 20260704023843.650787</span>
       </footer>
     </>
   )
