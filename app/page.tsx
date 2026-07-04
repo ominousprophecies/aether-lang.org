@@ -141,7 +141,7 @@ export default function Home() {
           Desktop: left side, 84px.  Mobile: right side, 56px.  Very narrow: hidden. */}
       <div className="floating-mark" aria-hidden="true">
         <img
-          src="/AE_mark_extruded_512.png"
+          src="/aetc.png"
           alt=""
           className="floating-mark-img"
         />
