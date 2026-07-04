@@ -137,24 +137,81 @@ export default function Home() {
     <>
       <div className="glow-dot" aria-hidden="true" />
 
-      {/* FLOATING AETC LOGO */}
-      <div style={{
-        position: 'fixed',
-        left: '1.5rem',
-        top: '50%',
-        transform: 'translateY(-50%)',
-        zIndex: 50,
-        opacity: 0.82,
-        filter: 'drop-shadow(0 0 10px rgba(57,255,20,0.5))',
-        pointerEvents: 'none',
-        userSelect: 'none',
-      }} aria-hidden="true">
+      {/* FLOATING Æ MARK — extruded treatment, v2.0
+          Desktop: left side, 84px.  Mobile: right side, 56px.  Very narrow: hidden. */}
+      <div className="floating-mark" aria-hidden="true">
         <img
-          src="/aetc.png"
+          src="/AE_mark_extruded_512.png"
           alt=""
-          style={{ width: '72px', height: 'auto', display: 'block' }}
+          className="floating-mark-img"
         />
       </div>
+
+      {/* Responsive rules for the floating mark and grid layouts.
+          Scoped by class name; overrides only fire below the given breakpoint. */}
+      <style>{`
+        .floating-mark {
+          position: fixed;
+          left: 1.5rem;
+          right: auto;
+          top: 50%;
+          transform: translateY(-50%);
+          z-index: 50;
+          opacity: 0.88;
+          filter: drop-shadow(0 0 14px rgba(57,255,20,0.4));
+          pointer-events: none;
+          user-select: none;
+        }
+        .floating-mark-img {
+          width: 84px;
+          height: auto;
+          display: block;
+        }
+        /* Mobile: move mark to right, shrink */
+        @media (max-width: 900px) {
+          .floating-mark {
+            left: auto;
+            right: 1rem;
+            opacity: 0.72;
+          }
+          .floating-mark-img {
+            width: 56px;
+          }
+        }
+        /* Very narrow screens: hide entirely (would crowd reading area) */
+        @media (max-width: 480px) {
+          .floating-mark {
+            display: none;
+          }
+        }
+        /* Card grids: force left-aligned single column below tablet size,
+           so cards don't center-collapse into visually-orphaned islands. */
+        @media (max-width: 720px) {
+          .problem-grid,
+          .manifest-grid,
+          .standards-grid {
+            grid-template-columns: 1fr !important;
+            text-align: left;
+          }
+          .problem-card,
+          .manifest-card,
+          .std-card {
+            text-align: left;
+          }
+          /* Section titles and eyebrows also left-align on mobile */
+          .section-title,
+          .section-eyebrow,
+          .section-sub,
+          .cta-title,
+          .cta-sub {
+            text-align: left !important;
+          }
+          /* CTA form grid: stack name/email vertically on mobile */
+          .form-row-2col {
+            grid-template-columns: 1fr !important;
+          }
+        }
+      `}</style>
 
       {/* NAV */}
       <nav className="main-nav">
@@ -362,7 +419,7 @@ export default function Home() {
             <p className="form-success">✓ Message received. We'll be in touch within one business day.</p>
           ) : (
             <form onSubmit={submitContact}>
-              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'1rem'}}>
+              <div className="form-row-2col" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'1rem'}}>
                 <div className="form-field">
                   <label className="form-label">name</label>
                   <input className="form-input" required value={formData.name}
@@ -445,7 +502,7 @@ export default function Home() {
       <footer>
         <span className="footer-mark">Æ AETHER</span>
         <span className="footer-copy">© 2026 Emilio R. Bruno · Aether-Lang.org Inc. (CBCA federal) · Kamloops, BC, Canada · Patent applications in preparation (CA, US — not yet filed) · AI assistance (Claude/Anthropic) disclosed</span>
-        <span className="footer-copy" style={{marginTop:'.35rem',opacity:.5,fontSize:'10px'}}>site build · 2026-07-04 03:17 UTC · serial 20260704023843.650787</span>
+        <span className="footer-copy" style={{marginTop:'.35rem',opacity:.5,fontSize:'10px'}}>site build · 2026-07-04 05:20 UTC · serial 20260704023843.650787</span>
       </footer>
     </>
   )
