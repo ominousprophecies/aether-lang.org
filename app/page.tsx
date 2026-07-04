@@ -21,7 +21,7 @@ const TERM_LINES = [
   { t: 'pass',     s: '  [✓] Correctness Cert (TT) machine-verifiable  PASS' },
   { t: 'pass',     s: '  [✓] GENXR Codegen Emit    0.019ms' },
   { t: 'dim',      s: '  ──────────────────────────────────────────' },
-  { t: 'key',      s: '  Total: 0.037ms  (39 manifests · 434,535 aet bytes · 123 ops)' },
+  { t: 'key',      s: '  Total: 0.037ms  (39 manifests · 440,919 aet bytes · 132 ops)' },
   { t: 'dim',      s: '' },
   { t: 'manifest', s: '// GENXR_V8.0 / STRICT_MODE' },
   { t: 'manifest', s: 'attestation_manifest {' },
@@ -304,18 +304,18 @@ export default function Home() {
         <p className="section-sub">
           Every claim in this section is backed by an immutable, hash-chained build serial
           (SHA-256, each archive carrying its full source, fixtures, outputs, and a written
-          validation-evidence record). Verification status as of serial 20260703201412.428309 — July 3, 2026:
+          validation-evidence record). Verification status as of serial 20260704020340.807766 — July 4, 2026:
         </p>
         <div className="standards-grid">
           {[
             ['Tier 1 — Deterministic hashes',
-             'Every emitted artifact is byte-hashed. Fourteen consecutive builds byte-identical across two platforms (Linux container and Windows/WSL2) — cross-platform reproducibility measured, not assumed.'],
+             'Every emitted artifact is byte-hashed. Twenty-one consecutive builds byte-identical across two platforms (Linux container and Windows/WSL2), with the Rust toolchain pinned via rust-toolchain.toml — cross-platform reproducibility is now an enforced invariant, not just an empirical one.'],
             ['Tier 2 — Register-level traces',
              'Emitted Thumb-2 is hand-verified register-by-register per change, with worked traces recorded in each serial’s validation evidence.'],
             ['Tier 3 — Reference assembler',
-             'The complete emitted-assembly corpus (52 files, 124 golden manifest hashes) assembles clean under GNU arm-none-eabi-as, machine-checked on every gate — output validity is not an eyeball claim.'],
+             'The complete emitted-assembly corpus (61 files, 130 golden manifest hashes) assembles clean under GNU arm-none-eabi-as 2.42, machine-checked on every gate — output validity is not an eyeball claim. Tool versions documented in TOOLCHAIN.md.'],
             ['Tier 4 — Execution on target architecture',
-             '28 runtime value assertions pass on emulated Cortex-M4 (QEMU mps2-an386): arithmetic, bounds-proven array loops, struct operations, comparisons, control flow, and calls — every documented computation executed and checked, reproduced in both environments. 177 fixtures total: 117 pass · 52 reject · 8 parse-error.'],
+             '35 runtime value assertions pass on emulated Cortex-M4 (QEMU mps2-an386): arithmetic, bounds-proven array loops, struct operations, comparisons, control flow, calls, and signed-integer semantics — every documented computation executed and checked, reproduced in both environments. Distinguishing runtime tests included: the signed comparison -5 < 3 returns 1 (would be 0 under unsigned execution). 187 fixtures total across the corpus.'],
           ].map(([name, desc]) => (
             <div className="std-card" key={name}>
               <div className="std-name">{name}</div>
@@ -327,9 +327,20 @@ export default function Home() {
           The language core these tiers verify: nested expressions, arrays and loops with
           compile-time bounds proofs (a for-range is itself the proof — no runtime checks),
           structs with initialization-completeness and field-existence proofs, functions with
-          parse-time arity- and type-proven calls, and by-reference struct passing observed
-          live at runtime. Emulated-target results are not silicon results; hardware
+          parse-time arity- and type-proven calls, by-reference struct passing observed
+          live at runtime, signed and unsigned integer arithmetic with strict mixing rejection
+          (I32/U32 combinations refused at parse), module-level overflow policy
+          (#overflow[policy: reject|wrap|saturate|trap], fail-closed default with compile-time
+          constant-fold detection), and a const keyword with mandatory type annotation for
+          compile-time known values. Emulated-target results are not silicon results; hardware
           calibration is a stated, pending step.
+        </p>
+        <p className="section-sub" style={{marginTop:'1.5rem'}}>
+          Discriminating power is itself measured: a mutation-testing probe deliberately
+          corrupts emitted assembly (add → sub) before rebuilding the harness, and the runtime
+          assertions must fail. If a mutated build passes, the assertions were tautologies.
+          Current status: the mutation probe fails when it should — the assertions have proven
+          discriminating power on that corpus, not just green checkmarks.
         </p>
       </section>
 
@@ -426,7 +437,7 @@ export default function Home() {
       <footer>
         <span className="footer-mark">Æ AETHER</span>
         <span className="footer-copy">© 2026 Emilio R. Bruno · Aether-Lang.org Inc. (CBCA federal) · Kamloops, BC, Canada · Patent applications in preparation (CA, US — not yet filed) · AI assistance (Claude/Anthropic) disclosed</span>
-        <span className="footer-copy" style={{marginTop:'.35rem',opacity:.5,fontSize:'10px'}}>site build · 2026-07-03 20:14 UTC · serial 20260703201412.428309</span>
+        <span className="footer-copy" style={{marginTop:'.35rem',opacity:.5,fontSize:'10px'}}>site build · 2026-07-04 02:03 UTC · serial 20260704020340.807766</span>
       </footer>
     </>
   )
