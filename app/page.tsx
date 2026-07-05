@@ -181,7 +181,7 @@ export default function Home() {
               <span className="stat-lbl">patent tracks (draft)</span>
             </div>
             <div className="stat-cell">
-              <span className="stat-num">18.7K</span>
+              <span className="stat-num">19.7K</span>
               <span className="stat-lbl">lines of Rust</span>
             </div>
             <div className="stat-cell">
