@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 const TERM_LINES = [
   { t: 'cmd',      s: '$ cargo run --release' },
-  { t: 'dim',      s: '   Compiling aether-lexer v7.3.0 ...' },
+  { t: 'dim',      s: '   Compiling aether-lexer v8.0.0 ...' },
   { t: 'dim',      s: '   Finished release profile in 1.1s' },
   { t: 'dim',      s: '' },
   { t: 'dim',      s: '===== PROCESSING: missile_guidance.bru =====' },
@@ -13,21 +13,21 @@ const TERM_LINES = [
   { t: 'pass',     s: '  [✓] Monomorphization   0.009ms  (3 instantiation(s))' },
   { t: 'pass',     s: '  [✓] Zero-Heap Certified   0 bytes  MISRA-C Rule 20.4' },
   { t: 'pass',     s: '  [✓] Stack Depth Verified  192b ≤ 2048b budget' },
-  { t: 'pass',     s: '  [✓] Power Verified        285mW ≤ 500mW  MIL-STD-461' },
-  { t: 'pass',     s: '  [✓] Interrupt Verified    2.5μs ≤ 50μs  IEC-61508' },
-  { t: 'pass',     s: '  [✓] Constant-Time         no secret branches  FIPS-140-3' },
+  { t: 'pass',     s: '  [✓] Power Envelope        285mW ≤ 500mW budget (model est.)' },
+  { t: 'pass',     s: '  [✓] Interrupt Latency     2.5μs ≤ 50μs budget (model est.)' },
+  { t: 'pass',     s: '  [✓] Constant-Time         no secret-dep branches (syntactic)' },
   { t: 'pass',     s: '  [✓] MLS Lattice           Bell-LaPadula+Biba model' },
-  { t: 'pass',     s: '  [✓] Attestation Token     0x5ce1beb75a928c4c  RFC-9334' },
-  { t: 'pass',     s: '  [✓] Correctness Cert (TT) machine-verifiable  PASS' },
+  { t: 'pass',     s: '  [✓] Attestation Token     0x5ce1beb75a928c4c (tamper-evidence)' },
+  { t: 'pass',     s: '  [✓] Correctness Cert (TT) self-consistent · untampered' },
   { t: 'pass',     s: '  [✓] GENXR Codegen Emit    0.073ms' },
   { t: 'dim',      s: '  ──────────────────────────────────────────' },
   { t: 'key',      s: '  Total: 0.164ms  (39 manifests · 7,110 aet bytes)' },
   { t: 'dim',      s: '' },
-  { t: 'manifest', s: '// GENXR_V7.3 / STRICT_MODE' },
+  { t: 'manifest', s: '// GENXR_V8.0.0 / STRICT_MODE' },
   { t: 'manifest', s: 'attestation_manifest {' },
   { t: 'manifest', s: '  token:    0x5ce1beb75a928c4c' },
   { t: 'manifest', s: '  chain:    39 blocks · depth 7' },
-  { t: 'manifest', s: '  standard: NIST_SP_800-193 / TCG_TPM2.0' },
+  { t: 'manifest', s: '  note:     tamper-evidence token (deterministic, not a signature)' },
   { t: 'manifest', s: '}' },
 ]
 
@@ -199,7 +199,7 @@ export default function Home() {
         <div className="terminal-wrap">
           <div className="term-header">
             <div className="term-dot td-r" /><div className="term-dot td-y" /><div className="term-dot td-g" />
-            <span className="term-title">aether v7.3 — GENXR_V7.3 / STRICT_MODE</span>
+            <span className="term-title">aether v8.0.0 — GENXR_V8.0.0 / STRICT_MODE</span>
           </div>
           <div className="term-body" ref={termRef}>
             {lines.map((l, i) => (
@@ -246,7 +246,7 @@ export default function Home() {
       <section id="manifests">
         <div className="section-eyebrow">what aether produces</div>
         <h2 className="section-title">39 certification manifests. One compilation. Sub-millisecond.</h2>
-        <p className="section-sub">Every Aether binary carries machine-verifiable certification manifest blocks, each independently checkable by the standalone verifier (aether-verify) — without the compiler or source code. Manifests are compile-time evidence artifacts, not third-party certifications.</p>
+        <p className="section-sub">Every Aether binary carries machine-verifiable certification manifest blocks, each re-checkable by the standalone verifier (aether-verify), which recomputes the tamper-evidence token of each manifest to detect post-compilation modification. This confirms the manifest is self-consistent and untampered — it does not independently re-derive the safety properties. Manifests are compile-time evidence artifacts, not third-party certifications.</p>
         <div className="manifest-grid">
           {MANIFESTS.map(([name, std]) => (
             <div className="manifest-card" key={name}>
