@@ -18,7 +18,7 @@ const TERM_LINES = [
   { t: 'pass',     s: '  [✓] Constant-Time         no secret branches' },
   { t: 'pass',     s: '  [✓] MLS Lattice           Bell-LaPadula+Biba model' },
   { t: 'pass',     s: '  [✓] Attestation Token     0x5ce1beb75a928c4c' },
-  { t: 'pass',     s: '  [✓] Correctness Cert (TT) machine-verifiable  PASS' },
+  { t: 'pass',     s: '  [✓] Correctness Cert (TT) tamper-evident self-consistency' },
   { t: 'pass',     s: '  [✓] GENXR Codegen Emit    0.073ms' },
   { t: 'dim',      s: '  ──────────────────────────────────────────' },
   { t: 'key',      s: '  Total: 0.164ms  (39 manifests · 7,110 aet bytes)' },
@@ -33,13 +33,14 @@ const TERM_LINES = [
 
 // NOTE (honesty audit): the manifest labels below name the framework each
 // manifest block *references*. They are compile-time evidence artifacts, not
-// third-party certifications. Entries backed by name-only tracks with no
-// implementation evidence yet — quantum_manifest (Track Z), infer_manifest
-// (Track R), evidence_manifest (Track U) — are FLAGGED for review: either back
-// them with real logic or mark them "declared" before relying on them externally.
+// third-party certifications. Track Z (quantum), Track R (infer), and Track U
+// (evidence) were previously flagged here as name-only; all three now have
+// verified reject/inference/clause-mapping logic in source (Z:
+// QuantumVulnerabilityViolation reject; R: infer_directive scope analysis;
+// U: certify_directive clause mapping), so that flag has been cleared.
 const MANIFESTS = [
   ['identity_manifest',       'Source fingerprint · tamper-evident chain'],
-  ['memory_manifest',         'MISRA-C Rule 20.4 · AUTOSAR M18-4-1'],
+  ['memory_manifest',         'MISRA-C Dir 4.12 / Rule 21.3 · AUTOSAR M18-4-1'],
   ['stack_manifest',          'MISRA-C Rule 17.2 · stack depth bound'],
   ['wcet_manifest',           'DO-178C Level A · worst-case execution time'],
   ['power_manifest',          'DO-160 · MIL-STD-461 · power envelope'],
@@ -167,8 +168,8 @@ export default function Home() {
       {/* HERO */}
       <div className="hero">
         <div className="hero-left">
-          <div className="eyebrow">compile-time certification</div>
-          <h1>The software is <span>either certified</span> or it does not compile.</h1>
+          <div className="eyebrow">compile-time verification</div>
+          <h1>The software is <span>either proven</span> or it does not compile.</h1>
           <p className="hero-desc">
             Aether enforces safety, security, and reliability as structural invariants before
             a single byte of machine code is generated. A program that violates a declared
@@ -186,11 +187,11 @@ export default function Home() {
             </div>
             <div className="stat-cell">
               <span className="stat-num">39</span>
-              <span className="stat-lbl">cert manifests</span>
+              <span className="stat-lbl">manifest types</span>
             </div>
             <div className="stat-cell">
-              <span className="stat-num">~0.15ms</span>
-              <span className="stat-lbl">avg compile</span>
+              <span className="stat-num">sub-ms</span>
+              <span className="stat-lbl">per-op compile</span>
             </div>
           </div>
           <div className="cta-row">
@@ -225,7 +226,7 @@ export default function Home() {
           {[
             ['01','Binary tampering after certification',
              'An adversary modifies firmware after it leaves the build environment. Existing toolchains have no mechanism to detect post-compilation modification at deployment.',
-             '→ Aether: an attestation token (a keyed integrity hash over the complete manifest chain) is emitted at compile time. Any modification invalidates the token. Detected before execution.'],
+             '→ Aether: an attestation token (a keyless integrity hash over the complete manifest chain) is emitted at compile time. Any modification invalidates the token. Detected when the token is checked, before execution.'],
             ['02','Operator impersonation and privilege escalation',
              'Captured or compromised hardware is operated by personnel without the required clearance. No existing compiler binds operator identity to the binary itself.',
              '→ Aether: CCBP binds an operator-clearance check at compile time; clearance below the data classification is rejected before codegen. (Reference implementation — the challenge/response flow is defined; PKI signing is not yet implemented.)'],
@@ -250,7 +251,7 @@ export default function Home() {
       <section id="manifests">
         <div className="section-eyebrow">what aether produces</div>
         <h2 className="section-title">39 certification manifests. One compilation. Sub-millisecond.</h2>
-        <p className="section-sub">Every Aether binary carries machine-verifiable certification manifest blocks, each independently checkable by the standalone verifier (aether-verify) — without the compiler or source code. Manifests are compile-time evidence artifacts, not third-party certifications.</p>
+        <p className="section-sub">Every Aether binary carries machine-verifiable certification manifest blocks. The standalone verifier (aether-verify) independently re-checks the manifest chain and attestation token — without the compiler or source code — and parses the core manifest block types individually. Manifests are compile-time evidence artifacts, not third-party certifications.</p>
         <div className="manifest-grid">
           {MANIFESTS.map(([name, std]) => (
             <div className="manifest-card" key={name}>
@@ -322,7 +323,7 @@ export default function Home() {
       {/* CONTACT */}
       <div className="cta-section" id="contact">
         <h2 className="cta-title">Your C code. Aether certification manifests.<br/>No rewrites.</h2>
-        <p className="cta-sub">Add a sidecar declaration file alongside your existing C/C++ firmware. Aether enforces the properties you declare and produces a machine-verifiable certification manifest in under one millisecond.</p>
+        <p className="cta-sub">Add a sidecar declaration file alongside your existing C/C++ firmware. Aether enforces the properties you declare and produces a machine-verifiable certification manifest in under one millisecond per operation.</p>
 
         <div className="contact-form">
           {formState === 'ok' ? (
