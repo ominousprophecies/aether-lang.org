@@ -2,36 +2,42 @@
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 
-// HONESTY BASIS (audit 2026-07-07): every line below is a condensed, faithful
-// reproduction of the REAL console output of fixture 162_pqc_full_stack.bru,
-// compiled from the verified tree (serial 20260707141007.858049, suite green,
-// chain_root f5270b56…). Values (timings, token, byte counts, chain length)
-// are from that run, not invented. The [!] WCET decline line is real output —
-// the compiler refuses to assert a timing bound without a declared clock.
-// Prior version showed a nonexistent fixture, a per-file "39 manifests" count
-// (39 is the suite-wide TYPE count; the per-file max is 19), and a reject
-// followed by codegen (impossible — rejects halt compilation). All corrected.
+// HONESTY BASIS (audit 2026-07-07, re-captured from a live `cargo run --release`
+// on the CURRENT build, serial 20260707191610.014676 — the "P1 honesty
+// remediation" build). Two phase strings changed in this build and are updated
+// here to match the tool exactly: the old "Post-Quantum Cryptography Verified"
+// is now "PQC Algorithm Declaration Check" (a name-vs-list check of the DECLARED
+// algorithm — it does NOT verify any cryptographic implementation), and
+// "Constant-Time Verified … FIPS/CC" is now "Static Constant-Time Check" (a
+// structural control-flow check — NOT a physical-timing measurement, NOT a
+// FIPS/CC conformance claim). STRUCTURAL values for fixture 162 were
+// re-verified byte-stable on this build: token 0xb16f154c7350806c, chain of 10,
+// 10 evidence items, 19 manifest blocks, 11,246 aet bytes. Per-phase/total
+// TIMINGS are wall-clock and vary run to run (~0.09ms total observed here) —
+// representative real values, not a fixed spec. The [!] WCET line is real: the
+// compiler refuses to assert a timing bound without a declared clock.
 const TERM_LINES = [
   { t: 'cmd',      s: '$ cargo run --release' },
-  { t: 'dim',      s: '   Compiling aether-lexer v8.0.0 ...' },
-  { t: 'dim',      s: '   Finished release [optimized] target(s)' },
+  { t: 'dim',      s: '   Compiling aether-lexer v8.0.0' },
+  { t: 'dim',      s: '    Finished `release` [optimized] target(s) in 0.76s' },
+  { t: 'dim',      s: '     Running `target/release/aether-lexer`' },
   { t: 'dim',      s: '' },
   { t: 'dim',      s: '===== PROCESSING: 162_pqc_full_stack.bru =====' },
-  { t: 'pass',     s: '  [✓] Parser Phase Complete              0.051ms' },
-  { t: 'pass',     s: '  [✓] Type-Checker Verification Passed   0.001ms' },
-  { t: 'pass',     s: '  [✓] Post-Quantum Crypto Verified   CRYSTALS-Kyber · NIST level 5' },
+  { t: 'pass',     s: '  [✓] Parser Phase Complete              ~0.07ms' },
+  { t: 'pass',     s: '  [✓] Type-Checker Verification Passed   ~0.00ms' },
+  { t: 'pass',     s: '  [✓] PQC Algorithm Declaration Check  CRYSTALS-Kyber on NIST FIPS-203/204/205 list' },
   { t: 'warn',     s: '  [!] WCET Not Verified   no clock_mhz declared — timing claim declined' },
   { t: 'pass',     s: '  [✓] Zero-Heap Certified    0 bytes   MISRA-C Dir 4.12 / 21.3' },
   { t: 'pass',     s: '  [✓] Stack Depth Verified   0b ≤ 2048b budget' },
   { t: 'pass',     s: '  [✓] Power Envelope         0.0mW ≤ 1000.0mW budget (declared)' },
   { t: 'pass',     s: '  [✓] Interrupt Latency      1.0μs ≤ 10.0μs budget (declared)' },
-  { t: 'pass',     s: '  [✓] Constant-Time          no secret-dependent branches' },
+  { t: 'pass',     s: '  [✓] Static Constant-Time Check  no secret-dependent branches (structural)' },
   { t: 'pass',     s: '  [✓] Formal Verification    5 proof obligations discharged' },
-  { t: 'pass',     s: '  [✓] Attestation Token      0xb16f154c7350806c · 10 manifests in chain' },
-  { t: 'pass',     s: '  [✓] Evidence Generated     10 items → DO-178C / DO-160 / IEC clauses' },
-  { t: 'pass',     s: '  [✓] GENXR Codegen Emit     0.021ms' },
+  { t: 'pass',     s: '  [✓] Attestation Token      0xb16f154c7350806c · chain of 10' },
+  { t: 'pass',     s: '  [✓] Evidence Generated     10 items → DO-178C clause mapping' },
+  { t: 'pass',     s: '  [✓] GENXR Codegen Emit     0.023ms' },
   { t: 'dim',      s: '  ──────────────────────────────────────────' },
-  { t: 'key',      s: '  Total: 0.073ms  (19 manifest blocks · 11,246 aet bytes)' },
+  { t: 'key',      s: '  Total: ~0.09ms  (19 manifest blocks · 11,246 aet bytes)' },
   { t: 'dim',      s: '' },
   { t: 'manifest', s: '// GENXR_V8.0.0 / STRICT_MODE' },
   { t: 'manifest', s: 'attestation_manifest {' },
@@ -189,17 +195,17 @@ export default function Home() {
             property cannot be compiled. There is no runtime check. There is no advisory
             warning. The program does not compile.
           </p>
-          {/* Hero stats — every number provable on serial 20260707141007.858049:
-              · 49 = canonical IP-track list (records); label is "mapped" not
-                "drafted" because only 3 tracks (A/B/C) plus Umbrella Claim 0 have
-                drafted claims, and 42 of the 49 letters are evidenced in source.
-                "mapped" is the honest verb for the full 49.
-              · 20.5K = total .rs line count across all crates excluding the build
-                dir = 20,497 total lines (19.2K non-blank). Prior "19.7K" matched
-                no measure on this tree.
+          {/* Hero stats — re-verified on the CURRENT build, serial 20260707191610.014676:
+              · 49 = canonical IP-track list (records). Label is "mapped" not
+                "drafted": only 3 tracks (A/B/C) plus Umbrella Claim 0 have drafted
+                claims, and 42 of 49 letters are evidenced in source. [RECORDS]
+              · 20.5K = total .rs lines across all crates excluding the build dir
+                = 20,523 (wc -l). Functional (comments stripped) is ~14.8K; the
+                label says "lines of Rust" (raw), so 20.5K is correct. [FACT]
               · 39 = distinct manifest block types emitted across the fixture
-                suite (grep-verified, exactly 39). Correct — unchanged.
-              · sub-ms = measured 45.4us avg per op this session; true. Unchanged. */}
+                suite (grep-verified, exactly 39, unchanged this build). [FACT]
+              · sub-ms = per-op compile stays sub-millisecond every run; wall-clock
+                avg varies (135us/op Windows, ~45us sandbox — both sub-ms). [FACT] */}
           <div className="hero-stats">
             <div className="stat-cell">
               <span className="stat-num">49</span>
