@@ -191,15 +191,15 @@ export default function Home() {
           </p>
           {/* Hero stats — every number provable on serial 20260707141007.858049:
               · 49 = canonical IP-track list (records); label is "mapped" not
-                "drafted" because only 3 tracks (A/B/C) + Umbrella Claim 0 have
+                "drafted" because only 3 tracks (A/B/C) plus Umbrella Claim 0 have
                 drafted claims, and 42 of the 49 letters are evidenced in source.
                 "mapped" is the honest verb for the full 49.
-              · 20.5K = `find . -name "*.rs" -not -path "*/target/*" | xargs cat | wc -l`
-                = 20,497 total .rs lines (19.2K non-blank). Prior "19.7K" matched
+              · 20.5K = total .rs line count across all crates excluding the build
+                dir = 20,497 total lines (19.2K non-blank). Prior "19.7K" matched
                 no measure on this tree.
               · 39 = distinct manifest block types emitted across the fixture
                 suite (grep-verified, exactly 39). Correct — unchanged.
-              · sub-ms = measured 45.4µs avg/op this session; true. Unchanged. */}
+              · sub-ms = measured 45.4us avg per op this session; true. Unchanged. */}
           <div className="hero-stats">
             <div className="stat-cell">
               <span className="stat-num">49</span>
