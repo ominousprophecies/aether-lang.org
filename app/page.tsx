@@ -199,9 +199,16 @@ export default function Home() {
               · 49 = canonical IP-track list (records). Label is "mapped" not
                 "drafted": only 3 tracks (A/B/C) plus Umbrella Claim 0 have drafted
                 claims, and 42 of 49 letters are evidenced in source. [RECORDS]
-              · 20.5K = total .rs lines across all crates excluding the build dir
-                = 20,523 (wc -l). Functional (comments stripped) is ~14.8K; the
-                label says "lines of Rust" (raw), so 20.5K is correct. [FACT]
+              · 20.9K = total .rs lines across all crates excluding the build dir
+                = 20,872 (wc -l), serial 20260708175630.565675. Functional
+                (comments stripped) is 15,294; the label says "lines of Rust"
+                (raw), so 20.9K is correct. [FACT] */}
+          {/* Hero-stats note: only the line count changed this update. SHA-256
+              (single + two-block KAT) and mul256 are verified UNDER EMULATION
+              as internal compiler-substrate work, not user-facing features —
+              deliberately NOT surfaced on the site. A hash is integrity, not
+              authenticity; no crypto capability is claimed here. This reflects
+              current state only and is not a statement of intent or roadmap. [HONESTY]
               · 39 = distinct manifest block types emitted across the fixture
                 suite (grep-verified, exactly 39, unchanged this build). [FACT]
               · sub-ms = per-op compile stays sub-millisecond every run; wall-clock
@@ -212,7 +219,7 @@ export default function Home() {
               <span className="stat-lbl">IP tracks mapped</span>
             </div>
             <div className="stat-cell">
-              <span className="stat-num">20.5K</span>
+              <span className="stat-num">20.9K</span>
               <span className="stat-lbl">lines of Rust</span>
             </div>
             <div className="stat-cell">
