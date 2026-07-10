@@ -2,20 +2,22 @@
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 
-// HONESTY BASIS (audit 2026-07-07, re-captured from a live `cargo run --release`
-// on the CURRENT build, serial 20260707191610.014676 — the "P1 honesty
-// remediation" build). Two phase strings changed in this build and are updated
-// here to match the tool exactly: the old "Post-Quantum Cryptography Verified"
-// is now "PQC Algorithm Declaration Check" (a name-vs-list check of the DECLARED
+// HONESTY BASIS (audit 2026-07-10, re-captured from live MULTIPASS runs on the
+// CURRENT build — timing serial 20260710191836.012509, artifact-stability
+// serial 20260710164846.177123). Phase strings match the tool exactly:
+// "PQC Algorithm Declaration Check" (a name-vs-list check of the DECLARED
 // algorithm — it does NOT verify any cryptographic implementation), and
-// "Constant-Time Verified … FIPS/CC" is now "Static Constant-Time Check" (a
-// structural control-flow check — NOT a physical-timing measurement, NOT a
-// FIPS/CC conformance claim). STRUCTURAL values for fixture 162 were
-// re-verified byte-stable on this build: token 0xb16f154c7350806c, chain of 10,
-// 10 evidence items, 19 manifest blocks, 11,246 aet bytes. Per-phase/total
-// TIMINGS are wall-clock and vary run to run (~0.09ms total observed here) —
-// representative real values, not a fixed spec. The [!] WCET line is real: the
-// compiler refuses to assert a timing bound without a declared clock.
+// "Static Constant-Time Check" (a structural control-flow check — NOT a
+// physical-timing measurement, NOT a FIPS/CC conformance claim). STRUCTURAL
+// values for fixture 162 re-verified byte-stable on this build: token
+// 0xb16f154c7350806c, chain of 10, 10 evidence items, 5 proof obligations,
+// 19 manifest blocks, 11,246 aet bytes. Per-phase/total TIMINGS are wall-clock
+// and vary run to run (0.155ms total, pass 11 of serial 20260710191836;
+// 0.231ms pass 1) — representative real values, not a fixed spec. The [!] WCET
+// line is real: the compiler refuses to assert a timing bound without a
+// declared clock. BYTE-STABILITY [FACT]: all 356 emitted artifacts (.aet
+// manifests + .s + objects) hashed identical across 20 consecutive
+// build+QEMU passes (pass_01..20.artifacts.sha256, serial 20260710164846).
 const TERM_LINES = [
   { t: 'cmd',      s: '$ cargo run --release' },
   { t: 'dim',      s: '   Compiling aether-lexer v8.0.0' },
@@ -23,7 +25,7 @@ const TERM_LINES = [
   { t: 'dim',      s: '     Running `target/release/aether-lexer`' },
   { t: 'dim',      s: '' },
   { t: 'dim',      s: '===== PROCESSING: 162_pqc_full_stack.bru =====' },
-  { t: 'pass',     s: '  [✓] Parser Phase Complete              ~0.07ms' },
+  { t: 'pass',     s: '  [✓] Parser Phase Complete              ~0.11ms' },
   { t: 'pass',     s: '  [✓] Type-Checker Verification Passed   ~0.00ms' },
   { t: 'pass',     s: '  [✓] PQC Algorithm Declaration Check  CRYSTALS-Kyber on NIST FIPS-203/204/205 list' },
   { t: 'warn',     s: '  [!] WCET Not Verified   no clock_mhz declared — timing claim declined' },
@@ -35,15 +37,16 @@ const TERM_LINES = [
   { t: 'pass',     s: '  [✓] Formal Verification    5 proof obligations discharged' },
   { t: 'pass',     s: '  [✓] Attestation Token      0xb16f154c7350806c · chain of 10' },
   { t: 'pass',     s: '  [✓] Evidence Generated     10 items → DO-178C clause mapping' },
-  { t: 'pass',     s: '  [✓] GENXR Codegen Emit     0.023ms' },
+  { t: 'pass',     s: '  [✓] GENXR Codegen Emit     0.045ms' },
   { t: 'dim',      s: '  ──────────────────────────────────────────' },
-  { t: 'key',      s: '  Total: ~0.09ms  (19 manifest blocks · 11,246 aet bytes)' },
+  { t: 'key',      s: '  Total: ~0.155ms  (19 manifest blocks · 11,246 aet bytes)' },
   { t: 'dim',      s: '' },
   { t: 'manifest', s: '// GENXR_V8.0.0 / STRICT_MODE' },
   { t: 'manifest', s: 'attestation_manifest {' },
   { t: 'manifest', s: '  token:    0xb16f154c7350806c' },
   { t: 'manifest', s: '  chain:    10 manifests · identity → verification' },
   { t: 'manifest', s: '  note:     compile-time evidence · not a certification' },
+  { t: 'manifest', s: '  build:    byte-identical across 20 consecutive passes' },
   { t: 'manifest', s: '}' },
 ]
 
@@ -195,14 +198,18 @@ export default function Home() {
             property cannot be compiled. There is no runtime check. There is no advisory
             warning. The program does not compile.
           </p>
-          {/* Hero stats — re-verified on the CURRENT build, serial 20260707191610.014676:
-              · 49 = canonical IP-track list (records). Label is "mapped" not
-                "drafted": only 3 tracks (A/B/C) plus Umbrella Claim 0 have drafted
-                claims, and 42 of 49 letters are evidenced in source. [RECORDS]
+          {/* Hero stats — re-verified on the CURRENT build (2026-07-10):
+              · 46 = patent tracks A–TT per SOURCE (token.rs) and README v8.0.0,
+                which are canonical ("source lettering is canonical" — 2026-07-07
+                audit). The previous site value of 49 came from an internal
+                records list that disagreed with source+README; reconciled
+                2026-07-10 in favour of source. Paper-spec-only tracks S/T/V
+                are counted in the 46 but have no token/parser/enforcer — per
+                token.rs they must not be claimed as implemented. [FACT]
               · 20.9K = total .rs lines across all crates excluding the build dir
-                = 20,872 (wc -l), serial 20260708175630.565675. Functional
-                (comments stripped) is 15,294; the label says "lines of Rust"
-                (raw), so 20.9K is correct. [FACT] */}
+                = 20,872 (wc -l), re-verified 2026-07-10 on the "al complete"
+                tree. Functional (comments stripped) is 15,294; the label says
+                "lines of Rust" (raw), so 20.9K is correct. [FACT] */}
           {/* Hero-stats note: only the line count changed this update. SHA-256
               (single + two-block KAT) and mul256 are verified UNDER EMULATION
               as internal compiler-substrate work, not user-facing features —
@@ -215,7 +222,7 @@ export default function Home() {
                 avg varies (135us/op Windows, ~45us sandbox — both sub-ms). [FACT] */}
           <div className="hero-stats">
             <div className="stat-cell">
-              <span className="stat-num">49</span>
+              <span className="stat-num">46</span>
               <span className="stat-lbl">IP tracks mapped</span>
             </div>
             <div className="stat-cell">
@@ -288,7 +295,7 @@ export default function Home() {
       <section id="manifests">
         <div className="section-eyebrow">what aether produces</div>
         <h2 className="section-title">39 certification manifest types. One compiler pass. Sub-millisecond.</h2>
-        <p className="section-sub">Aether emits machine-verifiable certification manifest blocks during a single compilation — up to 21 in one program, drawn from a catalog of 39 block types. The standalone verifier (aether-verify) independently re-checks the manifest chain and attestation token — without the compiler or source code — and parses the core manifest block types individually. Manifests are compile-time evidence artifacts, not third-party certifications.</p>
+        <p className="section-sub">Aether emits machine-verifiable certification manifest blocks during a single compilation — up to 21 in one program, drawn from a catalog of 39 block types. The standalone verifier (aether-verify) independently re-checks the manifest chain and attestation token — without the compiler or source code — and parses the core manifest block types individually. The output is deterministic: all 356 emitted artifacts hashed byte-identical across 20 consecutive build-and-execute passes (2026-07-10). Manifests are compile-time evidence artifacts, not third-party certifications.</p>
         <div className="manifest-grid">
           {MANIFESTS.map(([name, std]) => (
             <div className="manifest-card" key={name}>
