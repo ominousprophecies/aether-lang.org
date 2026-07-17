@@ -123,6 +123,40 @@ const STANDARDS = [
   ['ARM MTE v8.5-A',    'Memory tagging · spatial safety'],
 ]
 
+// HARDWARE VALIDATION (new 2026-07-17). Physical measurements taken on a Nordic
+// Power Profiler Kit II in series with an STM32F411 (ARM Cortex-M4) on a
+// NUCLEO-F411RE board, at the reset-default 16 MHz clock.
+// SCOPE [HONESTY]: each entry is a SINGLE datapoint on one board of one silicon
+// part, performed with AI assistance at the inventor's direction; NOT a
+// multi-part characterization, temperature study, or certified measurement.
+// PROVENANCE: the current-delta, coulomb, and residency entries used binaries
+// emitted VERBATIM by the release compiler [FACT — measured, compiler-emitted].
+// The constant-time and WCET entries used DERIVED-TEMPLATE instances — code
+// hand-assembled in the compiler's exact emission idiom, NOT a build-time
+// capture of the compiler's own output — and require an assembly-level
+// equivalence check to bind them to compiler emission; they are labelled as
+// such and must NOT be presented as compiler-verified. FIGURES (match the dated
+// rig log + result JSON, shown rounded): WFI delta — pre-registered 6-trial
+// protocol, PASS, median 5.28 vs 8.73 mA = 3.45 mA / 39%. Coulomb — 358.42 mC
+// projected vs 353.43 measured, −1.39%, inside a ±10% band declared before the
+// run. Residency — designed 0.50/0.80/0.95 vs measured 0.5002/0.8001/0.9500.
+// Constant-time — emitted pattern 0.8% spread across 4 query positions vs 116%
+// for a branchy comparator. WCET — one compiler-emitted instantiation measured
+// at 140.9 cycles, superseding a placeholder of 100. This section states current
+// measured state only; it is not a roadmap or a certification claim.
+const MEASUREMENTS = [
+  ['WFI current delta',
+   'Two compiler-emitted binaries differing by exactly the 14-byte clock-halt sequence, byte-identical otherwise, measured 3.45 mA (39%) apart — 5.28 vs 8.73 mA median. Pre-registered 6-trial protocol; PASS. [compiler-emitted]'],
+  ['Coulomb budget',
+   'Projected and measured integrated charge agree to 1.39% (358.42 vs 353.43 mC) over a 60 s duty-cycled mission; additive per-state model, ±10% band fixed before the run. [compiler-emitted]'],
+  ['Clock-halt residency',
+   'Measured clock-halted time fraction matches designed 0.50 / 0.80 / 0.95 to within 0.0002, across three missions. [compiler-emitted]'],
+  ['Constant-time timing',
+   'The emitted fixed-depth mask-accumulate lookup executes within 0.8% across four query positions; a branchy comparator over the same table varies 116% and monotonically. Measured on a hand-assembled instance of the emitted pattern — compiler-emission binding pending. [derived-template]'],
+  ['WCET instantiation',
+   'One compiler-emitted function measured at 140.9 processor cycles, superseding a placeholder constant of 100; per-construct cycle table measured by differencing. [derived-template]'],
+]
+
 export default function Home() {
   const termRef = useRef<HTMLDivElement>(null)
   const [lines, setLines] = useState<{t:string,s:string}[]>([])
@@ -172,6 +206,7 @@ export default function Home() {
         <ul className="nav-links">
           <li><a href="#how">How it works</a></li>
           <li><a href="#manifests">Manifests</a></li>
+          <li><a href="#validation">Validation</a></li>
           <li><a href="#standards">Standards</a></li>
           <li><a href="#contact">Contact</a></li>
           <li>
@@ -301,6 +336,23 @@ export default function Home() {
             <div className="manifest-card" key={name}>
               <div className="manifest-name">{name}</div>
               <div className="manifest-standard">{std}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <hr className="divider" />
+
+      {/* VALIDATION — measured on silicon */}
+      <section id="validation">
+        <div className="section-eyebrow">new — measured on silicon</div>
+        <h2 className="section-title">The physical claims now have physical measurements.</h2>
+        <p className="section-sub">On 2026-07-17 the compiler's physical-domain outputs were measured on hardware for the first time — a Nordic Power Profiler Kit II in series with an STM32F411 (ARM Cortex-M4) on a NUCLEO-F411RE board, at the reset-default 16&nbsp;MHz clock. Every result below is a single datapoint on one board of one silicon part, taken with AI assistance at the inventor's direction under a methodology fixed before the measurement; none is a multi-part characterization or a certified measurement. Three results — current delta, charge, and clock-halt residency — used binaries emitted verbatim by the compiler. Two — constant-time and WCET — used hand-assembled instances of the emitted instruction pattern and await an assembly-level equivalence check to bind them to compiler output; they are marked accordingly. Numbers are recorded with full chain of custody in a dated rig log.</p>
+        <div className="manifest-grid">
+          {MEASUREMENTS.map(([name, desc]) => (
+            <div className="manifest-card" key={name}>
+              <div className="manifest-name">{name}</div>
+              <div className="manifest-standard">{desc}</div>
             </div>
           ))}
         </div>
