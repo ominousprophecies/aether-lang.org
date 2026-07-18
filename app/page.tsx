@@ -129,9 +129,10 @@ const STANDARDS = [
 // SCOPE [HONESTY]: each entry is a SINGLE datapoint on one board of one silicon
 // part, performed with AI assistance at the inventor's direction; NOT a
 // multi-part characterization, temperature study, or certified measurement.
-// PROVENANCE: the current-delta, coulomb, and residency entries used binaries
-// emitted VERBATIM by the release compiler [FACT — measured, compiler-emitted].
-// The constant-time and WCET entries used DERIVED-TEMPLATE instances — code
+// PROVENANCE: the current-delta, coulomb, residency, and WCET-instantiation
+// (140.9-cycle) entries used binaries emitted VERBATIM by the release compiler
+// [FACT — measured, compiler-emitted]. The constant-time entry and the WCET
+// per-construct decomposition table used DERIVED-TEMPLATE instances — code
 // hand-assembled in the compiler's exact emission idiom, NOT a build-time
 // capture of the compiler's own output — and require an assembly-level
 // equivalence check to bind them to compiler emission; they are labelled as
@@ -146,7 +147,7 @@ const STANDARDS = [
 // measured state only; it is not a roadmap or a certification claim.
 const MEASUREMENTS = [
   ['WFI current delta',
-   'Two compiler-emitted binaries differing by exactly the 14-byte clock-halt sequence, byte-identical otherwise, measured 3.45 mA (39%) apart — 5.28 vs 8.73 mA median. Pre-registered 6-trial protocol; PASS. [compiler-emitted]'],
+   'Two compiler-emitted binaries that differ by whether the compiler emitted its 14-byte clock-halt (WFI) sequence for the entry mode, measured 3.45 mA (39%) apart — 5.28 vs 8.73 mA median. Pre-registered 6-trial protocol; PASS. [compiler-emitted]'],
   ['Coulomb budget',
    'Projected and measured integrated charge agree to 1.39% (358.42 vs 353.43 mC) over a 60 s duty-cycled mission; additive per-state model, ±10% band fixed before the run. [compiler-emitted]'],
   ['Clock-halt residency',
@@ -154,7 +155,7 @@ const MEASUREMENTS = [
   ['Constant-time timing',
    'The emitted fixed-depth mask-accumulate lookup executes within 0.8% across four query positions; a branchy comparator over the same table varies 116% and monotonically. Measured on a hand-assembled instance of the emitted pattern — compiler-emission binding pending. [derived-template]'],
   ['WCET instantiation',
-   'One compiler-emitted function measured at 140.9 processor cycles, superseding a placeholder constant of 100; per-construct cycle table measured by differencing. [derived-template]'],
+   'One compiler-emitted function measured at 140.9 processor cycles, superseding a placeholder constant of 100 [compiler-emitted]. The finer per-construct cycle table, measured by differencing, uses hand-assembled fixtures and awaits an assembly-level equivalence check [derived-template].'],
 ]
 
 export default function Home() {
@@ -347,7 +348,7 @@ export default function Home() {
       <section id="validation">
         <div className="section-eyebrow">new — measured on silicon</div>
         <h2 className="section-title">The physical claims now have physical measurements.</h2>
-        <p className="section-sub">On 2026-07-17 the compiler's physical-domain outputs were measured on hardware for the first time — a Nordic Power Profiler Kit II in series with an STM32F411 (ARM Cortex-M4) on a NUCLEO-F411RE board, at the reset-default 16&nbsp;MHz clock. Every result below is a single datapoint on one board of one silicon part, taken with AI assistance at the inventor's direction under a methodology fixed before the measurement; none is a multi-part characterization or a certified measurement. Three results — current delta, charge, and clock-halt residency — used binaries emitted verbatim by the compiler. Two — constant-time and WCET — used hand-assembled instances of the emitted instruction pattern and await an assembly-level equivalence check to bind them to compiler output; they are marked accordingly. Numbers are recorded with full chain of custody in a dated rig log.</p>
+        <p className="section-sub">On 2026-07-17 the compiler's physical-domain outputs were measured on hardware for the first time — a Nordic Power Profiler Kit II in series with an STM32F411 (ARM Cortex-M4) on a NUCLEO-F411RE board, at the reset-default 16&nbsp;MHz clock. Every result below is a single datapoint on one board of one silicon part, taken with AI assistance at the inventor's direction under a methodology fixed before the measurement; none is a multi-part characterization or a certified measurement. Four results — current delta, charge, clock-halt residency, and the 140.9-cycle WCET instantiation — used binaries emitted verbatim by the compiler. The constant-time result and the finer per-construct WCET table used hand-assembled instances of the emitted instruction pattern and await an assembly-level equivalence check to bind them to compiler output; they are marked accordingly. Numbers are recorded with full chain of custody in a dated rig log.</p>
         <div className="manifest-grid">
           {MEASUREMENTS.map(([name, desc]) => (
             <div className="manifest-card" key={name}>
