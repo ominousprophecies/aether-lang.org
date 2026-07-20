@@ -131,12 +131,22 @@ const STANDARDS = [
 // multi-part characterization, temperature study, or certified measurement.
 // PROVENANCE: the current-delta, coulomb, residency, and WCET-instantiation
 // (140.9-cycle) entries used binaries emitted VERBATIM by the release compiler
-// [FACT — measured, compiler-emitted]. The constant-time entry and the WCET
-// per-construct decomposition table used DERIVED-TEMPLATE instances — code
+// [FACT — measured, compiler-emitted]. UPDATE 2026-07-19/20: the constant-time
+// entry has been UPGRADED to [compiler-emitted] — the compiler's OWN emitted
+// lookup was measured cycle-exact (DWT) on silicon at 240 cycles flat across all
+// 20 query positions with no match-vs-absent leak, retiring the earlier
+// hand-assembled caveat. Three further compiler-emitted results were added and
+// are [FACT — measured]: Aether-vs-C energy per invocation (417 nJ, between two
+// hand-written constant-time C variants; naive C cheaper only because it leaks);
+// a unified capstone (one program, six typed gates accepted in one pass, three
+// measured on the one binary in a single run); and an interrupt-latency bound (a
+// static audit of all 821 emitted .s files finds the only interrupt-disabled
+// region is a fixed 5-instruction clock-halt block, bounding worst-case added
+// latency at 27 cycles / 1.69 us via the measured 16-cycle entry law). The WCET
+// per-construct decomposition table still uses a DERIVED-TEMPLATE instance —
 // hand-assembled in the compiler's exact emission idiom, NOT a build-time
-// capture of the compiler's own output — and require an assembly-level
-// equivalence check to bind them to compiler emission; they are labelled as
-// such and must NOT be presented as compiler-verified. FIGURES (match the dated
+// capture — and still awaits an assembly-level equivalence check; it is labelled
+// as such and must NOT be presented as compiler-verified. FIGURES (match the dated
 // rig log + result JSON, shown rounded): WFI delta — pre-registered 6-trial
 // protocol, PASS, median 5.28 vs 8.73 mA = 3.45 mA / 39%. Coulomb — 358.42 mC
 // projected vs 353.43 measured, −1.39%, inside a ±10% band declared before the
@@ -153,9 +163,15 @@ const MEASUREMENTS = [
   ['Clock-halt residency',
    'Measured clock-halted time fraction matches designed 0.50 / 0.80 / 0.95 to within 0.0002, across three missions. [compiler-emitted]'],
   ['Constant-time timing',
-   'The emitted fixed-depth mask-accumulate lookup executes within 0.8% across four query positions; a branchy comparator over the same table varies 116% and monotonically. Measured on a hand-assembled instance of the emitted pattern — compiler-emission binding pending. [derived-template]'],
+   'The compiler’s OWN emitted fixed-depth mask-accumulate lookup, measured cycle-exact (DWT) on silicon, runs 240 cycles at all 20 query positions — present and absent keys alike, zero spread, no match-vs-absent leak; a branchy comparator over the same table varies 116%. This supersedes the earlier hand-assembled instance and binds the constant-time result to verbatim compiler output. [compiler-emitted]'],
   ['WCET instantiation',
    'One compiler-emitted function measured at 140.9 processor cycles, superseding a placeholder constant of 100 [compiler-emitted]. The finer per-construct cycle table, measured by differencing, uses hand-assembled fixtures and awaits an assembly-level equivalence check [derived-template].'],
+  ['Aether-vs-C energy',
+   'Energy per invocation of the same 16-slot lookup, compiler-emitted vs gcc -O2, from measured active current × cycle-exact time: the compiler’s automatic constant-time output costs 417 nJ/call — between two hand-written constant-time C variants (298 and 432 nJ) — so enforced constant-time costs about what a careful C programmer spends by hand. The only cheaper option (146 nJ, naive C) is variable-time and leaks the query position. [compiler-emitted vs gcc -O2]'],
+  ['Unified capstone',
+   'One program declaring six typed constraints at once — energy, WCET, power, interrupt-latency, constant-time, and a Secret classification — is accepted by the compiler in a single pass and emits code byte-identical to the separately-validated fixtures. Three of those constraints were then measured on that one binary in a single run: constant-time (flat, 239 cycles), WCET (24 cycles, within the declared model), and a measurable run-vs-idle current difference. [compiler-emitted + measured]'],
+  ['Interrupt-latency bound',
+   'A static audit of all 821 emitted assembly files finds only 7 interrupt-disabled regions — every one the identical 5-instruction clock-halt sequence, with no function call or data-dependent loop inside any of them. Combined with the measured 16-cycle exception-entry law, the worst-case added interrupt latency of any emitted program is bounded at 27 cycles (1.69 µs at 16 MHz), independent of program size or input. [static audit of compiler-emitted corpus + measured entry law]'],
 ]
 
 export default function Home() {
@@ -346,9 +362,9 @@ export default function Home() {
 
       {/* VALIDATION — measured on silicon */}
       <section id="validation">
-        <div className="section-eyebrow">new — measured on silicon</div>
-        <h2 className="section-title">The physical claims now have physical measurements.</h2>
-        <p className="section-sub">On 2026-07-17 the compiler's physical-domain outputs were measured on hardware for the first time — a Nordic Power Profiler Kit II in series with an STM32F411 (ARM Cortex-M4) on a NUCLEO-F411RE board, at the reset-default 16&nbsp;MHz clock. Every result below is a single datapoint on one board of one silicon part, taken with AI assistance at the inventor's direction under a methodology fixed before the measurement; none is a multi-part characterization or a certified measurement. Four results — current delta, charge, clock-halt residency, and the 140.9-cycle WCET instantiation — used binaries emitted verbatim by the compiler. The constant-time result and the finer per-construct WCET table used hand-assembled instances of the emitted instruction pattern and await an assembly-level equivalence check to bind them to compiler output; they are marked accordingly. Numbers are recorded with full chain of custody in a dated rig log.</p>
+        <div className="section-eyebrow">measured on silicon</div>
+        <h2 className="section-title">The physical claims now have physical measurements — and the constant-time one is measured on the compiler's own output.</h2>
+        <p className="section-sub">Beginning 2026-07-17 and continuing through 2026-07-20, the compiler's physical-domain outputs were measured on hardware — a Nordic Power Profiler Kit II in series with an STM32F411 (ARM Cortex-M4) on a NUCLEO-F411RE board, at the reset-default 16&nbsp;MHz clock. Every result below is a single datapoint on one board of one silicon part, taken with AI assistance at the inventor's direction under a methodology fixed before the measurement; none is a multi-part characterization or a certified measurement. What began as four verbatim-compiler-emitted results has since been strengthened and extended: the constant-time property is now measured directly on the compiler's OWN emitted lookup, cycle-exact (240 cycles flat across all 20 query positions, no match-vs-absent leak) — the earlier hand-assembled caveat is retired — and a single program carrying six typed constraints at once (energy, WCET, power, interrupt-latency, constant-time, and a Secret classification) was accepted by the compiler in one pass and measured end-to-end on that one binary. A separate static audit further bounds the worst-case interrupt latency of every emitted program to 27&nbsp;cycles. Each number is recorded with full chain of custody in a dated rig log; where a result is still bound only to a hand-assembled instance, it says so.</p>
         <div className="manifest-grid">
           {MEASUREMENTS.map(([name, desc]) => (
             <div className="manifest-card" key={name}>
