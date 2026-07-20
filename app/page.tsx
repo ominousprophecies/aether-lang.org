@@ -153,8 +153,21 @@ const STANDARDS = [
 // run. Residency — designed 0.50/0.80/0.95 vs measured 0.5002/0.8001/0.9500.
 // Constant-time — emitted pattern 0.8% spread across 4 query positions vs 116%
 // for a branchy comparator. WCET — one compiler-emitted instantiation measured
-// at 140.9 cycles, superseding a placeholder of 100. This section states current
-// measured state only; it is not a roadmap or a certification claim.
+// at 140.9 cycles, superseding a placeholder of 100. UPDATE 2026-07-20 (additions):
+// three further already-recorded results are surfaced, results-level only (what was
+// achieved, not how). Constant-time under V&T — position spread ~0.08% across a
+// 3.3→~2.4 V supply sweep and to ~65 °C vs ~116% for a branchy comparator; this run
+// characterizes the constant-time PATTERN (consistent with the Track B provisional
+// [0020]) and is labelled [measured], NOT asserted as the verbatim build. Power-
+// envelope — P=V×I tracked to <2%, worst peak ~91 mW vs 1000 mW declared (11× margin).
+// Codegen determinism — emitted instruction stream byte-identical across the v7.3→v8.0.0
+// bump for the TESTED fixtures only (2 fixtures; not the whole suite — stated as such).
+// DISCLOSURE CAUTION [strategy, not legal advice]: this site is public and the patent
+// applications are not yet filed (see footer). Everything surfaced here is deliberately
+// results-level; mechanism (the lookup idiom, the wire/packet format, the crypto
+// substrate, the token algorithm) is kept OFF to avoid a pre-filing public disclosure of
+// the patentable method. Prefer filing the provisionals before adding any HOW-level detail.
+// This section states current measured state only; it is not a roadmap or a certification claim.
 const MEASUREMENTS = [
   ['WFI current delta',
    'Two compiler-emitted binaries that differ by whether the compiler emitted its 14-byte clock-halt (WFI) sequence for the entry mode, measured 3.45 mA (39%) apart — 5.28 vs 8.73 mA median. Pre-registered 6-trial protocol; PASS. [compiler-emitted]'],
@@ -171,7 +184,13 @@ const MEASUREMENTS = [
   ['Unified capstone',
    'One program declaring six typed constraints at once — energy, WCET, power, interrupt-latency, constant-time, and a Secret classification — is accepted by the compiler in a single pass and emits code byte-identical to the separately-validated fixtures. Three of those constraints were then measured on that one binary in a single run: constant-time (flat, 239 cycles), WCET (24 cycles, within the declared model), and a measurable run-vs-idle current difference. [compiler-emitted + measured]'],
   ['Interrupt-latency bound',
-   'A static audit of all 821 emitted assembly files finds only 7 interrupt-disabled regions — every one the identical 5-instruction clock-halt sequence, with no function call or data-dependent loop inside any of them. Combined with the measured 16-cycle exception-entry law, the worst-case added interrupt latency of any emitted program is bounded at 27 cycles (1.69 µs at 16 MHz), independent of program size or input. [static audit of compiler-emitted corpus + measured entry law]'],
+   'A static audit of all 821 emitted assembly files finds only 7 interrupt-disabled regions — every one the identical 5-instruction clock-halt sequence, with no function call or data-dependent loop inside any of them. Combined with the measured 16-cycle exception-entry law (identical minimum, mean, and maximum over 50,000 interrupts; the instrument was validated by inserting a known 32-cycle critical section, which moved the measured maximum by the predicted amount), the worst-case added interrupt latency of any emitted program is bounded at 27 cycles (1.69 µs at 16 MHz), independent of program size or input. [static audit of compiler-emitted corpus + measured entry law]'],
+  ['Constant-time under voltage & temperature',
+   'A constant-time lookup in the emitted pattern was measured cycle-stable as the supply was swept from a nominal 3.3 V down toward the part’s ~2.4 V brown-out floor and at an elevated (~65 °C) die temperature — position spread held ~0.08%, versus ~116% for a conventional branchy comparator over the same table. Evidence the timing invariance is a structural property of the instruction sequence, not an artifact of one operating point. [measured]'],
+  ['Power-envelope accuracy',
+   'Instantaneous power derived as voltage × current tracked the measured power to within 2%, and the worst measured peak was ~91 mW against a declared 1000 mW envelope — an 11× margin under budget. [measured]'],
+  ['Codegen determinism over time',
+   'For the fixtures tested, the compiler’s emitted instruction stream was byte-identical across a major version bump (v7.3 → v8.0.0, ~12 days apart); only the version-header comment differed. Together with the 20-pass byte-identical artifact stability, this is evidence the physical numbers bind to what the compiler emits, not to a single build. [measured / emitted]'],
 ]
 
 export default function Home() {
@@ -364,7 +383,7 @@ export default function Home() {
       <section id="validation">
         <div className="section-eyebrow">measured on silicon</div>
         <h2 className="section-title">The physical claims now have physical measurements — and the constant-time one is measured on the compiler's own output.</h2>
-        <p className="section-sub">Beginning 2026-07-17 and continuing through 2026-07-20, the compiler's physical-domain outputs were measured on hardware — a Nordic Power Profiler Kit II in series with an STM32F411 (ARM Cortex-M4) on a NUCLEO-F411RE board, at the reset-default 16&nbsp;MHz clock. Every result below is a single datapoint on one board of one silicon part, taken with AI assistance at the inventor's direction under a methodology fixed before the measurement; none is a multi-part characterization or a certified measurement. What began as four verbatim-compiler-emitted results has since been strengthened and extended: the constant-time property is now measured directly on the compiler's OWN emitted lookup, cycle-exact (240 cycles flat across all 20 query positions, no match-vs-absent leak) — the earlier hand-assembled caveat is retired — and a single program carrying six typed constraints at once (energy, WCET, power, interrupt-latency, constant-time, and a Secret classification) was accepted by the compiler in one pass and measured end-to-end on that one binary. A separate static audit further bounds the worst-case interrupt latency of every emitted program to 27&nbsp;cycles. Each number is recorded with full chain of custody in a dated rig log; where a result is still bound only to a hand-assembled instance, it says so.</p>
+        <p className="section-sub">Beginning 2026-07-17 and continuing through 2026-07-20, the compiler's physical-domain outputs were measured on hardware — a Nordic Power Profiler Kit II in series with an STM32F411 (ARM Cortex-M4) on a NUCLEO-F411RE board, at the reset-default 16&nbsp;MHz clock. Every result below is a single datapoint on one board of one silicon part, taken with AI assistance at the inventor's direction under a methodology fixed before the measurement; none is a multi-part characterization or a certified measurement. What began as four verbatim-compiler-emitted results has since been strengthened and extended: the constant-time property is now measured directly on the compiler's OWN emitted lookup, cycle-exact (240 cycles flat across all 20 query positions, no match-vs-absent leak) — the earlier hand-assembled caveat is retired — and a single program carrying six typed constraints at once (energy, WCET, power, interrupt-latency, constant-time, and a Secret classification) was accepted by the compiler in one pass and measured end-to-end on that one binary. A separate static audit further bounds the worst-case interrupt latency of every emitted program to 27&nbsp;cycles. The constant-time behaviour was further observed to hold as the supply was starved toward the part's brown-out floor and at elevated temperature, the declared power envelope tracked measured power to within 2%, and the emitted code was byte-identical across a major version bump — evidence that the numbers describe the compiler's own output rather than one lucky build. Each number is recorded with full chain of custody in a dated rig log; where a result is still bound only to a hand-assembled instance, it says so.</p>
         <div className="manifest-grid">
           {MEASUREMENTS.map(([name, desc]) => (
             <div className="manifest-card" key={name}>
