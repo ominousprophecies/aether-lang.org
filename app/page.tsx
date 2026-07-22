@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect, useRef } from 'react'
+import LightningStrike from './LightningStrike'
 
 // HONESTY BASIS (audit 2026-07-10, re-captured from live MULTIPASS runs on the
 // CURRENT build — timing serial 20260710191836.012509, artifact-stability
@@ -258,6 +259,12 @@ export default function Home() {
           <li><a href="#contact">Contact</a></li>
         </ul>
       </nav>
+
+      {/* LIGHTNING HERO — the strike on ÆTHER (nav is position:fixed, so it floats over this) */}
+      <section style={{ position: 'relative', height: '100vh', overflow: 'hidden', background: '#04060a' }}>
+        <LightningStrike />
+        <div style={{ position: 'absolute', left: 0, right: 0, bottom: '22px', textAlign: 'center', zIndex: 2, fontFamily: "'Space Mono', monospace", fontSize: '11px', letterSpacing: '.3em', textTransform: 'uppercase', color: '#7f9ab5' }}>scroll ↓</div>
+      </section>
 
       {/* HERO */}
       <div className="hero">
