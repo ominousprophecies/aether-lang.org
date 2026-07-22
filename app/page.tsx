@@ -1,6 +1,118 @@
 'use client'
 import { useState, useEffect, useRef } from 'react'
-import LightningStrike from './LightningStrike'
+
+// ── LIGHTNING HERO ──────────────────────────────────────────────────────────
+// Faithful port of the HTML preview: white/blue photoreal bolts, ÆTHER (green,
+// site logo font Cinzel Decorative 400) as the strike point, "feeler" leaders
+// that probe and mostly fizzle — only ~5% connect into an intense return
+// stroke, and a connection stops all other lightning. Inlined here so it ships
+// as part of page.tsx (no separate module to commit / resolve).
+function LightningStrike() {
+  const ref = useRef<HTMLCanvasElement>(null)
+  useEffect(() => {
+    const cv = ref.current; if (!cv) return
+    const ctx = cv.getContext('2d'); if (!ctx) return
+    const WORD = 'ÆTHER'
+    const FONT = "400 %px 'Cinzel Decorative', serif"
+    const CONNECT_CHANCE = 0.05
+    let W = 0, H = 0, DPR = 1, cx = 0, cy = 0, fs = 0, contactY = 0, flash = 0, hit = 0, t = 0
+    const strikes: any[] = []
+    const contact = { x: 0, y: 0, e: 0 }
+    let raf = 0
+    function resize() {
+      DPR = Math.min(window.devicePixelRatio || 1, 2)
+      const w = cv!.clientWidth || window.innerWidth, h = cv!.clientHeight || window.innerHeight
+      W = cv!.width = Math.floor(w * DPR); H = cv!.height = Math.floor(h * DPR)
+      cx = W * 0.5; cy = H * 0.48; fs = Math.min(W * 0.15, H * 0.28); contactY = cy - fs * 0.34
+    }
+    window.addEventListener('resize', resize); resize()
+    function bolt(x1:number,y1:number,x2:number,y2:number,disp:number,segs:any[],branch:number,depth:number){
+      if(disp<3*DPR){ segs.push([x1,y1,x2,y2,depth]); return }
+      const mx=(x1+x2)/2+(Math.random()-0.5)*disp, my=(y1+y2)/2+(Math.random()-0.5)*disp
+      if(branch>0 && Math.random()<0.22){ const ang=Math.atan2(my-y1,mx-x1)+(Math.random()-0.5)*1.15, len=disp*(1.5+Math.random())
+        bolt(mx,my,mx+Math.cos(ang)*len,my+Math.sin(ang)*len,disp/2,segs,branch-1,depth+1) }
+      bolt(x1,y1,mx,my,disp/2,segs,branch,depth); bolt(mx,my,x2,y2,disp/2,segs,branch,depth)
+    }
+    function pass(segs:any[],color:string,mul:number,base:number,blur:number){ ctx!.strokeStyle=color; ctx!.shadowColor=color; ctx!.shadowBlur=blur*DPR
+      for(const s of segs){ ctx!.lineWidth=Math.max(0.6,(base-s[4]*0.6))*mul*DPR; ctx!.beginPath(); ctx!.moveTo(s[0],s[1]); ctx!.lineTo(s[2],s[3]); ctx!.stroke() } }
+    function drawBolt(x1:number,y1:number,x2:number,y2:number,disp:number,alpha:number,base:number,branch:number){ const segs:any[]=[]; bolt(x1,y1,x2,y2,disp,segs,branch,0)
+      ctx!.lineCap='round'; ctx!.lineJoin='round'; ctx!.globalCompositeOperation='lighter'
+      pass(segs,'rgba(110,160,255,'+(0.13*alpha)+')',7,base,40)
+      pass(segs,'rgba(150,215,255,'+(0.5*alpha)+')',2.4,base,20)
+      pass(segs,'rgba(255,255,255,'+(0.98*alpha)+')',1,base,11)
+      ctx!.globalCompositeOperation='source-over'; ctx!.shadowBlur=0 }
+    function drawFeeler(x1:number,y1:number,x2:number,y2:number,disp:number,alpha:number,branch:number){
+      const segs:any[]=[]; bolt(x1,y1,x2,y2,disp,segs,branch,0)
+      ctx!.lineCap='round'; ctx!.lineJoin='round'; ctx!.globalCompositeOperation='lighter'
+      pass(segs,'rgba(120,180,255,'+(0.10*alpha)+')',3,1,14)
+      pass(segs,'rgba(175,215,255,'+(0.26*alpha)+')',1,1,7)
+      ctx!.globalCompositeOperation='source-over'; ctx!.shadowBlur=0 }
+    function spawnStrike(forceConnect:boolean){
+      const hero=Math.random()<0.5
+      const topX=cx+(Math.random()-0.5)*(hero?W*0.10:W*0.6)
+      const hx=cx+(Math.random()-0.5)*fs*(hero?0.5:0.85)
+      const feelers:any[]=[], n=3+(hero?2:1)
+      for(let i=0;i<n;i++) feelers.push({tx:hx+(Math.random()-0.5)*fs*1.4, ty:contactY-fs*(0.02+Math.random()*0.5)})
+      strikes.push({phase:'leader', tt:0, dur:(12+Math.random()*10)|0, topX, hx,
+        disp:W*(hero?0.20:0.15), base:hero?3.6:2.3, branch:hero?5:4, feelers, ret:0, fade:0, hero,
+        connect: forceConnect || Math.random()<CONNECT_CHANCE}) }
+    function drawWord(){
+      const gl=hit
+      ctx!.save(); ctx!.textAlign='center'; ctx!.textBaseline='middle'; ctx!.font=FONT.replace('%',String(fs))
+      try{ (ctx as any).letterSpacing=(fs*0.03).toFixed(1)+'px' }catch(e){}
+      ctx!.globalCompositeOperation='lighter'
+      ctx!.shadowColor='#1e7a10'; ctx!.shadowBlur=(16+46*gl)*DPR; ctx!.fillStyle='rgba(40,150,25,'+(0.15+0.42*gl)+')'; ctx!.fillText(WORD,cx,cy)
+      ctx!.shadowColor='#39ff14'; ctx!.shadowBlur=(7+30*gl)*DPR;  ctx!.fillStyle='rgba(57,255,20,'+(0.26+0.5*gl)+')'; ctx!.fillText(WORD,cx,cy)
+      ctx!.shadowBlur=(3+12*gl)*DPR; ctx!.fillStyle='rgba(160,255,130,'+(0.5+0.45*gl)+')'; ctx!.fillText(WORD,cx,cy)
+      ctx!.restore(); ctx!.globalCompositeOperation='source-over'; ctx!.shadowBlur=0 }
+    function drawContact(){
+      if(contact.e<=0.01) return; const e=Math.min(1.2,contact.e)
+      ctx!.globalCompositeOperation='lighter'
+      const r=fs*0.95*(0.5+0.6*e); const g=ctx!.createRadialGradient(contact.x,contact.y,0,contact.x,contact.y,r)
+      g.addColorStop(0,'rgba(225,240,255,'+(0.55*e)+')'); g.addColorStop(0.4,'rgba(150,205,255,'+(0.30*e)+')'); g.addColorStop(1,'rgba(110,160,255,0)')
+      ctx!.fillStyle=g; ctx!.beginPath(); ctx!.arc(contact.x,contact.y,r,0,7); ctx!.fill()
+      const r2=fs*0.30*(0.4+0.6*e); const g2=ctx!.createRadialGradient(contact.x,contact.y,0,contact.x,contact.y,r2)
+      g2.addColorStop(0,'rgba(255,255,255,'+(0.98*e)+')'); g2.addColorStop(1,'rgba(255,255,255,0)')
+      ctx!.fillStyle=g2; ctx!.beginPath(); ctx!.arc(contact.x,contact.y,r2,0,7); ctx!.fill()
+      ctx!.globalCompositeOperation='source-over' }
+    let nextStrike=t+16
+    function frame(){ t++
+      ctx!.globalCompositeOperation='source-over'; ctx!.fillStyle='rgba(4,6,10,0.36)'; ctx!.fillRect(0,0,W,H)
+      const g=ctx!.createRadialGradient(cx,H*0.08,0,cx,H*0.08,Math.max(W,H)*0.95)
+      g.addColorStop(0,'rgba(34,46,82,0.20)'); g.addColorStop(0.6,'rgba(12,16,30,0.08)'); g.addColorStop(1,'rgba(4,6,10,0)')
+      ctx!.fillStyle=g; ctx!.fillRect(0,0,W,H)
+      let survivor:any=null
+      for(let i=strikes.length-1;i>=0;i--){ const s=strikes[i]; s.tt++
+        if(s.phase==='leader'){
+          const fl=0.45+0.55*Math.abs(Math.sin(s.tt*0.8))
+          for(const f of s.feelers) drawFeeler(s.topX,-20*DPR,f.tx,f.ty,s.disp*0.8,0.55*fl,s.branch-1)
+          if(s.tt>=s.dur){
+            if(s.connect){ s.phase='return'; s.ret=1; survivor=s
+              contact.x=s.hx; contact.y=contactY; contact.e=s.hero?1.6:1.3; hit=1; flash=s.hero?1.0:0.8 }
+            else { s.phase='fade'; s.fade=1 }
+          }
+        } else if(s.phase==='return'){
+          drawBolt(s.topX,-20*DPR,s.hx,contactY,s.disp,s.ret,s.base,s.branch)
+          if(s.ret>0.5) for(const f of s.feelers) drawFeeler(s.topX,-20*DPR,f.tx,f.ty,s.disp*0.8,0.22*s.ret,s.branch-1)
+          s.ret-=0.08; if(s.ret<=0) strikes.splice(i,1)
+        } else {
+          for(const f of s.feelers) drawFeeler(s.topX,-20*DPR,f.tx,f.ty,s.disp*0.8,0.5*s.fade,s.branch-1)
+          s.fade-=0.12; if(s.fade<=0) strikes.splice(i,1)
+        }
+      }
+      if(survivor){ strikes.length=0; strikes.push(survivor); nextStrike=t+50+Math.random()*40 }
+      drawWord(); drawContact(); contact.e*=0.96; hit*=0.985
+      if(flash>0){ ctx!.fillStyle='rgba(190,220,255,'+(0.16*flash)+')'; ctx!.fillRect(0,0,W,H); flash-=0.08 }
+      if(t>=nextStrike){ spawnStrike(false); nextStrike=t+8+Math.random()*20 }
+      raf=requestAnimationFrame(frame)
+    }
+    const start=()=>{ spawnStrike(true); raf=requestAnimationFrame(frame) }
+    ;(document.fonts && (document.fonts as any).load) ? (document.fonts as any).load("400 100px 'Cinzel Decorative'").then(start,start) : start()
+    return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', resize) }
+  }, [])
+  return <canvas ref={ref} style={{ position:'absolute', inset:0, width:'100%', height:'100%', display:'block', zIndex:0, pointerEvents:'none', background:'#04060a' }} />
+}
+// ────────────────────────────────────────────────────────────────────────────
 
 // HONESTY BASIS (audit 2026-07-10, re-captured from live MULTIPASS runs on the
 // CURRENT build — timing serial 20260710191836.012509, artifact-stability
