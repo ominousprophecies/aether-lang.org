@@ -14,13 +14,13 @@ function LightningStrike() {
     const ctx = cv.getContext('2d'); if (!ctx) return
     const WORD = 'ÆTHER'
     const FONT = "400 %px 'Cinzel Decorative', serif"
-    const CONNECT_CHANCE = 0.05
+    const CONNECT_CHANCE = 0.10
     let W = 0, H = 0, DPR = 1, cx = 0, cy = 0, fs = 0, contactY = 0, flash = 0, hit = 0, t = 0
     const strikes: any[] = []
     const contact = { x: 0, y: 0, e: 0 }
     let raf = 0
     function resize() {
-      DPR = Math.min(window.devicePixelRatio || 1, 2)
+      DPR = Math.min(window.devicePixelRatio || 1, 1.5)
       const w = cv!.clientWidth || window.innerWidth, h = cv!.clientHeight || window.innerHeight
       W = cv!.width = Math.floor(w * DPR); H = cv!.height = Math.floor(h * DPR)
       cx = W * 0.5; cy = H * 0.48; fs = Math.min(W * 0.15, H * 0.28); contactY = cy - fs * 0.34
@@ -51,7 +51,7 @@ function LightningStrike() {
       const hero=Math.random()<0.5
       const topX=cx+(Math.random()-0.5)*(hero?W*0.10:W*0.6)
       const hx=cx+(Math.random()-0.5)*fs*(hero?0.5:0.85)
-      const feelers:any[]=[], n=3+(hero?2:1)
+      const feelers:any[]=[], n=2+(hero?1:0)
       for(let i=0;i<n;i++) feelers.push({tx:hx+(Math.random()-0.5)*fs*1.4, ty:contactY-fs*(0.02+Math.random()*0.5)})
       strikes.push({phase:'leader', tt:0, dur:(12+Math.random()*10)|0, topX, hx,
         disp:W*(hero?0.20:0.15), base:hero?3.6:2.3, branch:hero?5:4, feelers, ret:0, fade:0, hero,
@@ -104,11 +104,23 @@ function LightningStrike() {
       drawWord(); drawContact(); contact.e*=0.96; hit*=0.985
       if(flash>0){ ctx!.fillStyle='rgba(190,220,255,'+(0.16*flash)+')'; ctx!.fillRect(0,0,W,H); flash-=0.08 }
       if(t>=nextStrike){ spawnStrike(false); nextStrike=t+8+Math.random()*20 }
-      raf=requestAnimationFrame(frame)
+      if(running) raf=requestAnimationFrame(frame)
     }
-    const start=()=>{ spawnStrike(true); raf=requestAnimationFrame(frame) }
+    // Only animate while the hero is on screen and the tab is visible — this is
+    // the big "processing slow" win: no canvas work once you've scrolled past.
+    let running=false
+    const run=()=>{ if(running) return; running=true; raf=requestAnimationFrame(frame) }
+    const stop=()=>{ running=false; cancelAnimationFrame(raf) }
+    const start=()=>{ spawnStrike(true); run() }
     ;(document.fonts && (document.fonts as any).load) ? (document.fonts as any).load("400 100px 'Cinzel Decorative'").then(start,start) : start()
-    return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', resize) }
+    const io = ('IntersectionObserver' in window) ? new IntersectionObserver(es=>{ for(const e of es){ e.isIntersecting ? run() : stop() } }, {threshold:0}) : null
+    io?.observe(cv)
+    const onVis=()=>{ document.hidden ? stop() : run() }
+    document.addEventListener('visibilitychange', onVis)
+    // Smooth-scroll for nav anchor links (#how, #validation, …)
+    const rootEl=document.documentElement, prevSB=rootEl.style.scrollBehavior
+    rootEl.style.scrollBehavior='smooth'
+    return () => { stop(); io?.disconnect(); document.removeEventListener('visibilitychange', onVis); window.removeEventListener('resize', resize); rootEl.style.scrollBehavior=prevSB }
   }, [])
   return <canvas ref={ref} style={{ position:'absolute', inset:0, width:'100%', height:'100%', display:'block', zIndex:0, pointerEvents:'none', background:'#04060a' }} />
 }
