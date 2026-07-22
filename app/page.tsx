@@ -59,7 +59,7 @@ function LightningStrike() {
       const feelers:any[]=[], n=2+(hero?1:0)
       for(let i=0;i<n;i++) feelers.push({tx:hx+(Math.random()-0.5)*fs*0.9, ty:hy-fs*(0.02+Math.random()*0.4)})
       strikes.push({phase:'leader', tt:0, dur:(12+Math.random()*10)|0, topX, hx, hy,
-        disp:W*(hero?0.20:0.15), base:hero?3.6:2.3, branch:hero?5:4, feelers, ret:0, fade:0, hero,
+        disp:W*(hero?0.20:0.15), base:hero?3.6:2.3, branch:0, feelers, ret:0, fade:0, hero,   // branch:0 → single channel, lands on the word and travels no further
         connect: forceConnect || Math.random()<CONNECT_CHANCE}) }
     function drawWord(){
       const gl=hit
