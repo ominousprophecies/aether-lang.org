@@ -392,6 +392,17 @@ export default function Home() {
 
   return (
     <>
+      {/* ── Width fill (2026-07-25): use more horizontal space on wide screens.
+          Kept inside page.tsx so it ships with the deploy unit — no separate CSS. ── */}
+      <style>{`
+        .section-sub{ max-width: 1180px !important; }
+        .section-title{ max-width: 1300px !important; }
+        .manifest-grid, .standards-grid, .problem-grid{ max-width: none !important; }
+        @media (min-width: 1100px){
+          .manifest-grid{ grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)) !important; }
+          .standards-grid{ grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)) !important; }
+        }
+      `}</style>
       <div className="glow-dot" aria-hidden="true" />
 
       {/* NAV */}
@@ -493,12 +504,12 @@ export default function Home() {
         borderTop:'1px solid var(--border-green)', borderBottom:'1px solid var(--border-green)',
         padding:'4rem 1.5rem',
       }}>
-        <div style={{maxWidth:'980px',margin:'0 auto'}}>
+        <div style={{maxWidth:'1340px',margin:'0 auto'}}>
           <div className="section-eyebrow" style={{color:'var(--green)'}}>for non-technical readers · everything in one place</div>
           <h2 className="section-title" style={{marginTop:'.4rem'}}>
             Software that <span style={{color:'var(--green)'}}>can&rsquo;t ship</span> unless it&rsquo;s proven safe.
           </h2>
-          <p className="section-sub" style={{maxWidth:'760px'}}>
+          <p className="section-sub" style={{maxWidth:'1080px'}}>
             In planes, cars, medical devices, and defense systems, a single software fault can cost lives.
             Today that software is trusted because it was <em>tested a lot</em> — but testing can only show
             that a bug exists, never that none remain.
@@ -519,7 +530,7 @@ export default function Home() {
           <h3 style={{fontSize:'18px',fontWeight:700,margin:'2.4rem 0 .4rem'}}>
             The guarantee isn&rsquo;t a promise on paper. We put it on a real chip and measured it.
           </h3>
-          <p className="section-sub" style={{maxWidth:'760px',marginTop:'.3rem'}}>
+          <p className="section-sub" style={{maxWidth:'1080px',marginTop:'.3rem'}}>
             Plenty of tools claim to make software safer. What sets this apart: we took the compiler&rsquo;s own
             output, ran it on a real microcontroller (the kind inside a car or a drone), and measured the
             physical behaviour with lab instruments. The predictions the compiler made <b>up front</b> matched
@@ -712,7 +723,7 @@ export default function Home() {
         </div>
         <div
           style={{
-            maxWidth: '860px',
+            maxWidth: '1080px',
             margin: '1.25rem auto 0',
             lineHeight: 1.75,
             fontSize: '17px',
