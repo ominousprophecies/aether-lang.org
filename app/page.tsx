@@ -762,7 +762,7 @@ export default function Home() {
 
       <footer>
         <span className="footer-mark">Æ AETHER</span>
-        <span className="footer-copy">© 2026 Emilio R. Bruno · Aether-Lang.org Inc. (CBCA federal) · Kamloops, BC, Canada · Provisional patent application filed with the USPTO (US, July 2026); further applications in preparation · AI assistance (Claude/Anthropic) disclosed</span>
+        <span className="footer-copy">© 2026 Emilio R. Bruno · Aether-Lang.org Inc. (CBCA federal) · Kamloops, BC, Canada · Provisional patent application filed with the USPTO (US, July 2026); further applications in preparation · AI assistance (Claude/Anthropic) </span>
       </footer>
     </>
   )
