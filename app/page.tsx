@@ -302,11 +302,13 @@ const STANDARDS = [
 // envelope — P=V×I tracked to <2%, worst peak ~91 mW vs 1000 mW declared (11× margin).
 // Codegen determinism — emitted instruction stream byte-identical across the v7.3→v8.0.0
 // bump for the TESTED fixtures only (2 fixtures; not the whole suite — stated as such).
-// DISCLOSURE CAUTION [strategy, not legal advice]: this site is public and the patent
-// applications are not yet filed (see footer). Everything surfaced here is deliberately
-// results-level; mechanism (the lookup idiom, the wire/packet format, the crypto
-// substrate, the token algorithm) is kept OFF to avoid a pre-filing public disclosure of
-// the patentable method. Prefer filing the provisionals before adding any HOW-level detail.
+// DISCLOSURE CAUTION [strategy, not legal advice]: this site is public. The Track B
+// constant-time provisional has been FILED with the USPTO (mailed 2026-07-24); the
+// companion provisionals (charge-budget, monomorphization, interrupt-latency) are prepared
+// but NOT yet filed. Everything surfaced here stays deliberately results-level; mechanism
+// (the lookup idiom, the wire/packet format, the crypto substrate, the token algorithm) is
+// kept OFF to avoid a pre-filing public disclosure of the still-unfiled methods. Keep it
+// HOW-free until those companions are filed too.
 // This section states current measured state only; it is not a roadmap or a certification claim.
 const MEASUREMENTS = [
   ['WFI current delta',
@@ -331,6 +333,8 @@ const MEASUREMENTS = [
    'Instantaneous power derived as voltage × current tracked the measured power to within 2%, and the worst measured peak was ~91 mW against a declared 1000 mW envelope — an 11× margin under budget. [measured]'],
   ['Codegen determinism over time',
    'For the fixtures tested, the compiler’s emitted instruction stream was byte-identical across a major version bump (v7.3 → v8.0.0, ~12 days apart); only the version-header comment differed. Together with the 20-pass byte-identical artifact stability, this is evidence the physical numbers bind to what the compiler emits, not to a single build. [measured / emitted]'],
+  ['Cross-part reproducibility',
+   'A second, independent STM32F411 part was measured under agree-criteria fixed and signed before the run. The constant-time lookup reproduced at 240 cycles flat with zero spread; the timing-leak comparison reproduced at +120 cycles; and the cache-on cycle counts reproduced flat within ~1% across the clock sweep — so the deterministic timing properties hold across two silicon parts, lifting the single-part caveat for those. Absolute current and energy magnitudes differed by up to ~12% between the two parts, as expected for analog quantities that depend on individual-die leakage. [measured · 2 parts · pre-registered]'],
 ]
 
 // PLAIN-LANGUAGE / INVESTOR BLOCK (added 2026-07-20). Non-technical translation of
@@ -358,6 +362,9 @@ const PLAIN_PROOF: [string, string, string][] = [
   ['Bit-for-bit reproducible',
    'Rebuilt from the same source, weeks apart and across a major version change, the compiler produced byte-for-byte identical output — twenty times in a row. That makes the evidence auditable: anyone can rebuild and get exactly the same thing.',
    'All 356 emitted artifacts hashed identical across 20 consecutive passes; instruction stream unchanged across a v7.3→v8 version bump (fixtures tested).'],
+  ['Reproduced on a second chip',
+   'We took the same compiler output to a second, independent microcontroller and re-ran the key tests under rules we locked in before looking at the results. The timing guarantees came out the same — evidence they follow from the shape of the code itself, not from one lucky chip.',
+   'Constant-time 240 cycles (spread 0) and the +120-cycle leak both reproduced exactly on a 2nd STM32F411; cycle counts within ~1%. Absolute current/energy varied up to ~12% part-to-part, as expected.'],
 ]
 
 export default function Home() {
@@ -543,7 +550,7 @@ export default function Home() {
               <h3 style={{fontSize:'16px',fontWeight:700,margin:'0 0 .5rem'}}>Why it&rsquo;s defensible</h3>
               <ul style={{listStyle:'none',padding:0,margin:0}}>
                 {[
-                  ['Patent applications in preparation', ' (Canada & US) covering the core methods, with the crown-jewel method already demonstrated on real silicon.'],
+                  ['First provisional patent filed (US, 2026)', ', covering the crown-jewel constant-time method — already demonstrated on real silicon — with further applications in preparation.'],
                   ['A working compiler', ', not a slide — roughly 21,000 lines of code producing the results above.'],
                   ['Honesty-first evidence trail', ': every claim ties to a dated lab log and a reproducible build — exactly what safety auditors and acquirers want to see.'],
                 ].map(([b,rest]) => (
@@ -585,15 +592,18 @@ export default function Home() {
               output on real hardware, each recorded with a fixed method and a reproducible build.
             </p>
             <p style={{margin:'.5rem 0 0',color:'#93a1a8',fontSize:'14px',lineHeight:1.6}}>
-              <b style={{color:'#e8eef0'}}>Scope, stated plainly:</b> each measurement is a single reading on one board of
-              one chip — a strong proof-of-concept, not yet a multi-part, temperature-qualified, or independently
-              certified characterization. A second board is being added to broaden this.
+              <b style={{color:'#e8eef0'}}>Scope, stated plainly:</b> the core measurements began as a single reading on one
+              board of one chip. A second independent chip has since been measured under a method fixed and signed before
+              the run: the timing results — constant-time execution, the timing-leak comparison, and the cache-on cycle
+              counts — reproduced on it, lifting the single-part caveat for those; the absolute current and energy
+              magnitudes showed ordinary part-to-part variation. This is still a proof-of-concept, not a multi-part,
+              temperature-qualified, or independently certified characterization.
             </p>
             <p style={{margin:'.5rem 0 0',color:'#93a1a8',fontSize:'14px',lineHeight:1.6}}>
               <b style={{color:'#e8eef0'}}>Not claimed:</b> Aether has not been formally qualified or certified under any
               of the safety standards it maps to; the compiler references those frameworks as evidence, which is not the
               same as third-party certification. Some capabilities are still specification-only. The company is
-              early-stage and pre-revenue, and the patent applications are prepared but <b style={{color:'#e8eef0'}}>not yet filed</b>.
+              early-stage and pre-revenue. A <b style={{color:'#e8eef0'}}>first provisional patent application — the constant-time method — has been filed with the USPTO (mailed July 2026)</b>; further applications are in preparation.
             </p>
             <p style={{margin:'.7rem 0 0',color:'var(--green-dim,#7ee36a)',fontSize:'14px',lineHeight:1.6}}>
               We would rather show exactly what is and isn&rsquo;t done than oversell it — the same discipline that makes
@@ -656,7 +666,7 @@ export default function Home() {
       <section id="validation">
         <div className="section-eyebrow">measured on silicon</div>
         <h2 className="section-title">The physical claims now have physical measurements — and the constant-time one is measured on the compiler's own output.</h2>
-        <p className="section-sub">Beginning 2026-07-17 and continuing through 2026-07-20, the compiler's physical-domain outputs were measured on hardware — a Nordic Power Profiler Kit II in series with an STM32F411 (ARM Cortex-M4) on a NUCLEO-F411RE board, at the reset-default 16&nbsp;MHz clock. Every result below is a single datapoint on one board of one silicon part, taken with AI assistance at the inventor's direction under a methodology fixed before the measurement; none is a multi-part characterization or a certified measurement. What began as four verbatim-compiler-emitted results has since been strengthened and extended: the constant-time property is now measured directly on the compiler's OWN emitted lookup, cycle-exact (240 cycles flat across all 20 query positions, no match-vs-absent leak) — the earlier hand-assembled caveat is retired — and a single program carrying six typed constraints at once (energy, WCET, power, interrupt-latency, constant-time, and a Secret classification) was accepted by the compiler in one pass and measured end-to-end on that one binary. A separate static audit further bounds the worst-case interrupt latency of every emitted program to 27&nbsp;cycles. The constant-time behaviour was further observed to hold as the supply was starved toward the part's brown-out floor and at elevated temperature, the declared power envelope tracked measured power to within 2%, and the emitted code was byte-identical across a major version bump — evidence that the numbers describe the compiler's own output rather than one lucky build. Each number is recorded with full chain of custody in a dated rig log; where a result is still bound only to a hand-assembled instance, it says so.</p>
+        <p className="section-sub">Beginning 2026-07-17 and continuing through 2026-07-20, the compiler's physical-domain outputs were measured on hardware — a Nordic Power Profiler Kit II in series with an STM32F411 (ARM Cortex-M4) on a NUCLEO-F411RE board, at the reset-default 16&nbsp;MHz clock. Every result below is a single datapoint on one board of one silicon part, taken with AI assistance at the inventor's direction under a methodology fixed before the measurement; none is a multi-part characterization or a certified measurement. What began as four verbatim-compiler-emitted results has since been strengthened and extended: the constant-time property is now measured directly on the compiler's OWN emitted lookup, cycle-exact (240 cycles flat across all 20 query positions, no match-vs-absent leak) — the earlier hand-assembled caveat is retired — and a single program carrying six typed constraints at once (energy, WCET, power, interrupt-latency, constant-time, and a Secret classification) was accepted by the compiler in one pass and measured end-to-end on that one binary. A separate static audit further bounds the worst-case interrupt latency of every emitted program to 27&nbsp;cycles. The constant-time behaviour was further observed to hold as the supply was starved toward the part's brown-out floor and at elevated temperature, the declared power envelope tracked measured power to within 2%, and the emitted code was byte-identical across a major version bump — evidence that the numbers describe the compiler's own output rather than one lucky build. As of 2026-07-24 a second independent STM32F411 part was measured under agree-criteria fixed and signed before the run: the constant-time (240 cycles, zero spread), timing-leak (+120 cycles), and cache-on cycle-count results reproduced on it, lifting the single-part caveat for those, while the absolute current and energy magnitudes vary part-to-part as expected (see &ldquo;Cross-part reproducibility&rdquo; below). Each number is recorded with full chain of custody in a dated rig log; where a result is still bound only to a hand-assembled instance, it says so.</p>
         <div className="manifest-grid">
           {MEASUREMENTS.map(([name, desc]) => (
             <div className="manifest-card" key={name}>
@@ -741,7 +751,7 @@ export default function Home() {
 
       <footer>
         <span className="footer-mark">Æ AETHER</span>
-        <span className="footer-copy">© 2026 Emilio R. Bruno · Aether-Lang.org Inc. (CBCA federal) · Kamloops, BC, Canada · Patent applications in preparation (CA, US — not yet filed) · AI assistance (Claude/Anthropic) disclosed</span>
+        <span className="footer-copy">© 2026 Emilio R. Bruno · Aether-Lang.org Inc. (CBCA federal) · Kamloops, BC, Canada · First provisional patent application filed with the USPTO (US, July 2026); further applications in preparation · AI assistance (Claude/Anthropic) disclosed</span>
       </footer>
     </>
   )
