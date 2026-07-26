@@ -21,8 +21,22 @@ function LightningStrike() {
     const contact = { x: 0, y: 0, e: 0 }
     const glows: any[] = []   // short-lived localized afterglows at each hit spot
     let raf = 0
+    // ── Mobile / reduced-motion tone-down (2026-07-25) ────────────────────
+    // The full-storm hero was too heavy on phones. On small screens we lower the
+    // render resolution, soften the screen-flash, and space strikes much further
+    // apart — an occasional distant strike instead of a constant barrage. Users
+    // who ask their OS for reduced motion get a static wordmark and no rAF loop.
+    // Desktop behaviour is unchanged.
+    const mm = (q:string)=> (typeof window!=='undefined' && window.matchMedia ? window.matchMedia(q).matches : false)
+    const MOBILE  = mm('(max-width: 640px)')
+    const REDUCED = mm('(prefers-reduced-motion: reduce)')
+    const DPR_CAP   = MOBILE ? 1.0 : 1.5   // fewer pixels to shade on phones
+    const FLASH_MUL = MOBILE ? 0.45 : 1    // gentler full-screen flash
+    const GAP_MIN   = MOBILE ? 42 : 8      // frames before next strike (min)
+    const GAP_RND   = MOBILE ? 60 : 20     // + random spread
+    const FIRST_GAP = MOBILE ? 40 : 16     // delay before the very first strike
     function resize() {
-      DPR = Math.min(window.devicePixelRatio || 1, 1.5)
+      DPR = Math.min(window.devicePixelRatio || 1, DPR_CAP)
       const w = cv!.clientWidth || window.innerWidth, h = cv!.clientHeight || window.innerHeight
       W = cv!.width = Math.floor(w * DPR); H = cv!.height = Math.floor(h * DPR)
       cx = W * 0.5; cy = H * 0.48; fs = Math.min(W * 0.15, H * 0.28); contactY = cy - fs * 0.34
@@ -93,7 +107,7 @@ function LightningStrike() {
       }
       ctx!.globalCompositeOperation='source-over'
     }
-    let nextStrike=t+16
+    let nextStrike=t+FIRST_GAP
     function frame(){ t++
       ctx!.globalCompositeOperation='source-over'; ctx!.fillStyle='rgba(0,0,0,0.36)'; ctx!.fillRect(0,0,W,H)   // absolute-black trail fade (no vignette)
       let survivor:any=null
@@ -118,8 +132,8 @@ function LightningStrike() {
       }
       if(survivor){ strikes.length=0; strikes.push(survivor); nextStrike=t+50+Math.random()*40 }
       drawWord(); drawGlows(); drawContact(); contact.e*=0.96; hit*=0.985
-      if(flash>0){ ctx!.fillStyle='rgba(190,220,255,'+(0.16*flash)+')'; ctx!.fillRect(0,0,W,H); flash-=0.08 }
-      if(t>=nextStrike){ spawnStrike(false); nextStrike=t+8+Math.random()*20 }
+      if(flash>0){ ctx!.fillStyle='rgba(190,220,255,'+(0.16*flash*FLASH_MUL)+')'; ctx!.fillRect(0,0,W,H); flash-=0.08 }
+      if(t>=nextStrike){ spawnStrike(false); nextStrike=t+GAP_MIN+Math.random()*GAP_RND }
       if(running) raf=requestAnimationFrame(frame)
     }
     // Only animate while the hero is on screen and the tab is visible — this is
@@ -128,15 +142,25 @@ function LightningStrike() {
     const run=()=>{ if(running) return; running=true; raf=requestAnimationFrame(frame) }
     const stop=()=>{ running=false; cancelAnimationFrame(raf) }
     const start=()=>{ spawnStrike(true); run() }
-    ;(document.fonts && (document.fonts as any).load) ? (document.fonts as any).load("400 100px 'Cinzel Decorative'").then(start,start) : start()
-    const io = ('IntersectionObserver' in window) ? new IntersectionObserver(es=>{ for(const e of es){ e.isIntersecting ? run() : stop() } }, {threshold:0}) : null
-    io?.observe(cv)
-    const onVis=()=>{ document.hidden ? stop() : run() }
-    document.addEventListener('visibilitychange', onVis)
+    // Motion-free render for users who requested reduced motion: paint the
+    // wordmark once with its steady green glow and never open a rAF loop.
+    const drawStatic=()=>{ ctx!.fillStyle='#000'; ctx!.fillRect(0,0,W,H); hit=0.5; drawWord(); hit=0 }
+    let io: IntersectionObserver | null = null
+    let onVis: (() => void) | null = null
+    if (REDUCED) {
+      ;(document.fonts && (document.fonts as any).load) ? (document.fonts as any).load("400 100px 'Cinzel Decorative'").then(drawStatic, drawStatic) : drawStatic()
+      window.addEventListener('resize', drawStatic)
+    } else {
+      ;(document.fonts && (document.fonts as any).load) ? (document.fonts as any).load("400 100px 'Cinzel Decorative'").then(start,start) : start()
+      io = ('IntersectionObserver' in window) ? new IntersectionObserver(es=>{ for(const e of es){ e.isIntersecting ? run() : stop() } }, {threshold:0}) : null
+      io?.observe(cv)
+      onVis=()=>{ document.hidden ? stop() : run() }
+      document.addEventListener('visibilitychange', onVis)
+    }
     // Smooth-scroll for nav anchor links (#how, #validation, …)
     const rootEl=document.documentElement, prevSB=rootEl.style.scrollBehavior
     rootEl.style.scrollBehavior='smooth'
-    return () => { stop(); io?.disconnect(); document.removeEventListener('visibilitychange', onVis); window.removeEventListener('resize', resize); rootEl.style.scrollBehavior=prevSB }
+    return () => { stop(); io?.disconnect(); if(onVis) document.removeEventListener('visibilitychange', onVis); window.removeEventListener('resize', resize); window.removeEventListener('resize', drawStatic); rootEl.style.scrollBehavior=prevSB }
   }, [])
   return <canvas ref={ref} style={{ position:'absolute', inset:0, width:'100%', height:'100%', display:'block', zIndex:0, pointerEvents:'none', background:'#000' }} />
 }
@@ -401,10 +425,21 @@ export default function Home() {
         </ul>
       </nav>
 
-      {/* LIGHTNING HERO — the strike on ÆTHER (nav is position:fixed, so it floats over this) */}
-      <section style={{ position: 'relative', height: '100vh', overflow: 'hidden', background: '#000' }}>
+      {/* LIGHTNING HERO — the strike on ÆTHER (nav is position:fixed, so it floats over this).
+          Desktop unchanged; on phones the section is shorter (70vh) so it no longer eats the
+          whole first screen, and the canvas animation itself is softened (see LightningStrike). */}
+      <style>{`
+        .lightning-hero{position:relative;height:100vh;overflow:hidden;background:#000}
+        .lightning-hero .scroll-cue{position:absolute;left:0;right:0;bottom:22px;text-align:center;z-index:2;
+          font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:#7f9ab5}
+        @media (max-width:640px){
+          .lightning-hero{height:70vh}
+          .lightning-hero .scroll-cue{bottom:14px;font-size:10px;letter-spacing:.25em}
+        }
+      `}</style>
+      <section className="lightning-hero">
         <LightningStrike />
-        <div style={{ position: 'absolute', left: 0, right: 0, bottom: '22px', textAlign: 'center', zIndex: 2, fontFamily: "'Space Mono', monospace", fontSize: '11px', letterSpacing: '.3em', textTransform: 'uppercase', color: '#7f9ab5' }}>scroll ↓</div>
+        <div className="scroll-cue">scroll ↓</div>
       </section>
 
       {/* HERO */}
