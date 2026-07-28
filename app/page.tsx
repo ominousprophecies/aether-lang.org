@@ -261,7 +261,7 @@ function LightningStrike() {
         }
       }
       if(survivor){ strikes.length=0; strikes.push(survivor); nextStrike=t+64+Math.random()*55 }
-      charge=Math.min(1, charge+0.0045)   // the word slowly RECHARGES between strikes (brightening, longer leaders)
+      charge=Math.min(1, charge+0.0015)   // the word slowly RECHARGES between strikes (brightening, longer leaders)
       drawWord(); drawGlows(); drawContact(); contact.e*=0.955; hit*=0.9
       if(flash>0){ ctx!.fillStyle='rgba(200,225,255,'+(0.22*Math.min(1,flash))+')'; ctx!.fillRect(0,0,W,H); flash-=0.06 }   // brief bright bloom, then fades
       if(t>=nextStrike){ spawnStrike(false); nextStrike=t+34+Math.random()*46 }
@@ -635,14 +635,14 @@ export default function Home() {
 
       {/* ───────────── IN PLAIN TERMS (investor / non-technical, on-page) ───────────── */}
       <section id="plain" style={{
-        background:'linear-gradient(180deg,rgba(57,255,20,.05),transparent 40%)',
-        borderTop:'1px solid var(--border-green)', borderBottom:'1px solid var(--border-green)',
+        background:'linear-gradient(180deg,rgba(255,204,51,.05),transparent 40%)',
+        borderTop:'1px solid rgba(255,204,51,.28)', borderBottom:'1px solid rgba(255,204,51,.28)',
         padding:'4rem 1.5rem',
       }}>
         <div style={{maxWidth:'980px',margin:'0 auto'}}>
-          <div className="section-eyebrow" style={{color:'var(--green)'}}>for non-technical readers · everything in one place</div>
+          <div className="section-eyebrow" style={{color:'var(--gold)'}}>for non-technical readers · everything in one place</div>
           <h2 className="section-title" style={{marginTop:'.4rem'}}>
-            Software that <span style={{color:'var(--green)'}}>can&rsquo;t ship</span> unless it&rsquo;s proven safe.
+            Software that <span style={{color:'var(--gold)'}}>can&rsquo;t ship</span> unless it&rsquo;s proven safe.
           </h2>
           <p className="section-sub" style={{maxWidth:'760px'}}>
             In planes, cars, medical devices, and defense systems, a single software fault can cost lives.
@@ -651,8 +651,8 @@ export default function Home() {
           </p>
 
           <div style={{
-            margin:'1.6rem 0 0', padding:'1.1rem 1.25rem', borderLeft:'3px solid var(--green)',
-            background:'linear-gradient(90deg,rgba(57,255,20,.07),transparent)', borderRadius:'0 8px 8px 0',
+            margin:'1.6rem 0 0', padding:'1.1rem 1.25rem', borderLeft:'3px solid var(--gold)',
+            background:'linear-gradient(90deg,rgba(255,204,51,.07),transparent)', borderRadius:'0 8px 8px 0',
             fontSize:'17px', lineHeight:1.6,
           }}>
             Aether is a <b>compiler</b> — the tool that turns a programmer&rsquo;s code into what runs on the
@@ -681,7 +681,7 @@ export default function Home() {
                 background:'#0d1114', border:'1px solid rgba(120,150,140,.18)', borderRadius:'12px',
                 padding:'1.15rem 1.2rem', position:'relative',
               }}>
-                <div style={{fontWeight:700,fontSize:'16px',color:'var(--green)'}}>{metric}</div>
+                <div style={{fontWeight:700,fontSize:'16px',color:'var(--gold)'}}>{metric}</div>
                 <p style={{margin:'.5rem 0 0',color:'#c7d1d4',fontSize:'14.5px',lineHeight:1.55}}>{plain}</p>
                 <p style={{margin:'.6rem 0 0',color:'#93a1a8',font:'12px/1.5 ui-monospace,Menlo,Consolas,monospace'}}>{tech}</p>
               </div>
@@ -702,7 +702,7 @@ export default function Home() {
                 ].map(([b,rest]) => (
                   <li key={b} style={{padding:'.55rem 0 .55rem 1.4rem',position:'relative',color:'#93a1a8',
                        borderBottom:'1px solid rgba(120,150,140,.18)',fontSize:'14.5px',lineHeight:1.55}}>
-                    <span style={{position:'absolute',left:0,top:'.55rem',color:'var(--green)'}}>▹</span>
+                    <span style={{position:'absolute',left:0,top:'.55rem',color:'var(--gold)'}}>▹</span>
                     <b style={{color:'#e8eef0'}}>{b}</b>{rest}
                   </li>
                 ))}
@@ -715,7 +715,7 @@ export default function Home() {
                 {['Aerospace · DO-178C','Automotive · ISO 26262','Medical devices','Industrial · IEC 61508','Defense'].map(p => (
                   <span key={p} style={{
                     font:'600 11px/1 ui-monospace,Menlo,Consolas,monospace', letterSpacing:'.06em', textTransform:'uppercase',
-                    color:'var(--green-dim,#7ee36a)', border:'1px solid var(--border-green)', borderRadius:'999px', padding:'.4rem .65rem',
+                    color:'#ffd766', border:'1px solid rgba(255,204,51,.28)', borderRadius:'999px', padding:'.4rem .65rem',
                   }}>{p}</span>
                 ))}
               </div>
@@ -748,7 +748,7 @@ export default function Home() {
               same as third-party certification. Some capabilities are still specification-only. The company is
               early-stage and pre-revenue. <b style={{color:'#e8eef0'}}>Four US provisional applications were submitted to the USPTO in July 2026</b> (filing dates attach on the Office&rsquo;s receipt); these are provisionals, not granted patents, and confer no enforceable rights yet.
             </p>
-            <p style={{margin:'.7rem 0 0',color:'var(--green-dim,#7ee36a)',fontSize:'14px',lineHeight:1.6}}>
+            <p style={{margin:'.7rem 0 0',color:'#ffd766',fontSize:'14px',lineHeight:1.6}}>
               We would rather show exactly what is and isn&rsquo;t done than oversell it — the same discipline that makes
               the compiler refuse to lie is how we run the company.
             </p>
@@ -789,7 +789,7 @@ export default function Home() {
       <hr className="divider" />
 
       {/* MANIFESTS */}
-      <section id="manifests">
+      <section id="manifests" style={{maxWidth:'none'}}>
         <div className="section-eyebrow">what aether produces</div>
         <h2 className="section-title">39 certification manifest types. One compiler pass. Sub-millisecond.</h2>
         <p className="section-sub">Aether emits machine-verifiable certification manifest blocks during a single compilation — up to 21 in one program, drawn from a catalog of 39 block types. The standalone verifier (aether-verify) independently re-checks the manifest chain and attestation token — without the compiler or source code — and parses the core manifest block types individually. The output is deterministic: all 356 emitted artifacts hashed byte-identical across 20 consecutive build-and-execute passes (2026-07-10). Manifests are compile-time evidence artifacts, not third-party certifications.</p>
@@ -806,7 +806,7 @@ export default function Home() {
       <hr className="divider" />
 
       {/* VALIDATION — measured on silicon */}
-      <section id="validation">
+      <section id="validation" style={{maxWidth:'none'}}>
         <div className="section-eyebrow">measured on silicon</div>
         <h2 className="section-title">The physical claims now have physical measurements — and the constant-time one is measured on the compiler's own output.</h2>
         <p className="section-sub">Beginning 2026-07-17 and continuing through 2026-07-20, the compiler's physical-domain outputs were measured on hardware — a Nordic Power Profiler Kit II in series with an STM32F411 (ARM Cortex-M4) on a NUCLEO-F411RE board, at the reset-default 16&nbsp;MHz clock. Every result below is a single datapoint on one board of one silicon part, taken with AI assistance at the inventor's direction under a methodology fixed before the measurement; none is a multi-part characterization or a certified measurement. What began as four verbatim-compiler-emitted results has since been strengthened and extended: the constant-time property is now measured directly on the compiler's OWN emitted lookup, cycle-exact (240 cycles flat across all 20 query positions, no match-vs-absent leak) — the earlier hand-assembled caveat is retired — and a single program carrying six typed constraints at once (energy, WCET, power, interrupt-latency, constant-time, and a Secret classification) was accepted by the compiler in one pass and measured end-to-end on that one binary. A separate static audit further bounds the worst-case interrupt latency of every emitted program to 27&nbsp;cycles. The constant-time behaviour was further observed to hold as the supply was starved toward the part's brown-out floor and at elevated temperature, the declared power envelope tracked measured power to within 2%, and the emitted code was byte-identical across a major version bump — evidence that the numbers describe the compiler's own output rather than one lucky build. Each number is recorded with full chain of custody in a dated rig log; where a result is still bound only to a hand-assembled instance, it says so.</p>
@@ -827,7 +827,7 @@ export default function Home() {
         <div className="section-eyebrow">standards coverage</div>
         <h2 className="section-title">Mapped to the standards that matter.</h2>
         <p className="section-sub">Aether's manifests reference the certification frameworks used across NATO member nations and major regulatory jurisdictions. These references are compile-time evidence — Aether has not been qualified or certified under these standards, and manifest emission is not a substitute for tool qualification (e.g. DO-330, ISO 26262).</p>
-        <div className="standards-grid">
+        <div className="standards-grid" style={{gridTemplateColumns:'repeat(6,1fr)'}}>
           {STANDARDS.map(([name, desc]) => (
             <div className="std-card" key={name}>
               <div className="std-name">{name}</div>
@@ -880,7 +880,7 @@ export default function Home() {
 
       {/* CONTACT */}
       <div className="cta-section" id="contact">
-        <h2 className="cta-title">Your C code. Aether certification manifests.<br/>No rewrites.</h2>
+        <h2 className="cta-title" style={{fontSize:'clamp(20px,3vw,32px)',lineHeight:1.25}}>Your C code. Aether certification manifests. No rewrites.</h2>
         <p className="cta-sub">Add a sidecar declaration file alongside your existing C/C++ firmware. Aether enforces the properties you declare and produces a machine-verifiable certification manifest in under one millisecond per operation.</p>
 
         <div style={{display:'flex',gap:'1rem',justifyContent:'center',flexWrap:'wrap',marginTop:'2rem'}}>
