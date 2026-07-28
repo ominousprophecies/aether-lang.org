@@ -19,6 +19,7 @@ function LightningStrike() {
     let W = 0, H = 0, DPR = 1, cx = 0, cy = 0, fs = 0, contactY = 0, wordHalf = 0, flash = 0, hit = 0, t = 0
     let charge = 0.2   // 0→1 word ENERGY: drains on a strike, recharges over time. Drives BOTH the
                        // word's brightness AND how far the leaders reach (brighter = longer leaders).
+    let flick = 0      // strike after-flicker: a damped strobe that degenerates the word to an outline
     const strikes: any[] = []
     const contact = { x: 0, y: 0, e: 0 }
     const glows: any[] = []   // short-lived localized afterglows at each hit spot
@@ -125,7 +126,10 @@ function LightningStrike() {
       const hero=Math.random()<0.5
       const disp=W*(hero?0.11:0.08), base=hero?4.4:3.0   // thicker return stroke
       // contact a real LETTER (a sampled glyph point), not the empty gaps between letters
-      const hpt = pickLetterTop()   // pick a LETTER first, then a top point on it → every letter equally likely
+      // 1 in 10 strikes always lands on the H (group index 2 of Æ T H E R); the rest are even
+      const hpt = (Math.random()<0.1 && letterTops.length>=3)
+        ? letterTops[2][(Math.random()*letterTops[2].length)|0]
+        : pickLetterTop()   // pick a LETTER first, then a top point on it → every other letter equally likely
       const hx = hpt ? hpt[0] : cx+(Math.random()-0.5)*wordHalf*1.7
       const hy = hpt ? hpt[1] : cy+(Math.random()-0.5)*fs*0.5
       const topX=hx+(Math.random()-0.5)*W*0.06   // near-vertical descent to the hit point (real cloud-to-ground lean)
@@ -197,10 +201,17 @@ function LightningStrike() {
     function drawWord(){
       // Brightness follows the word's ENERGY: dim just after a strike drains it, brightening
       // as it recharges. `hit` adds only the brief extra pop at the moment of the strike.
-      const gl=Math.min(1, charge + hit*0.5)
+      // Degeneration STROBE: right after a strike `flick` drives a damped series of bright
+      // flashes; between them the fill collapses to almost nothing, leaving the OUTLINE.
+      const strobe = flick>0.03 ? flick*Math.abs(Math.sin(t*0.3)) : 0
+      const gl=Math.min(1, charge + strobe)
       ctx!.save(); ctx!.textAlign='center'; ctx!.textBaseline='middle'; ctx!.font=FONT.replace('%',String(fs))
       try{ (ctx as any).letterSpacing=(fs*0.14).toFixed(1)+'px' }catch(e){}
       ctx!.globalCompositeOperation='lighter'
+      // OUTLINE of the letters — the skeleton that remains when the fill is drained away
+      ctx!.lineWidth=Math.max(1, fs*0.011)*DPR; ctx!.strokeStyle='rgba(150,255,120,'+(0.30+0.5*gl)+')'
+      ctx!.shadowColor='#39ff14'; ctx!.shadowBlur=(2+9*gl)*DPR; ctx!.strokeText(WORD,cx,cy)
+      // FILL — scales with energy, so at the drained/outline state it's ~gone
       ctx!.shadowColor='#1e7a10'; ctx!.shadowBlur=(2+58*gl)*DPR; ctx!.fillStyle='rgba(40,150,25,'+(0.0+0.55*gl)+')'; ctx!.fillText(WORD,cx,cy)
       ctx!.shadowColor='#39ff14'; ctx!.shadowBlur=(1+36*gl)*DPR;  ctx!.fillStyle='rgba(57,255,20,'+(0.0+0.7*gl)+')'; ctx!.fillText(WORD,cx,cy)
       ctx!.shadowBlur=(0.5+15*gl)*DPR; ctx!.fillStyle='rgba(160,255,130,'+(0.006+0.94*gl)+')'; ctx!.fillText(WORD,cx,cy)
@@ -252,8 +263,8 @@ function LightningStrike() {
             renderFeeler(S.segs.filter((sg:any)=>Math.max(sg[1],sg[3])>=yUp), a) }
           if(s.tt>=s.dur){
             if(s.connect){ s.phase='return'; s.ret=1; survivor=s
-              contact.x=s.hx; contact.y=s.hy; contact.e=s.hero?1.6:1.3; hit=1; flash=s.hero?1.5:1.15   // "and only one became real" — strong flash
-              charge=0.02   // the strike DRAINS the word — it dims, then recharges
+              contact.x=s.hx; contact.y=s.hy; contact.e=s.hero?1.6:1.3; hit=1; flash=0.5   // "and only one became real" — strong flash
+              charge=0.02; flick=1.3   // strike DRAINS the word (→ outline) and kicks off the degeneration strobe
               glows.push({x:s.hx, y:s.hy, e:1, r:fs*(0.16+Math.random()*0.12)}) }   // localized short-lived glow at the hit
             else { s.phase='fade'; s.fade=1 }
           }
@@ -268,8 +279,9 @@ function LightningStrike() {
       }
       if(survivor){ strikes.length=0; strikes.push(survivor); nextStrike=t+64+Math.random()*55 }
       charge=Math.min(1, charge+0.0015)   // the word slowly RECHARGES between strikes (brightening, longer leaders)
+      flick*=0.93   // the degeneration strobe damps out over ~0.5s, leaving the outline to recharge
       drawWord(); drawGlows(); contact.e*=0.955; hit*=0.9
-      if(flash>0){ ctx!.fillStyle='rgba(200,225,255,'+(0.22*Math.min(1,flash))+')'; ctx!.fillRect(0,0,W,H); flash-=0.06 }   // brief bright bloom, then fades
+      if(flash>0){ ctx!.fillStyle='rgba(200,225,255,'+(0.22*Math.min(1,flash))+')'; ctx!.fillRect(0,0,W,H); flash-=0.1 }   // brief bright bloom, then fades
       if(t>=nextStrike){ spawnStrike(false); nextStrike=t+34+Math.random()*46 }
       if(running) raf=requestAnimationFrame(frame)
     }
