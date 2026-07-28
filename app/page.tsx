@@ -17,30 +17,34 @@ function LightningStrike() {
     const FONT = "400 %px 'Cinzel Decorative', serif"
     const CONNECT_CHANCE = 0.10
     let W = 0, H = 0, DPR = 1, cx = 0, cy = 0, fs = 0, contactY = 0, wordHalf = 0, flash = 0, hit = 0, t = 0
+    let charge = 0.2   // 0→1 word ENERGY: drains on a strike, recharges over time. Drives BOTH the
+                       // word's brightness AND how far the leaders reach (brighter = longer leaders).
     const strikes: any[] = []
     const contact = { x: 0, y: 0, e: 0 }
     const glows: any[] = []   // short-lived localized afterglows at each hit spot
+    let letterHits: any[] = []   // sampled points that lie ON the glyphs (top silhouette per column)
     let raf = 0
-    // ── Mobile / reduced-motion tone-down (2026-07-25) ────────────────────
-    // The full-storm hero was too heavy on phones. On small screens we lower the
-    // render resolution, soften the screen-flash, and space strikes much further
-    // apart — an occasional distant strike instead of a constant barrage. Users
-    // who ask their OS for reduced motion get a static wordmark and no rAF loop.
-    // Desktop behaviour is unchanged.
-    const mm = (q:string)=> (typeof window!=='undefined' && window.matchMedia ? window.matchMedia(q).matches : false)
-    const MOBILE  = mm('(max-width: 640px)')
-    const REDUCED = mm('(prefers-reduced-motion: reduce)')
-    const DPR_CAP   = MOBILE ? 1.0 : 1.5   // fewer pixels to shade on phones
-    const FLASH_MUL = MOBILE ? 0.45 : 1    // gentler full-screen flash
-    const GAP_MIN   = MOBILE ? 42 : 8      // frames before next strike (min)
-    const GAP_RND   = MOBILE ? 60 : 20     // + random spread
-    const FIRST_GAP = MOBILE ? 40 : 16     // delay before the very first strike
     function resize() {
-      DPR = Math.min(window.devicePixelRatio || 1, DPR_CAP)
+      DPR = Math.min(window.devicePixelRatio || 1, 1.5)
       const w = cv!.clientWidth || window.innerWidth, h = cv!.clientHeight || window.innerHeight
       W = cv!.width = Math.floor(w * DPR); H = cv!.height = Math.floor(h * DPR)
       cx = W * 0.5; cy = H * 0.48; fs = Math.min(W * 0.15, H * 0.28); contactY = cy - fs * 0.34
-      ctx!.font = FONT.replace('%', String(fs)); wordHalf = ctx!.measureText(WORD).width / 2
+      ctx!.font = FONT.replace('%', String(fs))
+      try{ (ctx as any).letterSpacing='0px' }catch(e){}
+      // wordmark tracking — keep each letter clearly SEPARATE (measure includes the gaps)
+      wordHalf = (ctx!.measureText(WORD).width + fs*0.14*(WORD.length-1)) / 2
+      // Sample the glyph silhouette so strikes contact the LETTERS, not the gaps between them.
+      letterHits=[]
+      const oc=document.createElement('canvas'); oc.width=W; oc.height=H
+      const octx=oc.getContext('2d')
+      if(octx){
+        octx.textAlign='center'; octx.textBaseline='middle'; octx.font=FONT.replace('%',String(fs))
+        try{ (octx as any).letterSpacing=(fs*0.14).toFixed(1)+'px' }catch(e){}
+        octx.fillStyle='#fff'; octx.fillText(WORD,cx,cy)
+        try{ const d=octx.getImageData(0,0,W,H).data, step=Math.max(2,(fs*0.028)|0)
+          for(let x=0;x<W;x+=step){ for(let y=Math.max(0,(cy-fs)|0); y<cy+fs && y<H; y+=2){ if(d[(y*W+x)*4+3]>90){ letterHits.push([x,y]); break } } }
+        }catch(e){}
+      }
     }
     window.addEventListener('resize', resize); resize()
     function bolt(x1:number,y1:number,x2:number,y2:number,disp:number,segs:any[],branch:number,depth:number){
@@ -52,37 +56,147 @@ function LightningStrike() {
     }
     function pass(segs:any[],color:string,mul:number,base:number,blur:number){ ctx!.strokeStyle=color; ctx!.shadowColor=color; ctx!.shadowBlur=blur*DPR
       for(const s of segs){ ctx!.lineWidth=Math.max(0.6,(base-s[4]*0.6))*mul*DPR; ctx!.beginPath(); ctx!.moveTo(s[0],s[1]); ctx!.lineTo(s[2],s[3]); ctx!.stroke() } }
-    function drawBolt(x1:number,y1:number,x2:number,y2:number,disp:number,alpha:number,base:number,branch:number){ const segs:any[]=[]; bolt(x1,y1,x2,y2,disp,segs,branch,0)
+    // Generate a bolt path ONCE (frozen) so it doesn't re-randomize every frame —
+    // that per-frame regeneration is what made the old feelers "dance". Callers
+    // cache the returned segments and just re-render them with a changing alpha.
+    function genSegs(x1:number,y1:number,x2:number,y2:number,disp:number,branch:number){ const segs:any[]=[]; bolt(x1,y1,x2,y2,disp,segs,branch,0); return segs }
+    function renderBolt(segs:any[],alpha:number,base:number){
       ctx!.lineCap='round'; ctx!.lineJoin='round'; ctx!.globalCompositeOperation='lighter'
       pass(segs,'rgba(110,160,255,'+(0.13*alpha)+')',7,base,40)
       pass(segs,'rgba(150,215,255,'+(0.5*alpha)+')',2.4,base,20)
       pass(segs,'rgba(255,255,255,'+(0.98*alpha)+')',1,base,11)
       ctx!.globalCompositeOperation='source-over'; ctx!.shadowBlur=0 }
-    function drawFeeler(x1:number,y1:number,x2:number,y2:number,disp:number,alpha:number,branch:number){
-      const segs:any[]=[]; bolt(x1,y1,x2,y2,disp,segs,branch,0)
+    function renderFeeler(segs:any[],alpha:number){
       ctx!.lineCap='round'; ctx!.lineJoin='round'; ctx!.globalCompositeOperation='lighter'
-      pass(segs,'rgba(120,180,255,'+(0.10*alpha)+')',3,1,14)
-      pass(segs,'rgba(175,215,255,'+(0.26*alpha)+')',1,1,7)
+      pass(segs,'rgba(120,180,255,'+(0.10*alpha)+')',4.4,2.0,14)
+      pass(segs,'rgba(175,215,255,'+(0.30*alpha)+')',2.1,2.0,7)
       ctx!.globalCompositeOperation='source-over'; ctx!.shadowBlur=0 }
+    // Build a downward-BRANCHING leader — a "file-folder" tree: a trunk that steps
+    // down and keeps forking into thinner twigs, most of which fizzle above the word.
+    // Pushes [x1,y1,x2,y2,level] segments (level = depth, for width taper). The FIRST
+    // child chain is tracked as the trunk, and the trunk's tip is returned — that is
+    // the point a rising surface strand meets and the bright return stroke follows.
+    // dir=+1 descends (boundY is a floor); dir=-1 rises (boundY is a ceiling).
+    function buildLeader(x:number,y:number,ang:number,len:number,depth:number,level:number,boundY:number,dir:number,segs:any[],onTrunk:boolean,trunk:any[]):[number,number]{
+      const steps=4; let px=x,py=y
+      for(let i=0;i<steps;i++){
+        const fwd=len/steps
+        // forward along ang PLUS a sideways kink (perpendicular) → jagged, not a straight line
+        const perp=ang+Math.PI/2+(Math.random()-0.5)*0.7
+        const kink=(Math.random()-0.5)*len*0.5
+        let nx=px+Math.cos(ang)*fwd+Math.cos(perp)*kink
+        let ny=py+Math.sin(ang)*fwd+Math.sin(perp)*kink
+        if(dir>0 ? ny>=boundY : ny<=boundY){
+          // Reached the bound line. The single TRUNK clamps to it (one contact point);
+          // a BRANCH just STOPS where it is (ends short, ragged). Tips must NOT pile onto
+          // a flat horizontal line — that pile-up was the "flatlining".
+          if(onTrunk){ const tt=(boundY-py)/((ny-py)||1); nx=px+(nx-px)*tt; ny=boundY
+            segs.push([px,py,nx,ny,level]); trunk.push([px,py,nx,ny]); return [nx,ny] }
+          return [px,py]
+        }
+        segs.push([px,py,nx,ny,level]); if(onTrunk) trunk.push([px,py,nx,ny]); px=nx; py=ny
+      }
+      if(depth<=0) return [px,py]
+      const nb=1+(Math.random()<0.6?1:0)+(Math.random()<0.22?1:0)   // usually 1–2 forks (a narrower tapering tree, not a wide fan)
+      let tEnd:[number,number]=[px,py]
+      for(let b=0;b<nb;b++){
+        const childAng=ang+(b===0?(Math.random()-0.5)*0.35:(Math.random()-0.5)*0.9)  // trunk stays fairly straight; side branches diverge
+        const childLen=len*(0.6+Math.random()*0.22)             // children shorter → tree tapers toward the tip
+        const e=buildLeader(px,py,childAng,childLen,depth-1,level+1,boundY,dir,segs,onTrunk&&b===0,trunk)
+        if(onTrunk&&b===0) tEnd=e
+      }
+      return tEnd
+    }
     function spawnStrike(forceConnect:boolean){
       const hero=Math.random()<0.5
-      // land on a RANDOM spot inside the wordmark's bounding box
-      const hx=cx+(Math.random()-0.5)*wordHalf*1.7
-      const hy=cy+(Math.random()-0.5)*fs*0.5
-      const topX=hx+(Math.random()-0.5)*(hero?W*0.06:W*0.5)   // bolt descends roughly above the hit point
-      const feelers:any[]=[], n=2+(hero?1:0)
-      for(let i=0;i<n;i++) feelers.push({tx:hx+(Math.random()-0.5)*fs*0.9, ty:hy-fs*(0.02+Math.random()*0.4)})
-      strikes.push({phase:'leader', tt:0, dur:(12+Math.random()*10)|0, topX, hx, hy,
-        disp:W*(hero?0.20:0.15), base:hero?3.6:2.3, branch:0, feelers, ret:0, fade:0, hero,   // branch:0 → single channel, lands on the word and travels no further
-        connect: forceConnect || Math.random()<CONNECT_CHANCE}) }
-    function drawWord(){
-      const gl=hit
-      ctx!.save(); ctx!.textAlign='center'; ctx!.textBaseline='middle'; ctx!.font=FONT.replace('%',String(fs))
-      try{ (ctx as any).letterSpacing=(fs*0.03).toFixed(1)+'px' }catch(e){}
+      const disp=W*(hero?0.11:0.08), base=hero?4.4:3.0   // thicker return stroke
+      // contact a real LETTER (a sampled glyph point), not the empty gaps between letters
+      const hpt = letterHits.length ? letterHits[(Math.random()*letterHits.length)|0] : null
+      const hx = hpt ? hpt[0] : cx+(Math.random()-0.5)*wordHalf*1.7
+      const hy = hpt ? hpt[1] : cy+(Math.random()-0.5)*fs*0.5
+      const topX=hx+(Math.random()-0.5)*W*0.06   // near-vertical descent to the hit point (real cloud-to-ground lean)
+      const startY=-20*DPR
+      const wtop=cy-fs*0.32                                  // the word's top edge
+      // BUILD-UP: each attempt reaches a little further. Most probe only ~1/3 down the
+      // image and fizzle; tension `build` climbs until one gets close enough to the word
+      // that a responding upward leader can touch it → that one connects.
+      const willConnect = forceConnect || charge>=0.88
+      // Most leaders only probe ~1/3 DOWN THE IMAGE and fizzle; as the word charges up its
+      // leaders reach further, until a fully-charged one reaches the junction and connects.
+      const shallowY = H*(0.30+Math.random()*0.05)          // ~1/3 down the image
+      const junctionY = startY + (wtop-startY)*(0.72+Math.random()*0.08)   // where descender & riser MEET — above the word
+      const reachFrac = Math.min(1, charge)
+      const reachY = shallowY + (junctionY-shallowY)*reachFrac*reachFrac    // longer leaders as charge builds
+      const targetY = willConnect ? junctionY : Math.min(junctionY, reachY)
+      const drop=targetY-startY
+      // (the drain happens at the strike flash, not here, so the word stays bright THROUGH the descent)
+      // The descending LEADER as a branching tree ("file-folder" fork system).
+      const leaders:any[]=[]
+      const primarySegs:any[]=[], trunk:any[]=[]
+      const trunkTip=buildLeader(topX,startY, Math.PI/2+(Math.random()-0.5)*0.2, drop*0.5, 4, 0, targetY, 1, primarySegs, true, trunk)
+      leaders.push({segs:primarySegs, primary:true})
+      if(Math.random()<0.4){                                // occasionally a second, shorter probe elsewhere
+        const ox=cx+(Math.random()-0.5)*wordHalf*2.6
+        const s2:any[]=[]
+        buildLeader(ox,startY, Math.PI/2+(Math.random()-0.5)*0.28, drop*0.45, 3, 0, targetY, 1, s2, false, [])
+        leaders.push({segs:s2, primary:false})
+      }
+      // RESPONDING UPWARD LEADERS — branching leaders rising OFF THE WORD, going up to
+      // meet the descenders. Only when one gets close enough does the responder reach it.
+      const streamers:any[]=[]
+      let retSegs:any=null
+      if(willConnect){
+        // the connector: a branching leader rising from the word up to the descender's tip
+        const upSegs:any[]=[], upTrunk:any[]=[]
+        const baseAng=Math.atan2(trunkTip[1]-wtop, trunkTip[0]-hx)         // aim at the junction (upward)
+        const upLen=Math.hypot(trunkTip[0]-hx, trunkTip[1]-wtop)*0.5
+        const upTip=buildLeader(hx,wtop, baseAng, upLen, 3, 0, trunkTip[1], -1, upSegs, true, upTrunk)
+        upSegs.push([upTip[0],upTip[1], trunkTip[0],trunkTip[1], 0])       // bridge — the two leaders touch
+        streamers.push({segs:upSegs, primary:true})
+        // a couple more responders that rise but fall short of a descender
+        const nShort=1+(Math.random()<0.6?1:0)
+        for(let k=0;k<nShort;k++){
+          const sx=cx+(Math.random()-0.5)*wordHalf*1.7
+          const topY=wtop-(wtop-trunkTip[1])*(0.35+Math.random()*0.4)
+          const s2:any[]=[]
+          buildLeader(sx,wtop, -Math.PI/2+(Math.random()-0.5)*0.5, (wtop-topY)*0.6, 2, 0, topY, -1, s2, false, [])
+          streamers.push({segs:s2, primary:false})
+        }
+        // bright return stroke: cloud → junction → down the responder's trunk → word
+        retSegs = trunk.map((p:any)=>[p[0],p[1],p[2],p[3],0])
+        retSegs.push([trunkTip[0],trunkTip[1], upTip[0],upTip[1], 0])
+        for(let i=upTrunk.length-1;i>=0;i--){ const p=upTrunk[i]; retSegs.push([p[2],p[3],p[0],p[1],0]) }
+        retSegs.push([hx,wtop, hx,hy, 0])
+      }
+      // Highest point the responders reach — used to animate them rising upward.
+      let streamerTopY=wtop
+      for(const S of streamers) for(const sg of S.segs) streamerTopY=Math.min(streamerTopY, sg[1], sg[3])
+      strikes.push({phase:'leader', tt:0, dur:(24+Math.random()*16)|0, hx, hy, base,   // slow enough to SEE the descent (~0.6–0.9s)
+        leaders, streamers, retSegs, ret:0, fade:0, hero, connect: willConnect,
+        startY, drop, wtop, streamerTopY, trunk}) }
+    // Bright bulbous HEAD that rides the advancing tip of a stepped leader.
+    function headAt(tk:any[], yF:number):[number,number]|null{
+      for(const p of tk){ if((p[1]<=yF&&p[3]>=yF)||(p[3]<=yF&&p[1]>=yF)){ const tt=(yF-p[1])/((p[3]-p[1])||1); return [p[0]+(p[2]-p[0])*tt, yF] } }
+      const last=tk[tk.length-1]; return last?[last[2],last[3]]:null
+    }
+    function drawHead(x:number,y:number,e:number){
+      const r=fs*0.085*(0.7+0.5*e)
       ctx!.globalCompositeOperation='lighter'
-      ctx!.shadowColor='#1e7a10'; ctx!.shadowBlur=(16+46*gl)*DPR; ctx!.fillStyle='rgba(40,150,25,'+(0.15+0.42*gl)+')'; ctx!.fillText(WORD,cx,cy)
-      ctx!.shadowColor='#39ff14'; ctx!.shadowBlur=(7+30*gl)*DPR;  ctx!.fillStyle='rgba(57,255,20,'+(0.26+0.5*gl)+')'; ctx!.fillText(WORD,cx,cy)
-      ctx!.shadowBlur=(3+12*gl)*DPR; ctx!.fillStyle='rgba(160,255,130,'+(0.5+0.45*gl)+')'; ctx!.fillText(WORD,cx,cy)
+      const g=ctx!.createRadialGradient(x,y,0,x,y,r)
+      g.addColorStop(0,'rgba(235,246,255,'+(0.95*e)+')'); g.addColorStop(0.45,'rgba(150,205,255,'+(0.4*e)+')'); g.addColorStop(1,'rgba(120,170,255,0)')
+      ctx!.fillStyle=g; ctx!.beginPath(); ctx!.arc(x,y,r,0,7); ctx!.fill()
+      ctx!.globalCompositeOperation='source-over'
+    }
+    function drawWord(){
+      // Brightness follows the word's ENERGY: dim just after a strike drains it, brightening
+      // as it recharges. `hit` adds only the brief extra pop at the moment of the strike.
+      const gl=Math.min(1, charge + hit*0.5)
+      ctx!.save(); ctx!.textAlign='center'; ctx!.textBaseline='middle'; ctx!.font=FONT.replace('%',String(fs))
+      try{ (ctx as any).letterSpacing=(fs*0.14).toFixed(1)+'px' }catch(e){}
+      ctx!.globalCompositeOperation='lighter'
+      ctx!.shadowColor='#1e7a10'; ctx!.shadowBlur=(10+50*gl)*DPR; ctx!.fillStyle='rgba(40,150,25,'+(0.10+0.44*gl)+')'; ctx!.fillText(WORD,cx,cy)
+      ctx!.shadowColor='#39ff14'; ctx!.shadowBlur=(5+32*gl)*DPR;  ctx!.fillStyle='rgba(57,255,20,'+(0.15+0.6*gl)+')'; ctx!.fillText(WORD,cx,cy)
+      ctx!.shadowBlur=(2+13*gl)*DPR; ctx!.fillStyle='rgba(160,255,130,'+(0.40+0.55*gl)+')'; ctx!.fillText(WORD,cx,cy)
       ctx!.restore(); ctx!.globalCompositeOperation='source-over'; ctx!.shadowBlur=0 }
     function drawContact(){
       if(contact.e<=0.01) return; const e=Math.min(1.2,contact.e)
@@ -103,37 +217,54 @@ function LightningStrike() {
         g.addColorStop(0.35,'rgba(57,255,20,'+(0.5*e)+')')
         g.addColorStop(1,'rgba(57,255,20,0)')
         ctx!.fillStyle=g; ctx!.beginPath(); ctx!.arc(gm.x,gm.y,R*1.2,0,7); ctx!.fill()
-        gm.e*=0.90; if(gm.e<0.03) glows.splice(i,1)
+        gm.e*=0.9; if(gm.e<0.03) glows.splice(i,1)
       }
       ctx!.globalCompositeOperation='source-over'
     }
-    let nextStrike=t+FIRST_GAP
+    let nextStrike=t+16
     function frame(){ t++
       ctx!.globalCompositeOperation='source-over'; ctx!.fillStyle='rgba(0,0,0,0.36)'; ctx!.fillRect(0,0,W,H)   // absolute-black trail fade (no vignette)
       let survivor:any=null
       for(let i=strikes.length-1;i>=0;i--){ const s=strikes[i]; s.tt++
         if(s.phase==='leader'){
-          const fl=0.45+0.55*Math.abs(Math.sin(s.tt*0.8))
-          for(const f of s.feelers) drawFeeler(s.topX,-20*DPR,f.tx,f.ty,s.disp*0.8,0.55*fl,s.branch-1)
+          // Frozen paths, but REVEALED progressively so the leader steps DOWNWARD and,
+          // once the descent front reaches bottom, stops. A segment shows only after the
+          // descending front passes it. (No re-randomizing → no dancing.)
+          const prog=s.tt/s.dur
+          const g=Math.min(1, prog/0.82)                       // descent completes at ~82% of the phase, then holds
+          const yFront=s.startY + s.drop*g                     // downward reveal line
+          const band=Math.max(8*DPR, s.drop*0.16)              // the glowing ADVANCING TIP band at the leading edge
+          for(const L of s.leaders){ const a=(s.connect && L.primary)?(0.42+0.5*prog):0.5
+            renderFeeler(L.segs.filter((sg:any)=>Math.min(sg[1],sg[3])<=yFront-band), a*0.85)   // settled channel (dimmer)
+            renderFeeler(L.segs.filter((sg:any)=>{const y=Math.min(sg[1],sg[3]); return y>yFront-band && y<=yFront}), Math.min(1,a+0.55)) }  // bright descending tip
+          // bright bulbous HEAD riding the advancing tip of the primary leader while it descends
+          if(g<1 && s.trunk){ const hp=headAt(s.trunk, yFront); if(hp) drawHead(hp[0], hp[1], 0.6+0.4*prog) }
+          // responders rise UP from the word a little later, reaching toward the descenders
+          const g2=Math.min(1, Math.max(0,(prog-0.3))/0.55)
+          const yUp=s.wtop-(s.wtop-s.streamerTopY)*g2           // upward reveal line
+          for(const S of s.streamers){ const a=S.primary?(0.55+0.45*prog):0.6
+            renderFeeler(S.segs.filter((sg:any)=>Math.max(sg[1],sg[3])>=yUp), a) }
           if(s.tt>=s.dur){
             if(s.connect){ s.phase='return'; s.ret=1; survivor=s
-              contact.x=s.hx; contact.y=s.hy; contact.e=s.hero?1.4:1.1; hit=1; flash=s.hero?0.9:0.7
+              contact.x=s.hx; contact.y=s.hy; contact.e=s.hero?1.6:1.3; hit=1; flash=s.hero?1.5:1.15   // "and only one became real" — strong flash
+              charge=0.06   // the strike DRAINS the word — it dims, then recharges
               glows.push({x:s.hx, y:s.hy, e:1, r:fs*(0.16+Math.random()*0.12)}) }   // localized short-lived glow at the hit
             else { s.phase='fade'; s.fade=1 }
           }
         } else if(s.phase==='return'){
-          drawBolt(s.topX,-20*DPR,s.hx,s.hy,s.disp,s.ret,s.base,s.branch)
-          if(s.ret>0.5) for(const f of s.feelers) drawFeeler(s.topX,-20*DPR,f.tx,f.ty,s.disp*0.8,0.22*s.ret,s.branch-1)
-          s.ret-=0.08; if(s.ret<=0) strikes.splice(i,1)
+          renderBolt(s.retSegs, s.ret, s.base)   // bright return stroke lights up the connecting trunk
+          s.ret-=0.11; if(s.ret<=0) strikes.splice(i,1)
         } else {
-          for(const f of s.feelers) drawFeeler(s.topX,-20*DPR,f.tx,f.ty,s.disp*0.8,0.5*s.fade,s.branch-1)
-          s.fade-=0.12; if(s.fade<=0) strikes.splice(i,1)
+          for(const L of s.leaders) renderFeeler(L.segs, 0.5*s.fade)
+          for(const S of s.streamers) renderFeeler(S.segs, 0.6*s.fade)
+          s.fade-=0.11; if(s.fade<=0) strikes.splice(i,1)
         }
       }
-      if(survivor){ strikes.length=0; strikes.push(survivor); nextStrike=t+50+Math.random()*40 }
-      drawWord(); drawGlows(); drawContact(); contact.e*=0.96; hit*=0.985
-      if(flash>0){ ctx!.fillStyle='rgba(190,220,255,'+(0.16*flash*FLASH_MUL)+')'; ctx!.fillRect(0,0,W,H); flash-=0.08 }
-      if(t>=nextStrike){ spawnStrike(false); nextStrike=t+GAP_MIN+Math.random()*GAP_RND }
+      if(survivor){ strikes.length=0; strikes.push(survivor); nextStrike=t+64+Math.random()*55 }
+      charge=Math.min(1, charge+0.0045)   // the word slowly RECHARGES between strikes (brightening, longer leaders)
+      drawWord(); drawGlows(); drawContact(); contact.e*=0.955; hit*=0.9
+      if(flash>0){ ctx!.fillStyle='rgba(200,225,255,'+(0.22*Math.min(1,flash))+')'; ctx!.fillRect(0,0,W,H); flash-=0.06 }   // brief bright bloom, then fades
+      if(t>=nextStrike){ spawnStrike(false); nextStrike=t+34+Math.random()*46 }
       if(running) raf=requestAnimationFrame(frame)
     }
     // Only animate while the hero is on screen and the tab is visible — this is
@@ -142,25 +273,22 @@ function LightningStrike() {
     const run=()=>{ if(running) return; running=true; raf=requestAnimationFrame(frame) }
     const stop=()=>{ running=false; cancelAnimationFrame(raf) }
     const start=()=>{ spawnStrike(true); run() }
-    // Motion-free render for users who requested reduced motion: paint the
-    // wordmark once with its steady green glow and never open a rAF loop.
-    const drawStatic=()=>{ ctx!.fillStyle='#000'; ctx!.fillRect(0,0,W,H); hit=0.5; drawWord(); hit=0 }
-    let io: IntersectionObserver | null = null
-    let onVis: (() => void) | null = null
-    if (REDUCED) {
-      ;(document.fonts && (document.fonts as any).load) ? (document.fonts as any).load("400 100px 'Cinzel Decorative'").then(drawStatic, drawStatic) : drawStatic()
-      window.addEventListener('resize', drawStatic)
-    } else {
-      ;(document.fonts && (document.fonts as any).load) ? (document.fonts as any).load("400 100px 'Cinzel Decorative'").then(start,start) : start()
-      io = ('IntersectionObserver' in window) ? new IntersectionObserver(es=>{ for(const e of es){ e.isIntersecting ? run() : stop() } }, {threshold:0}) : null
-      io?.observe(cv)
-      onVis=()=>{ document.hidden ? stop() : run() }
-      document.addEventListener('visibilitychange', onVis)
-    }
+    // Load Cinzel Decorative WITH the actual wordmark glyphs (incl. Æ, a latin-ext
+    // subset) so the canvas paints the wordmark in the SITE font — not a serif
+    // fallback. Redraw once it lands in case the first frames beat the download.
+    const F=(document.fonts as any)
+    if(F && F.load){
+      Promise.all([ F.load("400 120px 'Cinzel Decorative'", 'ÆTHER'), F.load("700 120px 'Cinzel Decorative'", 'ÆTHER') ])
+        .then(()=>{ resize(); start() }, start)
+    } else start()
+    const io = ('IntersectionObserver' in window) ? new IntersectionObserver(es=>{ for(const e of es){ e.isIntersecting ? run() : stop() } }, {threshold:0}) : null
+    io?.observe(cv)
+    const onVis=()=>{ document.hidden ? stop() : run() }
+    document.addEventListener('visibilitychange', onVis)
     // Smooth-scroll for nav anchor links (#how, #validation, …)
     const rootEl=document.documentElement, prevSB=rootEl.style.scrollBehavior
     rootEl.style.scrollBehavior='smooth'
-    return () => { stop(); io?.disconnect(); if(onVis) document.removeEventListener('visibilitychange', onVis); window.removeEventListener('resize', resize); window.removeEventListener('resize', drawStatic); rootEl.style.scrollBehavior=prevSB }
+    return () => { stop(); io?.disconnect(); document.removeEventListener('visibilitychange', onVis); window.removeEventListener('resize', resize); rootEl.style.scrollBehavior=prevSB }
   }, [])
   return <canvas ref={ref} style={{ position:'absolute', inset:0, width:'100%', height:'100%', display:'block', zIndex:0, pointerEvents:'none', background:'#000' }} />
 }
@@ -425,21 +553,10 @@ export default function Home() {
         </ul>
       </nav>
 
-      {/* LIGHTNING HERO — the strike on ÆTHER (nav is position:fixed, so it floats over this).
-          Desktop unchanged; on phones the section is shorter (70vh) so it no longer eats the
-          whole first screen, and the canvas animation itself is softened (see LightningStrike). */}
-      <style>{`
-        .lightning-hero{position:relative;height:100vh;overflow:hidden;background:#000}
-        .lightning-hero .scroll-cue{position:absolute;left:0;right:0;bottom:22px;text-align:center;z-index:2;
-          font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:#7f9ab5}
-        @media (max-width:640px){
-          .lightning-hero{height:70vh}
-          .lightning-hero .scroll-cue{bottom:14px;font-size:10px;letter-spacing:.25em}
-        }
-      `}</style>
-      <section className="lightning-hero">
+      {/* LIGHTNING HERO — the strike on ÆTHER (nav is position:fixed, so it floats over this) */}
+      <section style={{ position: 'relative', height: '100vh', overflow: 'hidden', background: '#000' }}>
         <LightningStrike />
-        <div className="scroll-cue">scroll ↓</div>
+        <div style={{ position: 'absolute', left: 0, right: 0, bottom: '22px', textAlign: 'center', zIndex: 2, fontFamily: "'Space Mono', monospace", fontSize: '11px', letterSpacing: '.3em', textTransform: 'uppercase', color: '#7f9ab5' }}>scroll ↓</div>
       </section>
 
       {/* HERO */}
@@ -451,7 +568,7 @@ export default function Home() {
             Aether enforces safety, security, and reliability as structural invariants before
             a single byte of machine code is generated. A program that violates a declared
             property cannot be compiled. There is no runtime check. There is no advisory
-            warning. The program does not compile.
+            warning. The program does not compile. Uncompromising? That&rsquo;s the feature.
           </p>
           {/* Hero stats — re-verified on the CURRENT build (2026-07-10):
               · 46 = patent tracks A–TT per SOURCE (token.rs) and README v8.0.0,
@@ -529,8 +646,8 @@ export default function Home() {
           </h2>
           <p className="section-sub" style={{maxWidth:'760px'}}>
             In planes, cars, medical devices, and defense systems, a single software fault can cost lives.
-            Today that software is trusted because it was <em>tested a lot</em> — but testing can only show
-            that a bug exists, never that none remain.
+            Today that software is trusted because it was <em>tested a lot</em> — but as Edsger Dijkstra put it,
+            testing can reveal that a bug is present, never that none remain. We took that personally.
           </p>
 
           <div style={{
