@@ -436,9 +436,11 @@ const STANDARDS = [
 // HARDWARE VALIDATION (new 2026-07-17). Physical measurements taken on a Nordic
 // Power Profiler Kit II in series with an STM32F411 (ARM Cortex-M4) on a
 // NUCLEO-F411RE board, at the reset-default 16 MHz clock.
-// SCOPE [HONESTY]: each entry is a SINGLE datapoint on one board of one silicon
-// part, performed with AI assistance at the inventor's direction; NOT a
-// multi-part characterization, temperature study, or certified measurement.
+// SCOPE [HONESTY]: each entry was first recorded as a SINGLE datapoint on one board
+// of one silicon part, performed with AI assistance at the inventor's direction; NOT a
+// multi-part characterization, temperature study, or certified measurement. (See the
+// SECOND BOARD update dated 2026-07-24 below: the compiler-determined subset has since
+// been reproduced on a second part; the analog magnitudes have not.)
 // PROVENANCE: the current-delta, coulomb, residency, and WCET-instantiation
 // (140.9-cycle) entries used binaries emitted VERBATIM by the release compiler
 // [FACT — measured, compiler-emitted]. UPDATE 2026-07-19/20: the constant-time
@@ -478,8 +480,19 @@ const STANDARDS = [
 // Pre-filing public-disclosure risk is therefore reduced, BUT provisionals are unpublished and a
 // 12-month clock is now running; mechanism (the lookup idiom, the wire/packet format, the crypto
 // substrate, the token algorithm) is kept OFF until the non-provisionals are on file.
+// UPDATE 2026-07-24 (SECOND BOARD, E27): the compiler-determined subset was re-measured on a
+// second, independent NUCLEO-F411RE board under pass/fail criteria fixed and WET-SIGNED before the
+// run. AGREE across parts: constant-time lookup 240 cyc flat / zero spread; naive-C comparator leak
+// +120 cyc; ART-path cycle counts within ~1%. PART-TO-PART VARIATION (analog magnitudes, remain
+// single-board for absolute value): one energy comparison was METHOD-LIMITED (board#1 reference used
+// non-identical manual integration, ~15% low, not a like-for-like); one COLD current reading differed
+// -12.5%. HONEST FRAMING [FACT]: compiler-determined timing/cycle/constant-time properties replicate
+// across parts; absolute current/energy magnitudes carry normal part-to-part variation and do NOT yet
+// replicate. This does NOT claim all re-measured results agree.
 // This section states current measured state only; it is not a roadmap or a certification claim.
 const MEASUREMENTS = [
+  ['Cross-part replication (two boards)',
+   'On 2026-07-24 the compiler-determined results were re-measured on a second, independent NUCLEO-F411RE board under pass/fail criteria fixed and wet-signed before the run. The constant-time lookup held at 240 cycles flat with zero spread and the naive-C comparator leaked +120 cycles — both matching the first board exactly — and ART-path cycle counts agreed to within ~1%. The absolute analog magnitudes carried normal part-to-part variation: one energy comparison was method-limited (the first board’s reference used non-identical manual integration, ~15% low), and a cold-temperature current reading differed by ~12.5%. So the compiler-determined timing, cycle, and constant-time properties replicate across parts; the absolute current and energy magnitudes do not yet. This does not claim all re-measured results agree. [two-board, pre-registered]'],
   ['WFI current delta',
    'Two compiler-emitted binaries that differ by whether the compiler emitted its 14-byte clock-halt (WFI) sequence for the entry mode, measured 3.45 mA (39%) apart — 5.28 vs 8.73 mA median. Pre-registered 6-trial protocol; PASS. [compiler-emitted]'],
   ['Coulomb budget',
@@ -665,7 +678,11 @@ export default function Home() {
           <p className="section-sub" style={{maxWidth:'760px'}}>
             In planes, cars, medical devices, and defense systems, a single software fault can cost lives.
             Today that software is trusted because it was <em>tested a lot</em> — but as Edsger Dijkstra put it,
-            testing can reveal that a bug is present, never that none remain. We took that personally.
+            testing can reveal that a bug is present, never that none remain.{' '}
+            <span style={{color:'#ffcc33',fontWeight:700,
+                 textShadow:'0 0 6px rgba(57,255,20,.85), 0 0 16px rgba(57,255,20,.55), 0 0 30px rgba(57,255,20,.35)'}}>
+              We took that personally.
+            </span>
           </p>
 
           <div style={{
@@ -756,9 +773,15 @@ export default function Home() {
               output on real hardware, each recorded with a fixed method and a reproducible build.
             </p>
             <p style={{margin:'.5rem 0 0',color:'#93a1a8',fontSize:'14px',lineHeight:1.6}}>
-              <b style={{color:'#e8eef0'}}>Scope, stated plainly:</b> each measurement is a single reading on one board of
-              one chip — a strong proof-of-concept, not yet a multi-part, temperature-qualified, or independently
-              certified characterization. A second board is being added to broaden this.
+              <b style={{color:'#e8eef0'}}>Scope, stated plainly:</b> the compiler-determined results — constant-time
+              (240&nbsp;cycles flat, zero spread), the naive-C timing leak (+120&nbsp;cycles), and cycle-count flatness
+              (~1%) — were re-measured on a second, independent NUCLEO-F411RE board on 2026-07-24, under pass/fail
+              criteria fixed and wet-signed before the run, and they replicated across both parts, so those properties
+              are no longer single-board. The absolute analog magnitudes (current, energy) still carry normal
+              part-to-part variation: on the second board one energy comparison was method-limited and one
+              cold-temperature current reading differed by ~12.5%, so those remain single-board for absolute value.
+              This is a strong two-board proof-of-concept — not yet a temperature-qualified multi-part characterization
+              across parts, and not independently certified. We do not claim all five re-measured results agree.
             </p>
             <p style={{margin:'.5rem 0 0',color:'#93a1a8',fontSize:'14px',lineHeight:1.6}}>
               <b style={{color:'#e8eef0'}}>Not claimed:</b> Aether has not been formally qualified or certified under any
@@ -827,7 +850,7 @@ export default function Home() {
       <section id="validation" style={{maxWidth:'none'}}>
         <div className="section-eyebrow">measured on silicon</div>
         <h2 className="section-title">The physical claims now have physical measurements — and the constant-time one is measured on the compiler's own output.</h2>
-        <p className="section-sub">Beginning 2026-07-17 and continuing through 2026-07-20, the compiler's physical-domain outputs were measured on hardware — a Nordic Power Profiler Kit II in series with an STM32F411 (ARM Cortex-M4) on a NUCLEO-F411RE board, at the reset-default 16&nbsp;MHz clock. Every result below is a single datapoint on one board of one silicon part, taken with AI assistance at the inventor's direction under a methodology fixed before the measurement; none is a multi-part characterization or a certified measurement. What began as four verbatim-compiler-emitted results has since been strengthened and extended: the constant-time property is now measured directly on the compiler's OWN emitted lookup, cycle-exact (240 cycles flat across all 20 query positions, no match-vs-absent leak) — the earlier hand-assembled caveat is retired — and a single program carrying six typed constraints at once (energy, WCET, power, interrupt-latency, constant-time, and a Secret classification) was accepted by the compiler in one pass and measured end-to-end on that one binary. A separate static audit further bounds the worst-case interrupt latency of every emitted program to 27&nbsp;cycles. The constant-time behaviour was further observed to hold as the supply was starved toward the part's brown-out floor and at elevated temperature, the declared power envelope tracked measured power to within 2%, and the emitted code was byte-identical across a major version bump — evidence that the numbers describe the compiler's own output rather than one lucky build. Each number is recorded with full chain of custody in a dated rig log; where a result is still bound only to a hand-assembled instance, it says so.</p>
+        <p className="section-sub">Beginning 2026-07-17 and continuing through 2026-07-20, the compiler's physical-domain outputs were measured on hardware — a Nordic Power Profiler Kit II in series with an STM32F411 (ARM Cortex-M4) on a NUCLEO-F411RE board, at the reset-default 16&nbsp;MHz clock. Most results below were first recorded as a single datapoint on one board of one silicon part, taken with AI assistance at the inventor's direction under a methodology fixed before the measurement. On 2026-07-24 the compiler-determined subset — constant-time (240&nbsp;cycles flat), the naive-C timing leak, and cycle-count flatness — was re-measured on a second, independent NUCLEO-F411RE board under pass/fail criteria fixed and wet-signed before the run, and those results replicated across the two parts; the absolute analog magnitudes (current, energy) still carry normal part-to-part variation and remain single-board for absolute value, and one energy comparison on the second board was method-limited. None is yet a certified measurement or a temperature-qualified multi-part characterization across parts. What began as four verbatim-compiler-emitted results has since been strengthened and extended: the constant-time property is now measured directly on the compiler's OWN emitted lookup, cycle-exact (240 cycles flat across all 20 query positions, no match-vs-absent leak) — the earlier hand-assembled caveat is retired — and a single program carrying six typed constraints at once (energy, WCET, power, interrupt-latency, constant-time, and a Secret classification) was accepted by the compiler in one pass and measured end-to-end on that one binary. A separate static audit further bounds the worst-case interrupt latency of every emitted program to 27&nbsp;cycles. The constant-time behaviour was further observed to hold as the supply was starved toward the part's brown-out floor and at elevated temperature, the declared power envelope tracked measured power to within 2%, and the emitted code was byte-identical across a major version bump — evidence that the numbers describe the compiler's own output rather than one lucky build. Each number is recorded with full chain of custody in a dated rig log; where a result is still bound only to a hand-assembled instance, it says so.</p>
         <div style={{display:'flex',flexDirection:'column',gap:'1.1rem',marginTop:'1.6rem'}}>
           {MEASUREMENTS.map(([name, desc]) => (
             <div key={name} style={{display:'grid',gridTemplateColumns:'minmax(200px,260px) 1fr',gap:'1.6rem',
@@ -842,7 +865,7 @@ export default function Home() {
       <hr className="divider" />
 
       {/* STANDARDS */}
-      <section id="standards">
+      <section id="standards" style={{maxWidth:'none'}}>
         <div className="section-eyebrow">standards coverage</div>
         <h2 className="section-title">Mapped to the standards that matter.</h2>
         <p className="section-sub">Aether's manifests reference the certification frameworks used across NATO member nations and major regulatory jurisdictions. These references are compile-time evidence — Aether has not been qualified or certified under these standards, and manifest emission is not a substitute for tool qualification (e.g. DO-330, ISO 26262).</p>
