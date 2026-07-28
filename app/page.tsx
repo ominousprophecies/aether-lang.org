@@ -23,6 +23,8 @@ function LightningStrike() {
     const contact = { x: 0, y: 0, e: 0 }
     const glows: any[] = []   // short-lived localized afterglows at each hit spot
     let letterHits: any[] = []   // sampled points that lie ON the glyphs (top silhouette per column)
+    let letterGroups: any[] = []   // letterHits grouped per letter (so each letter is struck equally)
+    let letterTops: any[] = []     // per-letter TOP-EDGE points only (strike/responder origins)
     let raf = 0
     function resize() {
       DPR = Math.min(window.devicePixelRatio || 1, 1.5)
@@ -43,9 +45,19 @@ function LightningStrike() {
         octx.fillStyle='#fff'; octx.fillText(WORD,cx,cy)
         try{ const d=octx.getImageData(0,0,W,H).data, step=Math.max(2,(fs*0.028)|0)
           for(let x=0;x<W;x+=step){ for(let y=Math.max(0,(cy-fs)|0); y<cy+fs && y<H; y+=2){ if(d[(y*W+x)*4+3]>90){ letterHits.push([x,y]); break } } }
+          // Group ALL columns into LETTERS (each glyph is one contiguous run; the wide
+          // letter-spacing gaps separate them — so the H stays one group, not two).
+          letterGroups=[]; let cur:any[]=[]
+          for(let i=0;i<letterHits.length;i++){ if(cur.length && letterHits[i][0]-cur[cur.length-1][0] > step*2.5){ letterGroups.push(cur); cur=[] } cur.push(letterHits[i]) }
+          if(cur.length) letterGroups.push(cur)
+          // Within each letter keep ONLY the TOP-EDGE points (upper band) as strike/responder
+          // origins — never the mid-height crossbars (E/H/T bars). Every letter still gets one.
+          const topBand=cy-fs*0.18
+          letterTops = letterGroups.map((g:any[])=>{ const tt=g.filter((p:any)=>p[1]<topBand); return tt.length?tt:g })
         }catch(e){}
       }
     }
+    const pickLetterTop=()=> letterTops.length ? (g=>g[(Math.random()*g.length)|0])(letterTops[(Math.random()*letterTops.length)|0]) : null
     window.addEventListener('resize', resize); resize()
     function bolt(x1:number,y1:number,x2:number,y2:number,disp:number,segs:any[],branch:number,depth:number){
       if(disp<3*DPR){ segs.push([x1,y1,x2,y2,depth]); return }
@@ -61,13 +73,13 @@ function LightningStrike() {
     // cache the returned segments and just re-render them with a changing alpha.
     function genSegs(x1:number,y1:number,x2:number,y2:number,disp:number,branch:number){ const segs:any[]=[]; bolt(x1,y1,x2,y2,disp,segs,branch,0); return segs }
     function renderBolt(segs:any[],alpha:number,base:number){
-      ctx!.lineCap='round'; ctx!.lineJoin='round'; ctx!.globalCompositeOperation='lighter'
+      ctx!.lineCap='butt'; ctx!.lineJoin='round'; ctx!.globalCompositeOperation='lighter'
       pass(segs,'rgba(110,160,255,'+(0.13*alpha)+')',7,base,40)
       pass(segs,'rgba(150,215,255,'+(0.5*alpha)+')',2.4,base,20)
       pass(segs,'rgba(255,255,255,'+(0.98*alpha)+')',1,base,11)
       ctx!.globalCompositeOperation='source-over'; ctx!.shadowBlur=0 }
     function renderFeeler(segs:any[],alpha:number){
-      ctx!.lineCap='round'; ctx!.lineJoin='round'; ctx!.globalCompositeOperation='lighter'
+      ctx!.lineCap='butt'; ctx!.lineJoin='round'; ctx!.globalCompositeOperation='lighter'
       pass(segs,'rgba(120,180,255,'+(0.10*alpha)+')',4.4,2.0,14)
       pass(segs,'rgba(175,215,255,'+(0.30*alpha)+')',2.1,2.0,7)
       ctx!.globalCompositeOperation='source-over'; ctx!.shadowBlur=0 }
@@ -100,7 +112,9 @@ function LightningStrike() {
       const nb=1+(Math.random()<0.6?1:0)+(Math.random()<0.22?1:0)   // usually 1–2 forks (a narrower tapering tree, not a wide fan)
       let tEnd:[number,number]=[px,py]
       for(let b=0;b<nb;b++){
-        const childAng=ang+(b===0?(Math.random()-0.5)*0.35:(Math.random()-0.5)*0.9)  // trunk stays fairly straight; side branches diverge
+        // trunk (b=0) stays ~straight; side branches fork clearly OUTWARD (min ~0.5rad away) so
+        // they diverge from the trunk instead of running close/parallel to it
+        const childAng=ang+(b===0?(Math.random()-0.5)*0.28:(Math.random()<0.5?-1:1)*(0.5+Math.random()*0.45))
         const childLen=len*(0.6+Math.random()*0.22)             // children shorter → tree tapers toward the tip
         const e=buildLeader(px,py,childAng,childLen,depth-1,level+1,boundY,dir,segs,onTrunk&&b===0,trunk)
         if(onTrunk&&b===0) tEnd=e
@@ -111,7 +125,7 @@ function LightningStrike() {
       const hero=Math.random()<0.5
       const disp=W*(hero?0.11:0.08), base=hero?4.4:3.0   // thicker return stroke
       // contact a real LETTER (a sampled glyph point), not the empty gaps between letters
-      const hpt = letterHits.length ? letterHits[(Math.random()*letterHits.length)|0] : null
+      const hpt = pickLetterTop()   // pick a LETTER first, then a top point on it → every letter equally likely
       const hx = hpt ? hpt[0] : cx+(Math.random()-0.5)*wordHalf*1.7
       const hy = hpt ? hpt[1] : cy+(Math.random()-0.5)*fs*0.5
       const topX=hx+(Math.random()-0.5)*W*0.06   // near-vertical descent to the hit point (real cloud-to-ground lean)
@@ -130,50 +144,43 @@ function LightningStrike() {
       const targetY = willConnect ? junctionY : Math.min(junctionY, reachY)
       const drop=targetY-startY
       // (the drain happens at the strike flash, not here, so the word stays bright THROUGH the descent)
-      // The descending LEADER as a branching tree ("file-folder" fork system).
+      // ONE descending LEADER — a single strand that forks OUTWARD as it comes down.
       const leaders:any[]=[]
       const primarySegs:any[]=[], trunk:any[]=[]
       const trunkTip=buildLeader(topX,startY, Math.PI/2+(Math.random()-0.5)*0.2, drop*0.5, 4, 0, targetY, 1, primarySegs, true, trunk)
       leaders.push({segs:primarySegs, primary:true})
-      if(Math.random()<0.4){                                // occasionally a second, shorter probe elsewhere
-        const ox=cx+(Math.random()-0.5)*wordHalf*2.6
-        const s2:any[]=[]
-        buildLeader(ox,startY, Math.PI/2+(Math.random()-0.5)*0.28, drop*0.45, 3, 0, targetY, 1, s2, false, [])
-        leaders.push({segs:s2, primary:false})
-      }
       // RESPONDING UPWARD LEADERS — branching leaders rising OFF THE WORD, going up to
       // meet the descenders. Only when one gets close enough does the responder reach it.
       const streamers:any[]=[]
       let retSegs:any=null
       if(willConnect){
-        // the connector: a branching leader rising from the word up to the descender's tip
+        // the connector rises FROM THE TOP OF THE STRUCK LETTER (hx,hy) up to the descender's tip
         const upSegs:any[]=[], upTrunk:any[]=[]
-        const baseAng=Math.atan2(trunkTip[1]-wtop, trunkTip[0]-hx)         // aim at the junction (upward)
-        const upLen=Math.hypot(trunkTip[0]-hx, trunkTip[1]-wtop)*0.5
-        const upTip=buildLeader(hx,wtop, baseAng, upLen, 3, 0, trunkTip[1], -1, upSegs, true, upTrunk)
+        const baseAng=Math.atan2(trunkTip[1]-hy, trunkTip[0]-hx)           // aim at the junction (upward)
+        const upLen=Math.hypot(trunkTip[0]-hx, trunkTip[1]-hy)*0.5
+        const upTip=buildLeader(hx,hy, baseAng, upLen, 3, 0, trunkTip[1], -1, upSegs, true, upTrunk)
         upSegs.push([upTip[0],upTip[1], trunkTip[0],trunkTip[1], 0])       // bridge — the two leaders touch
         streamers.push({segs:upSegs, primary:true})
-        // a couple more responders that rise but fall short of a descender
+        // a couple more responders rising off OTHER letter tops, falling short
         const nShort=1+(Math.random()<0.6?1:0)
         for(let k=0;k<nShort;k++){
-          const sx=cx+(Math.random()-0.5)*wordHalf*1.7
-          const topY=wtop-(wtop-trunkTip[1])*(0.35+Math.random()*0.4)
+          const bp=pickLetterTop()||[cx+(Math.random()-0.5)*wordHalf*1.7, wtop]   // another letter top
+          const topY=bp[1]-(bp[1]-trunkTip[1])*(0.35+Math.random()*0.4)
           const s2:any[]=[]
-          buildLeader(sx,wtop, -Math.PI/2+(Math.random()-0.5)*0.5, (wtop-topY)*0.6, 2, 0, topY, -1, s2, false, [])
+          buildLeader(bp[0],bp[1], -Math.PI/2+(Math.random()-0.5)*0.5, (bp[1]-topY)*0.6, 2, 0, topY, -1, s2, false, [])
           streamers.push({segs:s2, primary:false})
         }
-        // bright return stroke: cloud → junction → down the responder's trunk → word
+        // bright return stroke: cloud → junction → down the responder's trunk → the letter top
         retSegs = trunk.map((p:any)=>[p[0],p[1],p[2],p[3],0])
         retSegs.push([trunkTip[0],trunkTip[1], upTip[0],upTip[1], 0])
         for(let i=upTrunk.length-1;i>=0;i--){ const p=upTrunk[i]; retSegs.push([p[2],p[3],p[0],p[1],0]) }
-        retSegs.push([hx,wtop, hx,hy, 0])
       }
-      // Highest point the responders reach — used to animate them rising upward.
-      let streamerTopY=wtop
-      for(const S of streamers) for(const sg of S.segs) streamerTopY=Math.min(streamerTopY, sg[1], sg[3])
+      // Reveal bounds for the responders (they grow upward from the letter tops).
+      let streamerTopY=wtop, streamerBotY=wtop
+      for(const S of streamers) for(const sg of S.segs){ const lo=Math.min(sg[1],sg[3]), hi=Math.max(sg[1],sg[3]); if(lo<streamerTopY)streamerTopY=lo; if(hi>streamerBotY)streamerBotY=hi }
       strikes.push({phase:'leader', tt:0, dur:(24+Math.random()*16)|0, hx, hy, base,   // slow enough to SEE the descent (~0.6–0.9s)
         leaders, streamers, retSegs, ret:0, fade:0, hero, connect: willConnect,
-        startY, drop, wtop, streamerTopY, trunk}) }
+        startY, drop, wtop, streamerTopY, streamerBotY, trunk}) }
     // Bright bulbous HEAD that rides the advancing tip of a stepped leader.
     function headAt(tk:any[], yF:number):[number,number]|null{
       for(const p of tk){ if((p[1]<=yF&&p[3]>=yF)||(p[3]<=yF&&p[1]>=yF)){ const tt=(yF-p[1])/((p[3]-p[1])||1); return [p[0]+(p[2]-p[0])*tt, yF] } }
@@ -194,9 +201,9 @@ function LightningStrike() {
       ctx!.save(); ctx!.textAlign='center'; ctx!.textBaseline='middle'; ctx!.font=FONT.replace('%',String(fs))
       try{ (ctx as any).letterSpacing=(fs*0.14).toFixed(1)+'px' }catch(e){}
       ctx!.globalCompositeOperation='lighter'
-      ctx!.shadowColor='#1e7a10'; ctx!.shadowBlur=(10+50*gl)*DPR; ctx!.fillStyle='rgba(40,150,25,'+(0.10+0.44*gl)+')'; ctx!.fillText(WORD,cx,cy)
-      ctx!.shadowColor='#39ff14'; ctx!.shadowBlur=(5+32*gl)*DPR;  ctx!.fillStyle='rgba(57,255,20,'+(0.15+0.6*gl)+')'; ctx!.fillText(WORD,cx,cy)
-      ctx!.shadowBlur=(2+13*gl)*DPR; ctx!.fillStyle='rgba(160,255,130,'+(0.40+0.55*gl)+')'; ctx!.fillText(WORD,cx,cy)
+      ctx!.shadowColor='#1e7a10'; ctx!.shadowBlur=(2+58*gl)*DPR; ctx!.fillStyle='rgba(40,150,25,'+(0.0+0.55*gl)+')'; ctx!.fillText(WORD,cx,cy)
+      ctx!.shadowColor='#39ff14'; ctx!.shadowBlur=(1+36*gl)*DPR;  ctx!.fillStyle='rgba(57,255,20,'+(0.0+0.7*gl)+')'; ctx!.fillText(WORD,cx,cy)
+      ctx!.shadowBlur=(0.5+15*gl)*DPR; ctx!.fillStyle='rgba(160,255,130,'+(0.006+0.94*gl)+')'; ctx!.fillText(WORD,cx,cy)
       ctx!.restore(); ctx!.globalCompositeOperation='source-over'; ctx!.shadowBlur=0 }
     function drawContact(){
       if(contact.e<=0.01) return; const e=Math.min(1.2,contact.e)
@@ -238,16 +245,15 @@ function LightningStrike() {
             renderFeeler(L.segs.filter((sg:any)=>Math.min(sg[1],sg[3])<=yFront-band), a*0.85)   // settled channel (dimmer)
             renderFeeler(L.segs.filter((sg:any)=>{const y=Math.min(sg[1],sg[3]); return y>yFront-band && y<=yFront}), Math.min(1,a+0.55)) }  // bright descending tip
           // bright bulbous HEAD riding the advancing tip of the primary leader while it descends
-          if(g<1 && s.trunk){ const hp=headAt(s.trunk, yFront); if(hp) drawHead(hp[0], hp[1], 0.6+0.4*prog) }
           // responders rise UP from the word a little later, reaching toward the descenders
           const g2=Math.min(1, Math.max(0,(prog-0.3))/0.55)
-          const yUp=s.wtop-(s.wtop-s.streamerTopY)*g2           // upward reveal line
+          const yUp=s.streamerBotY-(s.streamerBotY-s.streamerTopY)*g2   // grow up from the letter tops
           for(const S of s.streamers){ const a=S.primary?(0.55+0.45*prog):0.6
             renderFeeler(S.segs.filter((sg:any)=>Math.max(sg[1],sg[3])>=yUp), a) }
           if(s.tt>=s.dur){
             if(s.connect){ s.phase='return'; s.ret=1; survivor=s
               contact.x=s.hx; contact.y=s.hy; contact.e=s.hero?1.6:1.3; hit=1; flash=s.hero?1.5:1.15   // "and only one became real" — strong flash
-              charge=0.06   // the strike DRAINS the word — it dims, then recharges
+              charge=0.02   // the strike DRAINS the word — it dims, then recharges
               glows.push({x:s.hx, y:s.hy, e:1, r:fs*(0.16+Math.random()*0.12)}) }   // localized short-lived glow at the hit
             else { s.phase='fade'; s.fade=1 }
           }
@@ -262,7 +268,7 @@ function LightningStrike() {
       }
       if(survivor){ strikes.length=0; strikes.push(survivor); nextStrike=t+64+Math.random()*55 }
       charge=Math.min(1, charge+0.0015)   // the word slowly RECHARGES between strikes (brightening, longer leaders)
-      drawWord(); drawGlows(); drawContact(); contact.e*=0.955; hit*=0.9
+      drawWord(); drawGlows(); contact.e*=0.955; hit*=0.9
       if(flash>0){ ctx!.fillStyle='rgba(200,225,255,'+(0.22*Math.min(1,flash))+')'; ctx!.fillRect(0,0,W,H); flash-=0.06 }   // brief bright bloom, then fades
       if(t>=nextStrike){ spawnStrike(false); nextStrike=t+34+Math.random()*46 }
       if(running) raf=requestAnimationFrame(frame)
