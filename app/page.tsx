@@ -937,7 +937,6 @@ export default function Home() {
 
         <div style={{display:'flex',gap:'1rem',justifyContent:'center',flexWrap:'wrap',marginTop:'2rem'}}>
           <a href="mailto:contact@aether-lang.org" className="btn-primary">email us</a>
-          <a href="tel:7782205112" className="btn-ghost">778-220-5112</a>
         </div>
         <p style={{textAlign:'center',marginTop:'1.25rem',fontSize:'13px',color:'var(--dim,#93a1a8)'}}>
           <a href="mailto:contact@aether-lang.org" style={{color:'var(--green)'}}>contact@aether-lang.org</a>
@@ -946,7 +945,7 @@ export default function Home() {
 
       <footer>
         <span className="footer-mark">Æ AETHER</span>
-        <span className="footer-copy" style={{whiteSpace:'nowrap',fontSize:'clamp(7px,0.92vw,12px)'}}>© 2026 Emilio R. Bruno · AETHER-LANG.ORG INCORPORATED (CBCA federal no. 18049912; BC extra-provincial reg. A0143032) · Kamloops, BC, Canada · Four US provisional applications filed with the USPTO (July–August 2026); CA in preparation · AI assistance (Claude/Anthropic) disclosed</span>
+        <span className="footer-copy" style={{whiteSpace:'nowrap',fontSize:'clamp(7px,0.92vw,12px)'}}>© 2026 Emilio R. Bruno · AETHER-LANG.ORG INCORPORATED (CBCA federal; registered extra-provincially in British Columbia) · Kamloops, BC, Canada · Four US provisional applications filed with the USPTO (July–August 2026); CA in preparation · AI assistance (Claude/Anthropic) disclosed</span>
       </footer>
     </>
   )
