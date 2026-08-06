@@ -945,7 +945,7 @@ export default function Home() {
 
       <footer>
         <span className="footer-mark">Æ AETHER</span>
-        <span className="footer-copy" style={{whiteSpace:'nowrap',fontSize:'clamp(7px,0.92vw,12px)'}}>© 2026 Emilio R. Bruno · AETHER-LANG.ORG INCORPORATED (CBCA federal; registered extra-provincially in British Columbia) · Kamloops, BC, Canada · Four US provisional applications filed with the USPTO (July–August 2026); CA in preparation · AI assistance (Claude/Anthropic) disclosed</span>
+        <span className="footer-copy" style={{whiteSpace:'nowrap',fontSize:'clamp(4px,0.52vw,11px)'}}>© 2026 Emilio R. Bruno · AETHER-LANG.ORG INCORPORATED (CBCA federal; registered extra-provincially in British Columbia) · Kamloops, BC, Canada · Four US provisional applications filed with the USPTO (July–August 2026); CA in preparation · AI assistance (Claude/Anthropic) disclosed</span>
       </footer>
     </>
   )
