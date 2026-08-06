@@ -601,20 +601,20 @@ export default function Home() {
             property cannot be compiled. There is no runtime check. There is no advisory
             warning. The program does not compile. Uncompromising? That&rsquo;s the feature.
           </p>
-          {/* Hero stats — RECKONING 2026-08-03: the "46 IP tracks" figure was
-              retired. It counted paper-spec-only letters (S/T/V) with no
-              token/parser/enforcer, so it could not survive an item-by-item
-              count; replaced with the filed reality, which is both harder and
-              forward-looking.
-              · 4 = U.S. provisional applications delivered to the USPTO:
-                Track B (EM110454729CA, delivered 2026-07-31) and I-A / C / J
-                (EM110458221CA, delivered 2026-08-03). [FACT] Priority attaches
-                on USPTO receipt/docketing — basis pending counsel confirmation,
-                so the visible caveat below stays.
-              · 35 = total claims across the four provisionals
+          {/* Hero stats — re-verified 2026-08-06:
+              · 4 = U.S. provisional applications delivered to the USPTO
+                (EM110454729CA delivered 2026-07-31; EM110458221CA delivered 2026-08-03,
+                plus two companion bundles). All four fees charged at the US$65
+                micro-entity rate (CIBC statement 2026-08-03/04; the CAD amounts
+                $93.69/$93.64 are the USD$65 conversion, not a different fee). [FACT]
+                Filing receipts (application numbers + official filing dates) still to be
+                pulled from USPTO Patent Center — priority attaches on Office receipt. [OPEN]
+              · 35 = total claims across the four applications
                 (12 independent + 23 dependent). [FACT]
-              · 39 = distinct manifest block types (grep-verified). [FACT]
-              · sub-ms = per-op compile stays sub-millisecond every run. [FACT] */}
+              · Track lettering A–TT is retained internally per token.rs but is NOT a
+                patent count and must not be presented as one — the honest portfolio is
+                ~9–10 filing units. Paper-spec-only tracks have no token/parser/enforcer
+                and must not be claimed as implemented. [HONESTY] */}
           {/* Hero-stats note: only the line count changed this update. SHA-256
               (single + two-block KAT) and mul256 are verified UNDER EMULATION
               as internal compiler-substrate work, not user-facing features —
@@ -643,11 +643,11 @@ export default function Home() {
               <span className="stat-lbl">per-op compile</span>
             </div>
           </div>
-          <p className="hero-forward" style={{marginTop:'1.1rem',fontSize:'0.92rem',lineHeight:1.6,color:'#9a94a6',maxWidth:'54ch'}}>
-            Four U.S. provisional applications filed with the USPTO (July&ndash;August&nbsp;2026),
-            converting to full applications through 2027 &mdash; building toward a single certification
-            pass for systems where a bug is a recall: implantable devices, battery management, avionics.
-            <span style={{display:'block',marginTop:'0.4rem',fontSize:'0.82rem',color:'#6f6878'}}>
+          <p className="hero-forward" style={{margin:'1.1rem 0 0',fontSize:'14px',lineHeight:1.6,color:'#93a1a8'}}>
+            Four U.S. provisional applications filed with the USPTO (July&ndash;August 2026), converting to
+            full applications through 2027 &mdash; building toward a single certification pass for systems
+            where a bug is a recall: implantable devices, battery management, avionics.
+            <span style={{display:'block',marginTop:'.4rem',fontSize:'12.5px',color:'#6f7d84'}}>
               Provisionals, not granted patents; priority attaches on the Office&rsquo;s receipt. Patent-pending.
             </span>
           </p>
@@ -741,8 +741,8 @@ export default function Home() {
               <h3 style={{fontSize:'16px',fontWeight:700,margin:'0 0 .5rem'}}>Why it&rsquo;s defensible</h3>
               <ul style={{listStyle:'none',padding:0,margin:0}}>
                 {[
-                  ['Provisional patents filed with the USPTO', ' — four US provisional applications covering the core methods submitted July–August 2026 (Canadian filings to follow); the crown-jewel method is already demonstrated on real silicon.'],
-                  ['A working compiler', ', not a slide — roughly 21,000 lines of code producing the results above.'],
+                  ['Provisional applications filed with the USPTO', ' — four US provisional applications covering the core methods submitted July–August 2026 (Canadian filings to follow); the crown-jewel method is already demonstrated on real silicon.'],
+                  ['A working compiler', ', not a slide — roughly 12,300 lines of hand-authored Rust in the current compiler (~26,000 distinct across three related codebases) producing the results above.'],
                   ['Honesty-first evidence trail', ': every claim ties to a dated lab log and a reproducible build — exactly what safety auditors and acquirers want to see.'],
                 ].map(([b,rest]) => (
                   <li key={b} style={{padding:'.55rem 0 .55rem 1.4rem',position:'relative',color:'#93a1a8',
@@ -797,7 +797,7 @@ export default function Home() {
               <b style={{color:'#e8eef0'}}>Not claimed:</b> Aether has not been formally qualified or certified under any
               of the safety standards it maps to; the compiler references those frameworks as evidence, which is not the
               same as third-party certification. Some capabilities are still specification-only. The company is
-              early-stage and pre-revenue. <b style={{color:'#e8eef0'}}>Four US provisional applications were submitted to the USPTO in July–August 2026</b> (filing dates attach on the Office&rsquo;s receipt); these are provisionals, not granted patents, and confer no enforceable rights yet.
+              early-stage and pre-revenue. <b style={{color:'#e8eef0'}}>Four US provisional applications were submitted to the USPTO in July&ndash;August 2026</b> (filing dates attach on the Office&rsquo;s receipt); these are provisionals, not granted patents, and confer no enforceable rights yet.
             </p>
             <p style={{margin:'.7rem 0 0',color:'#ffd766',fontSize:'14px',lineHeight:1.6}}>
               We would rather show exactly what is and isn&rsquo;t done than oversell it — the same discipline that makes
@@ -946,7 +946,7 @@ export default function Home() {
 
       <footer>
         <span className="footer-mark">Æ AETHER</span>
-        <span className="footer-copy" style={{whiteSpace:'nowrap',fontSize:'clamp(7px,0.92vw,12px)'}}>© 2026 Emilio R. Bruno · Aether-Lang.org Inc. (CBCA federal) · Kamloops, BC, Canada · Four US provisional patents filed with the USPTO (July–August 2026); CA in preparation · AI assistance (Claude/Anthropic) disclosed</span>
+        <span className="footer-copy" style={{whiteSpace:'nowrap',fontSize:'clamp(7px,0.92vw,12px)'}}>© 2026 Emilio R. Bruno · AETHER-LANG.ORG INCORPORATED (CBCA federal no. 18049912; BC extra-provincial reg. A0143032) · Kamloops, BC, Canada · Four US provisional applications filed with the USPTO (July–August 2026); CA in preparation · AI assistance (Claude/Anthropic) disclosed</span>
       </footer>
     </>
   )
