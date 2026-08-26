@@ -569,6 +569,30 @@ export default function Home() {
 
   return (
     <>
+      <style>{`
+        html,body{max-width:100vw;overflow-x:hidden}
+        img,canvas,svg,video{max-width:100%}
+        *{overflow-wrap:break-word}
+        @media (max-width:860px){
+          .hero{grid-template-columns:1fr !important}
+          .hero-left,.terminal-wrap{max-width:100% !important;min-width:0 !important;width:auto !important}
+          .standards-grid{grid-template-columns:repeat(3,1fr) !important}
+        }
+        @media (max-width:680px){
+          .nav-links{display:none !important}
+          #validation [style*="minmax(200px"]{grid-template-columns:1fr !important;gap:.4rem !important}
+          .hero-stats{grid-template-columns:repeat(2,1fr) !important;flex-wrap:wrap !important}
+          .stat-cell{min-width:0 !important;flex:1 1 44% !important}
+          .standards-grid{grid-template-columns:repeat(2,1fr) !important}
+          section{padding-left:18px !important;padding-right:18px !important}
+        }
+        @media (max-width:480px){
+          .hero h1{font-size:clamp(30px,8.6vw,42px) !important;line-height:1.12 !important}
+          .section-title{font-size:clamp(22px,6.2vw,30px) !important}
+          .cta-row{flex-wrap:wrap !important}
+          .cta-row .btn-primary,.cta-row .btn-ghost{flex:1 1 100% !important;text-align:center !important}
+        }
+      `}</style>
       <div className="glow-dot" aria-hidden="true" />
 
       {/* NAV */}
