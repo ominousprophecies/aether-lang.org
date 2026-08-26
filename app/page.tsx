@@ -385,7 +385,7 @@ const MANIFESTS = [
   ['attestation_manifest',    'NIST SP 800-193 · TCG TPM 2.0 · RFC 9334'],
   ['operator_manifest',       'FIPS 201-3 · CCBP-v1.0 · NSA CNSSI 1253'],
   ['tensor_manifest',         'ML tensor classification · DoD AI Strategy 2023'],
-  ['adversarial_manifest',    'Adversarial taint · Track X'],
+  ['adversarial_manifest',    'Adversarial-input taint analysis'],
   ['federated_manifest',      'Federated learning · Bell-LaPadula gradient'],
   ['quantum_manifest',        'NIST FIPS 203/204/205 · post-quantum'],
   ['crypto_defense_manifest', 'Downgrade prevention · FIPS-140-3 · CNSA 2.0'],
@@ -607,14 +607,24 @@ export default function Home() {
                 plus two companion bundles). All four fees charged at the US$65
                 micro-entity rate (CIBC statement 2026-08-03/04; the CAD amounts
                 $93.69/$93.64 are the USD$65 conversion, not a different fee). [FACT]
-                Filing receipts (application numbers + official filing dates) still to be
-                pulled from USPTO Patent Center — priority attaches on Office receipt. [OPEN]
-              · 35 = total claims across the four applications
-                (12 independent + 23 dependent). [FACT]
+                Filing receipts RECEIVED (mailed 2026-08-13): application nos. 64/232,571
+                (2026-07-31, conf. 1177), 64/232,604 (2026-08-03, conf. 9351), 64/232,605
+                (2026-08-03, conf. 3112), plus a fourth companion; foreign-filing license
+                granted 2026-08-12. VERIFY the 64/ vs 63/ series against Patent Center before
+                relying on it, and do NOT surface raw application numbers publicly. [CONFIRMED]
+              · Claim counts are deliberately NOT surfaced on the page (they read as
+                granted patents to a lay visitor and inflate). The four filed provisionals
+                carry 35 claims (12 indep + 23 dep) and the 11 drafted applications ~108
+                more — kept in the record, not shown. The page states APPLICATION counts
+                only: 4 filed + 11 further possible applications drafted. [HONESTY] */}
+              {/* (was: 35 patent-claims stat cell — removed 2026-08-26 to pare the public
+                number down to possible patent applications, per owner instruction.)
               · Track lettering A–TT is retained internally per token.rs but is NOT a
-                patent count and must not be presented as one — the honest portfolio is
-                ~9–10 filing units. Paper-spec-only tracks have no token/parser/enforcer
-                and must not be claimed as implemented. [HONESTY] */}
+                patent count and must not be presented as one. The honest portfolio is
+                4 FILED provisionals + 11 DRAFTED-AND-STAGED (an originating umbrella
+                disclosure + ten white-space applications), the latter not yet filed and
+                labelled as such on the page. Paper-spec-only tracks have no token/parser/
+                enforcer and must not be claimed as implemented. [HONESTY] */}
           {/* Hero-stats note: only the line count changed this update. SHA-256
               (single + two-block KAT) and mul256 are verified UNDER EMULATION
               as internal compiler-substrate work, not user-facing features —
@@ -631,10 +641,6 @@ export default function Home() {
               <span className="stat-lbl">U.S. provisionals filed</span>
             </div>
             <div className="stat-cell">
-              <span className="stat-num">35</span>
-              <span className="stat-lbl">patent claims</span>
-            </div>
-            <div className="stat-cell">
               <span className="stat-num">39</span>
               <span className="stat-lbl">manifest types</span>
             </div>
@@ -642,17 +648,24 @@ export default function Home() {
               <span className="stat-num">sub-ms</span>
               <span className="stat-lbl">per-op compile</span>
             </div>
+            <div className="stat-cell">
+              <span className="stat-num">11</span>
+              <span className="stat-lbl">further applications drafted</span>
+            </div>
           </div>
           <p className="hero-forward" style={{margin:'1.1rem 0 0',fontSize:'14px',lineHeight:1.6,color:'#93a1a8'}}>
-            Four U.S. provisional applications filed with the USPTO (July&ndash;August 2026), converting to
-            full applications through 2027 &mdash; building toward a single certification pass for systems
-            where a bug is a recall: implantable devices, battery management, avionics.
+            Four U.S. provisional applications on file with the USPTO (July&ndash;August 2026), with an
+            originating umbrella disclosure and ten further white-space applications drafted and staged for
+            filing &mdash; a growing patent-pending portfolio converting to full applications through 2027,
+            building toward a single certification pass for systems where a bug is a recall: implantable
+            devices, battery management, avionics.
             <span style={{display:'block',marginTop:'.4rem',fontSize:'12.5px',color:'#6f7d84'}}>
-              Provisionals, not granted patents; priority attaches on the Office&rsquo;s receipt. Patent-pending.
+              Filed items are provisionals, not granted patents; priority attaches on the Office&rsquo;s receipt.
+              The eleven further applications are drafted and staged, not yet filed. Patent-pending.
             </span>
           </p>
           <div className="cta-row">
-            <a href="#contact" className="btn-primary">request access</a>
+            <a href="#contact" className="btn-primary">reproduce the build</a>
             <a href="#how" className="btn-ghost">see how it works</a>
           </div>
         </div>
@@ -741,7 +754,7 @@ export default function Home() {
               <h3 style={{fontSize:'16px',fontWeight:700,margin:'0 0 .5rem'}}>Why it&rsquo;s defensible</h3>
               <ul style={{listStyle:'none',padding:0,margin:0}}>
                 {[
-                  ['Provisional applications filed with the USPTO', ' — four US provisional applications covering the core methods submitted July–August 2026 (Canadian filings to follow); the crown-jewel method is already demonstrated on real silicon.'],
+                  ['A growing patent-pending portfolio', ' — four US provisional applications covering the core methods on file since July–August 2026, with an originating umbrella disclosure and ten further white-space applications drafted and staged to file (Canadian filings to follow); the crown-jewel method is already demonstrated on real silicon.'],
                   ['A working compiler', ', not a slide — roughly 12,300 lines of hand-authored Rust in the current compiler (~26,000 distinct across three related codebases) producing the results above.'],
                   ['Honesty-first evidence trail', ': every claim ties to a dated lab log and a reproducible build — exactly what safety auditors and acquirers want to see.'],
                 ].map(([b,rest]) => (
@@ -797,7 +810,7 @@ export default function Home() {
               <b style={{color:'#e8eef0'}}>Not claimed:</b> Aether has not been formally qualified or certified under any
               of the safety standards it maps to; the compiler references those frameworks as evidence, which is not the
               same as third-party certification. Some capabilities are still specification-only. The company is
-              early-stage and pre-revenue. <b style={{color:'#e8eef0'}}>Four US provisional applications were submitted to the USPTO in July&ndash;August 2026</b> (filing dates attach on the Office&rsquo;s receipt); these are provisionals, not granted patents, and confer no enforceable rights yet.
+              early-stage and pre-revenue. <b style={{color:'#e8eef0'}}>Four US provisional applications are on file with the USPTO (July&ndash;August 2026)</b>; an originating umbrella disclosure and ten further applications are drafted and staged to file but not yet filed. Provisionals are not granted patents and confer no enforceable rights yet.
             </p>
             <p style={{margin:'.7rem 0 0',color:'#ffd766',fontSize:'14px',lineHeight:1.6}}>
               We would rather show exactly what is and isn&rsquo;t done than oversell it — the same discipline that makes
@@ -817,13 +830,13 @@ export default function Home() {
         <div className="problem-grid">
           {[
             ['01','Binary tampering after certification',
-             'An adversary modifies firmware after it leaves the build environment. Existing toolchains have no mechanism to detect post-compilation modification at deployment.',
+             'An adversary modifies firmware after it leaves the build environment. Conventional toolchains typically detect post-compilation modification only downstream, if at all.',
              '→ Aether: an attestation token (a keyless integrity hash over the complete manifest chain) is emitted at compile time. Any modification invalidates the token. Detected when the token is checked, before execution.'],
             ['02','Operator impersonation and privilege escalation',
-             'Captured or compromised hardware is operated by personnel without the required clearance. No existing compiler binds operator identity to the binary itself.',
+             'Captured or compromised hardware is operated by personnel without the required clearance. Operator identity is conventionally enforced at runtime, not bound into the binary at build time.',
              '→ Aether: CCBP binds an operator-clearance check at compile time; clearance below the data classification is rejected before codegen. (Reference implementation — the challenge/response flow is defined; PKI signing is not yet implemented.)'],
             ['03','Information leakage across classification boundaries',
-             'Classified sensor data flows to unclassified telemetry channels. Timing side-channels leak cryptographic keys. No existing compiler enforces information flow at the type level.',
+             'Classified sensor data flows to unclassified telemetry channels. Timing side-channels leak cryptographic keys. Production compilers do not enforce information flow at the type level, and prior information-flow-typed languages (e.g. Jif, FlowCaml) were research systems, not production toolchains.',
              '→ Aether: Bell-LaPadula + Biba enforced at variable binding level. Classified data cannot flow to under-classified destinations. Constant-time execution enforced structurally.'],
           ].map(([n,title,desc,fix]) => (
             <div className="problem-card" key={n}>
@@ -932,11 +945,11 @@ export default function Home() {
 
       {/* CONTACT */}
       <div className="cta-section" id="contact">
-        <h2 className="cta-title" style={{fontSize:'clamp(20px,3vw,32px)',lineHeight:1.25}}>Your C code. Aether certification manifests. No rewrites.</h2>
-        <p className="cta-sub">Add a sidecar declaration file alongside your existing C/C++ firmware. Aether enforces the properties you declare and produces a machine-verifiable certification manifest in under one millisecond per operation.</p>
+        <h2 className="cta-title" style={{fontSize:'clamp(20px,3vw,32px)',lineHeight:1.25}}>Don&rsquo;t trust it. Reproduce it.</h2>
+        <p className="cta-sub">We ship a pinned build, its source, a one-command verification battery, and the expected result &mdash; rebuild it in your own environment and check us. If you evaluate or certify safety-critical software, or want to put Aether on one real problem as a design partner, we&rsquo;d value the conversation.</p>
 
         <div style={{display:'flex',gap:'1rem',justifyContent:'center',flexWrap:'wrap',marginTop:'2rem'}}>
-          <a href="mailto:contact@aether-lang.org" className="btn-primary">email us</a>
+          <a href="mailto:contact@aether-lang.org?subject=Aether%20reproduction%20kit" className="btn-primary">request the reproduction kit</a>
         </div>
         <p style={{textAlign:'center',marginTop:'1.25rem',fontSize:'13px',color:'var(--dim,#93a1a8)'}}>
           <a href="mailto:contact@aether-lang.org" style={{color:'var(--green)'}}>contact@aether-lang.org</a>
@@ -945,7 +958,7 @@ export default function Home() {
 
       <footer>
         <span className="footer-mark">Æ AETHER</span>
-        <span className="footer-copy" style={{whiteSpace:'nowrap',fontSize:'clamp(4px,0.52vw,11px)'}}>© 2026 Emilio R. Bruno · AETHER-LANG.ORG INCORPORATED (CBCA federal; registered extra-provincially in British Columbia) · Kamloops, BC, Canada · Four US provisional applications filed with the USPTO (July–August 2026); CA in preparation · AI assistance (Claude/Anthropic) disclosed</span>
+        <span className="footer-copy" style={{whiteSpace:'nowrap',fontSize:'clamp(4px,0.52vw,11px)'}}>© 2026 Emilio R. Bruno · AETHER-LANG.ORG INCORPORATED (CBCA federal; registered extra-provincially in British Columbia) · Kamloops, BC, Canada · Four US provisional applications on file with the USPTO (July–August 2026); umbrella + ten further applications drafted and staged to file; CA in preparation · AI assistance (Claude/Anthropic) disclosed</span>
       </footer>
     </>
   )
