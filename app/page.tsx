@@ -402,6 +402,7 @@ const MANIFESTS = [
   ['model_card_manifest',     'EU AI Act Art.13 · NIST AI RMF 1.0'],
   ['explainability_manifest', 'EU AI Act Art.17 · DoD AI Assurance'],
   ['ai_output_manifest',      'Bell-LaPadula ML output · DoD AI Strategy'],
+  ['compute_manifest',        'AI compute-governance cap · EU AI Act Art.51 threshold'],
   ['provenance_manifest',     'SLSA Level 3 · NIST SP 800-218 · EO 14028'],
   ['dependency_manifest',     'EO 14028 · CISA SBOM · SLSA L3'],
   ['evidence_manifest',       'DO-178C / DO-333 / CC clause mapping'],
@@ -621,8 +622,11 @@ export default function Home() {
       {/* HERO */}
       <div className="hero">
         <div className="hero-left">
-          <div className="eyebrow">compile-time verification</div>
+          <div className="eyebrow">the physical-invariant compiler</div>
           <h1>The software is <span>either proven</span> or it does not compile.</h1>
+          <p className="hero-expand" style={{margin:'.1rem 0 .2rem',font:'700 14px/1.5 ui-monospace,Menlo,Consolas,monospace',letterSpacing:'.01em',color:'#9fc7d8'}}>
+            <b style={{color:'#e8eef0'}}>AETHER</b>: Ahead-of-time Enforcement of Timing, Hardware, Energy and Resource invariants.
+          </p>
           <p className="hero-desc">
             Aether enforces safety, security, and reliability as structural invariants before
             a single byte of machine code is generated. A program that violates a declared
@@ -689,6 +693,41 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      <hr className="divider" />
+
+      {/* ───────────── WHAT AETHER STANDS FOR (backronym, project source of truth) ───────────── */}
+      <section id="meaning" style={{maxWidth:'980px',margin:'0 auto'}}>
+        <div className="section-eyebrow">what aether stands for</div>
+        <h2 className="section-title" style={{marginTop:'.3rem'}}>The name is the definition.</h2>
+        <p className="section-sub" style={{maxWidth:'820px'}}>
+          <b style={{color:'#e8eef0'}}>AETHER</b>: Ahead-of-time Enforcement of Timing, Hardware, Energy and Resource
+          invariants. It is a <b>physical-invariant compiler</b>: it enforces the physical limits of the target
+          hardware at compile time and refuses to emit a binary that would break them.
+        </p>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(300px,1fr))',gap:'.9rem',marginTop:'1.4rem'}}>
+          {[
+            ['A','Ahead-of-time','Enforcement happens at compile time, in the structure of compilation, not a runtime check and not an advisory warning.'],
+            ['E','Enforcement','A program that violates a declared invariant does not compile. No machine code and no manifest are emitted.'],
+            ['T','Timing','Worst-case execution time and interrupt-latency budgets, checked against the declared target profile.'],
+            ['H','Hardware','The declared target hardware profile (Cortex-M4, RISC-V) that every budget is checked against; the output is a physically distinct binary for that target.'],
+            ['E','Energy','Charge budget in coulombs and the power envelope; enforcement emits wait-for-interrupt opcodes at determined addresses, producing measurably lower integrated current.'],
+            ['R','Resource','Memory resource invariants: zero-heap and stack-depth budgets, plus the other structural resource limits.'],
+          ].map(([letter,word,desc],i) => (
+            <div key={i} style={{background:'#0d1114',border:'1px solid rgba(120,150,140,.18)',borderRadius:'12px',padding:'1rem 1.15rem'}}>
+              <div style={{display:'flex',alignItems:'baseline',gap:'.6rem'}}>
+                <span style={{font:'800 22px/1 ui-monospace,Menlo,Consolas,monospace',color:'var(--green,#39ff14)'}}>{letter}</span>
+                <span style={{fontWeight:700,fontSize:'15px',color:'#e8eef0'}}>{word}</span>
+              </div>
+              <p style={{margin:'.5rem 0 0',color:'#93a1a8',fontSize:'13.5px',lineHeight:1.55}}>{desc}</p>
+            </div>
+          ))}
+        </div>
+        <p className="section-sub" style={{maxWidth:'820px',marginTop:'1.2rem',fontSize:'13px',color:'#7f9099'}}>
+          The name describes the enforcing, physically-grounded core. Enforcement is proven; the magnitude of the
+          physical effect is being characterized on hardware and is reported, per result, as measured or single-datapoint.
+        </p>
+      </section>
 
       <hr className="divider" />
 
