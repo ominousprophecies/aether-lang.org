@@ -1003,6 +1003,11 @@ export default function Home() {
 
       <footer>
         <span className="footer-mark">Æ AETHER</span>
+        <span style={{display:'flex',gap:'1.25rem',flexWrap:'wrap',justifyContent:'center',margin:'0.75rem 0',fontSize:'13px'}}>
+          <a href="/verify" style={{color:'var(--green)'}}>Verify a manifest</a>
+          <a href="/certified" style={{color:'var(--green)'}}>Certified access</a>
+          <a href="/reports" style={{color:'var(--green)'}}>Reports</a>
+        </span>
         <span className="footer-copy" style={{whiteSpace:'nowrap',fontSize:'clamp(7px,0.92vw,12px)'}}>© 2026 Emilio R. Bruno · Aether-Lang.org Inc. (CBCA federal) · Kamloops, BC, Canada · Four US provisional patents filed with the USPTO (July 2026); CA in preparation · AI assistance (Claude/Anthropic) disclosed</span>
       </footer>
     </>
