@@ -798,7 +798,7 @@ export default function Home() {
               <h3 style={{fontSize:'16px',fontWeight:700,margin:'0 0 .5rem'}}>Why it&rsquo;s defensible</h3>
               <ul style={{listStyle:'none',padding:0,margin:0}}>
                 {[
-                  ['Provisional patents filed with the USPTO', ' — four US provisional applications covering the core methods submitted July 2026 (Canadian filings to follow); the crown-jewel method is already demonstrated on real silicon.'],
+                  ['Provisional patents filed with the USPTO', ' — five US provisional applications covering the core methods submitted across 2026, the latest a five US provisional applications covering the core methods submitted across 2026, the latest a unifying umbrella application (Canadian filings to follow); the crown-jewel method is already demonstrated on real silicon.'],
                   ['A working compiler', ', not a slide — roughly 21,000 lines of code producing the results above.'],
                   ['Honesty-first evidence trail', ': every claim ties to a dated lab log and a reproducible build — exactly what safety auditors and acquirers want to see.'],
                 ].map(([b,rest]) => (
@@ -854,7 +854,7 @@ export default function Home() {
               <b style={{color:'#e8eef0'}}>Not claimed:</b> Aether has not been formally qualified or certified under any
               of the safety standards it maps to; the compiler references those frameworks as evidence, which is not the
               same as third-party certification. Some capabilities are still specification-only. The company is
-              early-stage and pre-revenue. <b style={{color:'#e8eef0'}}>Four US provisional applications were submitted to the USPTO in July 2026</b> (filing dates attach on the Office&rsquo;s receipt); these are provisionals, not granted patents, and confer no enforceable rights yet.
+              early-stage and pre-revenue. <b style={{color:'#e8eef0'}}>Five US provisional applications have been submitted to the USPTO across 2026, the most recent a unifying umbrella application</b> (filing dates attach on the Office&rsquo;s receipt); these are provisionals, not granted patents, and confer no enforceable rights yet.
             </p>
             <p style={{margin:'.7rem 0 0',color:'#ffd766',fontSize:'14px',lineHeight:1.6}}>
               We would rather show exactly what is and isn&rsquo;t done than oversell it — the same discipline that makes
@@ -1008,7 +1008,7 @@ export default function Home() {
           <a href="/certified" style={{color:'var(--green)'}}>Certified access</a>
           <a href="/reports" style={{color:'var(--green)'}}>Reports</a>
         </span>
-<span className="footer-copy" style={{whiteSpace:'normal',fontSize:'11.25px',flexBasis:'100%',textAlign:'justify',textAlignLast:'justify'}}>© 2026 Emilio R. Bruno · Aether-Lang.org Inc. (CBCA federal) · Kamloops, BC, Canada · Four US provisional patents filed with the USPTO (July 2026); CA in preparation · AI assistance (Claude/Anthropic) disclosed · Page updated 2026-09-17</span>      </footer>
+<span className="footer-copy" style={{whiteSpace:'normal',fontSize:'11.25px',flexBasis:'100%',textAlign:'justify',textAlignLast:'justify'}}>© 2026 Emilio R. Bruno · Aether-Lang.org Inc. (CBCA federal) · Kamloops, BC, Canada · Five US provisional patents filed with the USPTO (2026); CA in preparation · AI assistance (Claude/Anthropic) disclosed · Page updated 2026-09-17</span>      </footer>
     </>
   )
 }
