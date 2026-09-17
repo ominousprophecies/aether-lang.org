@@ -580,7 +580,7 @@ export default function Home() {
         @media (max-width:860px){
           .hero{grid-template-columns:1fr !important;flex-direction:column !important}
           .hero-left,.hero-right,.terminal-wrap{max-width:100% !important;min-width:0 !important;width:auto !important}
-          .standards-grid{grid-template-columns:repeat(3,1fr) !important}
+          .standards-grid{grid-template-columns:repeat(3,1fr) !important} .manifest-grid{grid-template-columns:repeat(5,1fr) !important}
         }
         @media (max-width:680px){
           .nav-links{display:none !important}
@@ -901,7 +901,7 @@ export default function Home() {
         <div className="section-eyebrow">what aether produces</div>
         <h2 className="section-title">40 certification manifest types. One compiler pass. Sub-millisecond.</h2>
         <p className="section-sub" style={{maxWidth:'none'}}>Aether emits machine-verifiable certification manifest blocks during a single compilation — up to 21 in one program, drawn from a catalog of 40 manifest types (48 block types in total, counting three structural blocks and five nested record types). The standalone verifier (aether-verify) independently re-checks the manifest chain and attestation token — without the compiler or source code — and parses the core manifest block types individually. The output is deterministic: all 356 emitted artifacts hashed byte-identical across 20 consecutive build-and-execute passes (2026-07-10). Manifests are compile-time evidence artifacts, not third-party certifications. A manifest is emitted only when a program certifies: a program that fails a gate produces no manifest at all, so a refusal is recorded as an absence rather than as a field. Two blocks are the exception — gap_manifest records result: INCOMPLETE — gaps detected and names each unmet obligation, and timing_manifest records enforcement: none together with the reason it declined, rather than substituting an estimate.</p>
-        <div className="manifest-grid">
+        <div className="manifest-grid" style={{gridTemplateColumns:'repeat(8,1fr)'}}>
           {MANIFESTS.map(([name, std]) => (
             <div className="manifest-card" key={name}>
               <div className="manifest-name">{name}</div>
