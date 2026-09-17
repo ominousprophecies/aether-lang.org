@@ -362,7 +362,7 @@ const TERM_LINES = [
 
 // NOTE (honesty audit, updated 2026-07-07): the manifest labels below name the
 // framework each manifest block *references*. They are compile-time evidence
-// artifacts, not third-party certifications. All 39 names below were verified
+// artifacts, not third-party certifications. All 40 names below were verified
 // 1:1 against the distinct block types actually emitted across the fixture
 // suite (serial 20260707141007.858049). LETTERING CORRECTION: the shipped
 // source labels post-quantum as Track AA (not Z as earlier records said) and
@@ -651,8 +651,8 @@ export default function Home() {
               deliberately NOT surfaced on the site. A hash is integrity, not
               authenticity; no crypto capability is claimed here. This reflects
               current state only and is not a statement of intent or roadmap. [HONESTY]
-              · 39 = distinct manifest block types emitted across the fixture
-                suite (grep-verified, exactly 39, unchanged this build). [FACT]
+              · 40 = distinct manifest block types emitted across the fixture
+                suite (40 verified against emitted .aet output 2026-09-17; the earlier 39 matched only _manifest-suffixed block names and missed correctness_certificate, Track TT, which also emits as a block). [FACT]
               · sub-ms = per-op compile stays sub-millisecond every run; wall-clock
                 avg varies (135us/op Windows, ~45us sandbox — both sub-ms). [FACT] */}
           <div className="hero-stats">
@@ -665,7 +665,7 @@ export default function Home() {
               <span className="stat-lbl">lines of Rust</span>
             </div>
             <div className="stat-cell">
-              <span className="stat-num">39</span>
+              <span className="stat-num">40</span>
               <span className="stat-lbl">manifest types</span>
             </div>
             <div className="stat-cell">
@@ -899,8 +899,8 @@ export default function Home() {
       {/* MANIFESTS */}
       <section id="manifests" style={{maxWidth:'none'}}>
         <div className="section-eyebrow">what aether produces</div>
-        <h2 className="section-title">39 certification manifest types. One compiler pass. Sub-millisecond.</h2>
-        <p className="section-sub" style={{maxWidth:'none'}}>Aether emits machine-verifiable certification manifest blocks during a single compilation — up to 21 in one program, drawn from a catalog of 39 gate manifest types (47 block types in total, counting three structural blocks and five nested record types). The standalone verifier (aether-verify) independently re-checks the manifest chain and attestation token — without the compiler or source code — and parses the core manifest block types individually. The output is deterministic: all 356 emitted artifacts hashed byte-identical across 20 consecutive build-and-execute passes (2026-07-10). Manifests are compile-time evidence artifacts, not third-party certifications. A manifest is emitted only when a program certifies: a program that fails a gate produces no manifest at all, so a refusal is recorded as an absence rather than as a field. Two blocks are the exception — gap_manifest records result: INCOMPLETE — gaps detected and names each unmet obligation, and timing_manifest records enforcement: none together with the reason it declined, rather than substituting an estimate.</p>
+        <h2 className="section-title">40 certification manifest types. One compiler pass. Sub-millisecond.</h2>
+        <p className="section-sub" style={{maxWidth:'none'}}>Aether emits machine-verifiable certification manifest blocks during a single compilation — up to 21 in one program, drawn from a catalog of 40 manifest types (48 block types in total, counting three structural blocks and five nested record types). The standalone verifier (aether-verify) independently re-checks the manifest chain and attestation token — without the compiler or source code — and parses the core manifest block types individually. The output is deterministic: all 356 emitted artifacts hashed byte-identical across 20 consecutive build-and-execute passes (2026-07-10). Manifests are compile-time evidence artifacts, not third-party certifications. A manifest is emitted only when a program certifies: a program that fails a gate produces no manifest at all, so a refusal is recorded as an absence rather than as a field. Two blocks are the exception — gap_manifest records result: INCOMPLETE — gaps detected and names each unmet obligation, and timing_manifest records enforcement: none together with the reason it declined, rather than substituting an estimate.</p>
         <div className="manifest-grid">
           {MANIFESTS.map(([name, std]) => (
             <div className="manifest-card" key={name}>
