@@ -654,7 +654,13 @@ export default function Home() {
               · 40 = distinct manifest block types emitted across the fixture
                 suite (40 verified against emitted .aet output 2026-09-17; the earlier 39 matched only _manifest-suffixed block names and missed correctness_certificate, Track TT, which also emits as a block). [FACT]
               · sub-ms = per-op compile stays sub-millisecond every run; wall-clock
-                avg varies (135us/op Windows, ~45us sandbox — both sub-ms). [FACT] */}
+                avg varies (135us/op Windows, ~45us sandbox — both sub-ms). [FACT]
+              · 296 = canonical .bru test fixtures run through the compiler in a
+                single battery, measured 2026-09-17 on the Extreme v0.2.8 battery,
+                the largest fixture set on file. [FACT]
+              · 1.6MB = size of the compiled release binary of the compiler
+                (1,660,672 bytes; aether-lexer v8.0.0 release build, rustc 1.95.0,
+                2026-09-17). [FACT] */}
           <div className="hero-stats">
             <div className="stat-cell">
               <span className="stat-num">46</span>
@@ -671,6 +677,14 @@ export default function Home() {
             <div className="stat-cell">
               <span className="stat-num">sub-ms</span>
               <span className="stat-lbl">per-op compile</span>
+            </div>
+            <div className="stat-cell">
+              <span className="stat-num">296</span>
+              <span className="stat-lbl">fixture battery</span>
+            </div>
+            <div className="stat-cell">
+              <span className="stat-num">1.6MB</span>
+              <span className="stat-lbl">compiler binary</span>
             </div>
           </div>
           <div className="cta-row">
@@ -798,7 +812,7 @@ export default function Home() {
               <h3 style={{fontSize:'16px',fontWeight:700,margin:'0 0 .5rem'}}>Why it&rsquo;s defensible</h3>
               <ul style={{listStyle:'none',padding:0,margin:0}}>
                 {[
-                  ['Provisional patents filed with the USPTO', ' — five US provisional applications covering the core methods submitted across 2026, the latest a five US provisional applications covering the core methods submitted across 2026, the latest a unifying umbrella application (Canadian filings to follow); the crown-jewel method is already demonstrated on real silicon.'],
+                  ['Provisional patents filed with the USPTO', ': five US provisional applications covering the core methods submitted across 2026, the latest a unifying umbrella application (Canadian filings to follow); the crown-jewel method is already demonstrated on real silicon.'],
                   ['A working compiler', ', not a slide — roughly 21,000 lines of code producing the results above.'],
                   ['Honesty-first evidence trail', ': every claim ties to a dated lab log and a reproducible build — exactly what safety auditors and acquirers want to see.'],
                 ].map(([b,rest]) => (
@@ -904,7 +918,7 @@ export default function Home() {
         <div className="manifest-grid" style={{gridTemplateColumns:'repeat(8,minmax(0,1fr))',textWrap:'balance'}}>
           {MANIFESTS.map(([name, std]) => (
             <div className="manifest-card" key={name}>
-              <div className="manifest-name">{name}</div>
+              <div className="manifest-name">{name.replace(/_/g, '_​')}</div>
               <div className="manifest-standard">{std}</div>
             </div>
           ))}
