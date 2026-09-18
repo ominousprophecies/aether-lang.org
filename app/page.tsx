@@ -1022,7 +1022,7 @@ export default function Home() {
           <a href="/certified" style={{color:'var(--green)'}}>Certified access</a>
           <a href="/reports" style={{color:'var(--green)'}}>Reports</a>
         </span>
-<span className="footer-copy" style={{whiteSpace:'normal',fontSize:'10.75px',flexBasis:'100%',textAlign:'justify',textAlignLast:'justify'}}>© 2026 Emilio R. Bruno · Aether-Lang.org Inc. (CBCA federal) · Kamloops, BC, Canada · Five US provisional patents filed with the USPTO (2026); CA in preparation · AI assistance (Claude/Anthropic) disclosed · Page updated 2026-09-17</span>      </footer>
+<span className="footer-copy" style={{whiteSpace:'normal',fontSize:'10.5px',flexBasis:'100%',textAlign:'justify',textAlignLast:'justify'}}>© 2026 Emilio R. Bruno · Aether-Lang.org Inc. (CBCA federal) · Kamloops, BC, Canada · Five US provisional patents filed with the USPTO (2026); CA in preparation · AI assistance (Claude/Anthropic) disclosed · Page updated 2026-09-17</span>      </footer>
     </>
   )
 }
