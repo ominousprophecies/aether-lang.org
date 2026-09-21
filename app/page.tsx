@@ -982,6 +982,7 @@ export default function Home() {
             margin: '1.25rem auto 0',
             lineHeight: 1.75,
             fontSize: '17px',
+            textAlign: 'justify',
           }}
         >
           <p style={{ marginBottom: '1.25rem' }}>
