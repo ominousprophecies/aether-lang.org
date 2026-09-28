@@ -330,7 +330,7 @@ function LightningStrike() {
 // build+QEMU passes (pass_01..20.artifacts.sha256, serial 20260710164846).
 const TERM_LINES = [
   { t: 'cmd',      s: '$ cargo run --release' },
-  { t: 'dim',      s: '   Compiling aether-lexer v8.0.0' },
+  { t: 'dim',      s: '   Compiling aether-lexer v9.0.0' },
   { t: 'dim',      s: '    Finished `release` [optimized] target(s) in 0.76s' },
   { t: 'dim',      s: '     Running `target/release/aether-lexer`' },
   { t: 'dim',      s: '' },
@@ -351,7 +351,7 @@ const TERM_LINES = [
   { t: 'dim',      s: '  ──────────────────────────────────────────' },
   { t: 'key',      s: '  Total: ~0.155ms  (19 manifest blocks · 11,246 aet bytes)' },
   { t: 'dim',      s: '' },
-  { t: 'manifest', s: '// GENXR_V8.0.0 / STRICT_MODE' },
+  { t: 'manifest', s: '// GENXR_V9.0.0 / STRICT_MODE' },
   { t: 'manifest', s: 'attestation_manifest {' },
   { t: 'manifest', s: '  token:    0xb16f154c7350806c' },
   { t: 'manifest', s: '  chain:    10 manifests · identity → verification' },
@@ -697,7 +697,7 @@ export default function Home() {
         <div className="terminal-wrap">
           <div className="term-header">
             <div className="term-dot td-r" /><div className="term-dot td-y" /><div className="term-dot td-g" />
-            <span className="term-title">aether v8.0.0 — GENXR_V8.0.0 / STRICT_MODE</span>
+            <span className="term-title">aether v9.0.0 — GENXR_V9.0.0 / STRICT_MODE</span>
           </div>
           <div className="term-body" ref={termRef}>
             {lines.map((l, i) => (
@@ -1023,7 +1023,8 @@ export default function Home() {
           <a href="/certified" style={{color:'var(--green)'}}>Certified access</a>
           <a href="/reports" style={{color:'var(--green)'}}>Reports</a>
         </span>
-<span className="footer-copy" style={{whiteSpace:'normal',fontSize:'7px',flexBasis:'100%',textAlign:'justify',textAlignLast:'justify'}}>© 2026 Emilio R. Bruno · Aether-Lang.org Inc. (CBCA federal) · Kamloops, BC, Canada · Five US provisional patents filed with the USPTO (2026); CA in preparation · AI assistance (Claude/Anthropic) disclosed · Page updated 2026-09-28</span>      </footer>
+          <span className="footer-copy" style={{flexBasis:'100%',textAlign:'center',fontSize:'9.5px',lineHeight:1.6,opacity:0.72}}>© 2026 Emilio R. Bruno · Aether-Lang.org Inc. (CBCA federal) · Kamloops, BC · Five US provisionals filed (USPTO 2026), CA in preparation · AI assistance (Claude/Anthropic) disclosed · Updated 2026-09-28</span>
+        </footer>
     </>
   )
 }
