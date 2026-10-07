@@ -1,6 +1,28 @@
 'use client'
 import { useState, useEffect, useRef } from 'react'
-import { StdCite, StdList } from './StdCite'
+// Standards display components, inlined so page.tsx ships without a separate
+// module to resolve. StdCite = one standard name as a green citation chip;
+// StdList = a manifest's standards string split on the middle dot into one chip each.
+function StdCite({ name }: { name: string }) {
+  return (
+    <span style={{ display: 'inline-block', border: '1px solid rgba(57,255,20,0.4)', color: '#8aff7a', background: 'rgba(57,255,20,0.05)', borderRadius: '6px', padding: '1px 7px', fontSize: '12px', lineHeight: 1.5 }}>
+      {name}
+    </span>
+  )
+}
+
+function StdList({ text }: { text: string }) {
+  const items = text.split('·').map((s) => s.trim()).filter(Boolean)
+  return (
+    <span style={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
+      {items.map((item, i) => (
+        <span key={i} style={{ border: '1px solid rgba(120,150,140,0.18)', color: '#9fc7d8', background: 'rgba(120,150,140,0.06)', borderRadius: '5px', padding: '1px 6px', fontSize: '10.5px', lineHeight: 1.5 }}>
+          {item}
+        </span>
+      ))}
+    </span>
+  )
+}
 
 // ── LIGHTNING HERO ──────────────────────────────────────────────────────────
 // Faithful port of the HTML preview: white/blue photoreal bolts, ÆTHER (green,
