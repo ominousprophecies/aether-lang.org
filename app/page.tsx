@@ -624,7 +624,7 @@ export default function Home() {
       <div className="hero">
         <div className="hero-left">
           <div className="eyebrow">the physical-invariant compiler</div>
-          <h1>The software is <span>either proven</span> or it does not compile.</h1>
+          <h1>The software is <span>proven safe</span> or it does not ship.</h1>
           <p className="hero-expand" style={{margin:'.1rem 0 .2rem',font:'700 14px/1.5 ui-monospace,Menlo,Consolas,monospace',letterSpacing:'.01em',color:'#9fc7d8'}}>
             <b style={{color:'#e8eef0'}}>AETHER</b>: Ahead-of-time Enforcement of Timing, Hardware, Energy and Resource invariants.
           </p>
