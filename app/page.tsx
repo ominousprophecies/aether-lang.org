@@ -1046,7 +1046,7 @@ export default function Home() {
           <a href="/certified" style={{color:'var(--green)'}}>Certified access</a>
           <a href="/reports" style={{color:'var(--green)'}}>Reports</a>
         </span>
-          <span className="footer-copy" style={{flexBasis:'100%',textAlign:'center',fontSize:'9.5px',lineHeight:1.6,opacity:0.72}}>The very first attestation of ©BOUNDWARE, ©Beyond software. Bound to physics. © 2026 Emilio R. Bruno · Aether-Lang.org Inc. (CBCA federal) · Kamloops, BC · Five US provisionals filed (USPTO 2026), CA in preparation · AI assistance (Claude/Anthropic) disclosed · Updated 2026-09-28</span>
+          <span className="footer-copy" style={{flexBasis:'100%',textAlign:'center',fontSize:'15px',lineHeight:1.6,opacity:0.72}}>The very first attestation of ©BOUNDWARE, ©Beyond software. Bound to physics. © 2026 Emilio R. Bruno · Aether-Lang.org Inc. (CBCA federal) · Kamloops, BC · Five US provisionals filed (USPTO 2026), CA in preparation · AI assistance (Claude/Anthropic) disclosed · Updated 2026-09-28</span>
         </footer>
     </>
   )
