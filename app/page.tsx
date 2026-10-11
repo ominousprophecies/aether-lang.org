@@ -646,7 +646,7 @@ export default function Home() {
       <div className="hero">
         <div className="hero-left">
           <div className="eyebrow">the physical-invariant compiler</div>
-          <h1>The software is <span>proven safe</span> or it does not ship.</h1>
+          <h1>The BOUNDware is <span>proven safe</span> or it does not ship.</h1>
           <p className="hero-expand" style={{margin:'.1rem 0 .2rem',font:'700 14px/1.5 ui-monospace,Menlo,Consolas,monospace',letterSpacing:'.01em',color:'#9fc7d8'}}>
             <b style={{color:'#e8eef0'}}>AETHER</b>: Ahead-of-time Enforcement of Timing, Hardware, Energy and Resource invariants.
           </p>
@@ -777,7 +777,7 @@ export default function Home() {
         <div style={{maxWidth:'980px',margin:'0 auto'}}>
           <div className="section-eyebrow" style={{color:'var(--gold)'}}>for non-technical readers · everything in one place</div>
           <h2 className="section-title" style={{marginTop:'.4rem'}}>
-            Software that <span style={{color:'var(--gold)'}}>can&rsquo;t ship</span> unless it&rsquo;s proven safe.
+            Boundware that <span style={{color:'var(--gold)'}}>can&rsquo;t ship</span> unless it&rsquo;s proven safe.
           </h2>
           <p className="section-sub" style={{maxWidth:'760px'}}>
             In planes, cars, medical devices, and defense systems, a single software fault can cost lives.
@@ -808,7 +808,7 @@ export default function Home() {
             Plenty of tools claim to make software safer. What sets this apart: we took the compiler&rsquo;s own
             output, ran it on a real microcontroller (the kind inside a car or a drone), and measured the
             physical behaviour with lab instruments. The predictions the compiler made <b>up front</b> matched
-            what the hardware actually did.
+            what the hardware actually did. Aether is the Birth of Boundware, physically and lexiconly bound manifestations.
           </p>
 
           {/* PROOF — plain english + technical figure underneath */}
@@ -1009,7 +1009,7 @@ export default function Home() {
           }}
         >
           <p style={{ marginBottom: '1.25rem' }}>
-            Aether-Lang.org Inc. exists to raise the bar for what &ldquo;verified&rdquo; means in embedded safety-critical software.
+            Aether-Lang.org Inc. exists to raise the bar for what &ldquo;verified&rdquo; means in embedded safety-critical Boundware.
             We build compile-time certification tools that structurally prove correctness before code is deployed &mdash;
             producing machine-verifiable evidence of every safety, security, and reliability invariant a system depends on.
           </p>
