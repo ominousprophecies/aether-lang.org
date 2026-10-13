@@ -808,7 +808,7 @@ export default function Home() {
             Plenty of tools claim to make software safer. What sets this apart: we took the compiler&rsquo;s own
             output, ran it on a real microcontroller (the kind inside a car or a drone), and measured the
             physical behaviour with lab instruments. The predictions the compiler made <b>up front</b> matched
-            what the hardware actually did. Aether is the Birth of Boundware, physically and lexiconly bound manifestations.
+            what the hardware actually did. Aether is the Birth of Aether-Boundware, physically and lexiconly bound manifestations.
           </p>
 
           {/* PROOF — plain english + technical figure underneath */}
@@ -1009,7 +1009,7 @@ export default function Home() {
           }}
         >
           <p style={{ marginBottom: '1.25rem' }}>
-            Aether-Lang.org Inc. exists to raise the bar for what &ldquo;verified&rdquo; means in embedded safety-critical Boundware.
+            Aether-Lang.org Inc. exists to raise the bar for what &ldquo;verified&rdquo; means in embedded safety-critical Aether-Boundware.
             We build compile-time certification tools that structurally prove correctness before code is deployed &mdash;
             producing machine-verifiable evidence of every safety, security, and reliability invariant a system depends on.
           </p>
@@ -1046,7 +1046,7 @@ export default function Home() {
           <a href="/certified" style={{color:'var(--green)'}}>Certified access</a>
           <a href="/reports" style={{color:'var(--green)'}}>Reports</a>
         </span>
-          <span className="footer-copy" style={{flexBasis:'100%',textAlign:'center',fontSize:'15px',lineHeight:1.6,opacity:0.72}}>The very first attestation of ©BOUNDWARE, ©Beyond software. Bound to physics. © 2026 Emilio R. Bruno · Aether-Lang.org Inc. (CBCA federal) · Kamloops, BC · Five US provisionals filed (USPTO 2026), CA in preparation · AI assistance (Claude/Anthropic)  · Updated 2026-10-09</span>
+          <span className="footer-copy" style={{flexBasis:'100%',textAlign:'center',fontSize:'15px',lineHeight:1.6,opacity:0.72}}>The very first attestation of ©Aether-Boundware, ©Beyond software. Bound to physics. © 2026 Emilio R. Bruno · Aether-Lang.org Inc. (CBCA federal) · Kamloops, BC · Five US provisionals filed (USPTO 2026), CA in preparation · AI assistance (Claude/Anthropic)  · Updated 2026-10-09</span>
         </footer>
     </>
   )
