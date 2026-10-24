@@ -352,34 +352,36 @@ function LightningStrike() {
 // manifests + .s + objects) hashed identical across 20 consecutive
 // build+QEMU passes (pass_01..20.artifacts.sha256, serial 20260710164846).
 const TERM_LINES = [
-  { t: 'cmd',      s: '$ cargo run --release' },
-  { t: 'dim',      s: '   Compiling aether-lexer v9.0.0' },
-  { t: 'dim',      s: '    Finished `release` [optimized] target(s) in 0.76s' },
-  { t: 'dim',      s: '     Running `target/release/aether-lexer`' },
+  { t: 'cmd',      s: '$ aether examples/flagship_defense.aet' },
+  { t: 'dim',      s: '    Finished `release` [optimized] in 0.6s' },
   { t: 'dim',      s: '' },
-  { t: 'dim',      s: '===== PROCESSING: 162_pqc_full_stack.bru =====' },
-  { t: 'pass',     s: '  [✓] Parser Phase Complete              ~0.11ms' },
-  { t: 'pass',     s: '  [✓] Type-Checker Verification Passed   ~0.002ms' },
-  { t: 'pass',     s: '  [✓] PQC Algorithm Declaration Check  CRYSTALS-Kyber on NIST FIPS-203/204/205 list' },
-  { t: 'warn',     s: '  [!] WCET Not Verified   no clock_mhz declared — timing claim declined' },
-  { t: 'pass',     s: '  [✓] Zero-Heap Certified    0 bytes   MISRA-C Dir 4.12 / 21.3' },
-  { t: 'pass',     s: '  [✓] Stack Depth Verified   0 frames × 64B = 0b ≤ 2048b budget' },
-  { t: 'pass',     s: '  [✓] Power Envelope         0.0mW ≤ 1000.0mW budget (declared)' },
-  { t: 'pass',     s: '  [✓] Interrupt Latency      1.0μs ≤ 10.0μs budget (declared)' },
-  { t: 'pass',     s: '  [✓] Static Constant-Time Check  no secret-dependent branches (structural)' },
-  { t: 'pass',     s: '  [✓] Formal Verification    5 proof obligations discharged' },
-  { t: 'pass',     s: '  [✓] Attestation Token      0xb16f154c7350806c · chain of 10' },
-  { t: 'pass',     s: '  [✓] Evidence Generated     10 items → DO-178C clause mapping' },
-  { t: 'pass',     s: '  [✓] GENXR Codegen Emit     0.045ms' },
+  { t: 'dim',      s: '=== AETHER v10 CERTIFICATION MANIFEST ===' },
+  { t: 'dim',      s: '  source          flagship_defense.aet  (aerospace)' },
+  { t: 'dim',      s: '  bound_lexicon   v10.2-loopmodel-2026-10-24' },
+  { t: 'dim',      s: '  lexicon_root    sha256:61a531c7…' },
+  { t: 'dim',      s: '  toolchain       rustc 1.75.0' },
+  { t: 'key',      s: '  result: CERTIFIED      [profile: full · 46 capabilities]' },
+  { t: 'pass',     s: '  [✓] PQC             ML-KEM-768 approved · agility confirmed' },
+  { t: 'pass',     s: '  [✓] Constant-time   process_key: no secret-dependent branches' },
+  { t: 'pass',     s: '  [✓] WCET            297.6μs ≤ 500μs budget — clock-grounded' },
+  { t: 'pass',     s: '  [✓] RTOS            60% ≤ 75.7% [exact Liu-Layland · n=4]' },
+  { t: 'pass',     s: '  [✓] MLS             data=secret conf=secret integ=high' },
+  { t: 'pass',     s: '  [✓] Stack / Heap    2048 ≤ 4096 · 0 ≤ 0' },
+  { t: 'pass',     s: '  [✓] Interrupt       5 ≤ 10 budget' },
+  { t: 'pass',     s: '  [✓] MTE             4-bit tags, enforced' },
+  { t: 'pass',     s: '  [✓] Residency       CA ∈ [CA, US, NATO]' },
+  { t: 'pass',     s: '  [✓] Attestation     nonce BPC-2026-ALPHA · hw CortexM4-STM32F4' },
+  { t: 'pass',     s: '  [✓] Crypto-defense  downgrade-prevented · algorithm-agile' },
+  { t: 'pass',     s: '  [✓] SBOM · Provenance   3 components SPDX · recorded' },
   { t: 'dim',      s: '  ──────────────────────────────────────────' },
-  { t: 'key',      s: '  Total: ~0.155ms  (19 manifest blocks · 11,246 aet bytes)' },
+  { t: 'key',      s: '  attestation_token  sha256:351c58f6…' },
   { t: 'dim',      s: '' },
-  { t: 'manifest', s: '// GENXR_V9.0.0 / STRICT_MODE' },
-  { t: 'manifest', s: 'attestation_manifest {' },
-  { t: 'manifest', s: '  token:    0xb16f154c7350806c' },
-  { t: 'manifest', s: '  chain:    10 manifests · identity → verification' },
-  { t: 'manifest', s: '  note:     compile-time evidence · not a certification' },
-  { t: 'manifest', s: '  build:    byte-identical across 20 consecutive passes' },
+  { t: 'manifest', s: '// AETHER v10.2 — BOUND-LEXICON SPINE' },
+  { t: 'manifest', s: 'result: CERTIFIED' },
+  { t: 'manifest', s: '  bound_lexicon: v10.2-loopmodel-2026-10-24' },
+  { t: 'manifest', s: '  lexicon_root:  sha256:61a531c7…' },
+  { t: 'manifest', s: '  capabilities:  46 bound · 97/97 fixtures pass' },
+  { t: 'manifest', s: '  note: outside the sealed lexicon → fails to parse' },
   { t: 'manifest', s: '}' },
 ]
 
@@ -515,6 +517,22 @@ const STANDARDS = [
 // replicate. This does NOT claim all re-measured results agree.
 // This section states current measured state only; it is not a roadmap or a certification claim.
 const MEASUREMENTS = [
+  // ── v10.2 campaign (2026-10-24) on the verified bound-lexicon engine. RESULTS-LEVEL:
+  //    the method (composition, loop-baseline-in-source, 604 certificate logic) is held OFF
+  //    until the 605/604 non-provisionals are on file. Figures trace to RESULT_*.md under
+  //    05_Bench_and_Experiments/AETHER-CHARGE-20261024/. ──
+  ['Charge loop closed on silicon (v10)',
+   'On the rebuilt, verified v10 engine, the compiler’s compile-time charge prediction was compared against the meter-measured charge over two different mission shapes and agreed to about 2%; the same program re-declared over-budget was refused, with no binary emitted. Predicted charge, measured charge, and a correct accept/refuse on either side of the declared budget — closed end to end on hardware. [v10 · compiler-emitted · 2026-10-24]'],
+  ['Prediction confirmed (+1.55%)',
+   'A further measurement on the verified engine confirmed the compile-time charge prediction against the hardware to +1.55% — a tighter agreement still between what the compiler said up front and what the meter read. [v10 · compiler-emitted · 2026-10-24]'],
+  ['Transition cost measured negligible',
+   'A dedicated measurement bounded the device’s active↔idle transition cost below about 30 nanocoulombs per transition — indistinguishable from zero at any realistic mission scale — so it does not meaningfully affect a mission’s budget. A naive first pass that appeared to show a cost was traced to a measurement-windowing artifact and discarded; recorded as such. [v10 · measured · 2026-10-24]'],
+  ['Clock-halt current is a hard floor',
+   'A seven-point duty-cycle sweep from idle to fully active showed mean current tracking the active fraction almost perfectly (R² = 0.9998), with the wait-for-interrupt (clock-halted) current as a hard floor the device cannot draw under. Clock-halting measured up to a 59.5% current reduction versus always-on, and the compiler’s prediction tracked the meter across the sweep. [v10 · measured · 2026-10-24]'],
+  ['A real application, predicted and measured',
+   'A small text-editor application was authored in the language, certified, emitted, and run on the chip, and its energy measured at about 3.9 nanocoulombs per keystroke. The compiler’s up-front prediction of that application’s per-run charge matched the meter almost exactly. Author → certify → emit → predict → run, tied to a physical measurement on a real program; the certified computation was confirmed identical on a second, independent part. [v10 · compiler-emitted + measured · 2026-10-24]'],
+  ['Cross-part charge agreement (two boards)',
+   'The same application was measured on two independent STM32F411 parts. The digital result is identical across parts — the certified computation and its cycle count match exactly. The absolute charge carries normal part-to-part variation, about 8% apart, so an absolute-charge certificate should carry roughly a 10% part margin — which the compiler’s conservative over-prediction already provides. We state the spread rather than hide it. [v10 · two-board · 2026-10-24]'],
   ['Cross-part replication (two boards)',
    'On 2026-07-24 the compiler-determined results were re-measured on a second, independent NUCLEO-F411RE board under pass/fail criteria fixed and wet-signed before the run. The constant-time lookup held at 240 cycles flat with zero spread and the naive-C comparator leaked +120 cycles — both matching the first board exactly — and ART-path cycle counts agreed to within ~1%. The absolute analog magnitudes carried normal part-to-part variation: one energy comparison was method-limited (the first board’s reference used non-identical manual integration, ~15% low), and a cold-temperature current reading differed by ~12.5%. So the compiler-determined timing, cycle, and constant-time properties replicate across parts; the absolute current and energy magnitudes do not yet. This does not claim all re-measured results agree. [two-board, pre-registered]'],
   ['WFI current delta',
@@ -554,9 +572,9 @@ const PLAIN_PROOF: [string, string, string][] = [
   ['Held under stress',
    'That “same-time” behaviour did not crack when we starved the chip of power (down toward its brown-out point) or heated it up. The protection is built into the shape of the code, not a lucky condition.',
    'Timing spread stayed ~0.08% across a 3.3 V→~2.4 V supply sweep and to ~65 °C.'],
-  ['Battery predicted to ~1.4%',
-   'We asked the compiler to predict the electrical charge a 60-second mission would draw from the battery — before running it. The meter agreed with the prediction to within about one and a half percent.',
-   '358.42 mC projected vs 353.43 mC measured; ±10% tolerance fixed before the run.'],
+  ['Battery predicted, proven, and reproduced',
+   'We asked the compiler to predict the electrical charge a mission would draw from the battery, before running it, and the meter agreed to within about two percent — on the rebuilt, verified compiler. We then measured a real little app it produced, and the compiler’s up-front prediction of that app’s draw matched almost exactly. And we checked it on a second, identical chip.',
+   '~2% on two mission shapes and +1.55% on a further check (verified v10 engine); a real app predicted to an almost-exact match; ~8% part-to-part on absolute charge, stated plainly.'],
   ['11× under the power ceiling',
    'We set a power ceiling the device was not allowed to exceed. In practice its worst peak stayed eleven times below that ceiling, and the compiler’s power math matched the meter.',
    'Worst measured peak ~91 mW vs a declared 1000 mW envelope; power (V×I) tracked to within 2%.'],
@@ -656,58 +674,39 @@ export default function Home() {
             property cannot be compiled. There is no runtime check. There is no advisory
             warning. The program does not compile. Uncompromising? That&rsquo;s the feature.
           </p>
-          {/* Hero stats — re-verified on the CURRENT build (2026-07-10):
-              · 46 = patent tracks A–TT per SOURCE (token.rs) and README v8.0.0,
-                which are canonical ("source lettering is canonical" — 2026-07-07
-                audit). The previous site value of 49 came from an internal
-                records list that disagreed with source+README; reconciled
-                2026-07-10 in favour of source. Paper-spec-only tracks S/T/V
-                are counted in the 46 but have no token/parser/enforcer — per
-                token.rs they must not be claimed as implemented. [FACT]
-              · 20.9K = total .rs lines across all crates excluding the build dir
-                = 20,872 (wc -l), re-verified 2026-07-10 on the "al complete"
-                tree. Functional (comments stripped) is 15,294; the label says
-                "lines of Rust" (raw), so 20.9K is correct. [FACT] */}
-          {/* Hero-stats note: only the line count changed this update. SHA-256
-              (single + two-block KAT) and mul256 are verified UNDER EMULATION
-              as internal compiler-substrate work, not user-facing features —
-              deliberately NOT surfaced on the site. A hash is integrity, not
-              authenticity; no crypto capability is claimed here. This reflects
-              current state only and is not a statement of intent or roadmap. [HONESTY]
-              · 40 = distinct manifest block types emitted across the fixture
-                suite (40 verified against emitted .aet output 2026-09-17; the earlier 39 matched only _manifest-suffixed block names and missed correctness_certificate, Track TT, which also emits as a block). [FACT]
-              · sub-ms = per-op compile stays sub-millisecond every run; wall-clock
-                avg varies (135us/op Windows, ~45us sandbox — both sub-ms). [FACT]
-              · 296 = canonical .bru test fixtures run through the compiler in a
-                single battery, measured 2026-09-17 on the Extreme v0.2.8 battery,
-                the largest fixture set on file. [FACT]
-              · 1.6MB = size of the compiled release binary of the compiler
-                (1,660,672 bytes; aether-lexer v8.0.0 release build, rustc 1.95.0,
-                2026-09-17). [FACT] */}
+          {/* Hero stats — v10.2 bound-lexicon spine, verified 2026-10-24 [FACT]:
+              · 46   = bound capabilities (regression: "capabilities: 46").
+              · 97   = fixtures in the suite, all PASS ("fixtures: 97  suite: PASS").
+              · 4.9K = src/*.rs lines of the v10 spine (4,881, wc -l) — a lean,
+                       auditable rewrite; much smaller than v9's 20.9K across all crates.
+              · sub-ms = per-op compile stays sub-millisecond every run.
+              · 0.62MB = v10.2 release binary (646,656 bytes).
+              · sealed = the bound lexicon is frozen (v10.2-loopmodel-2026-10-24,
+                         root sha256:61a531c7…); anything outside it fails to parse. */}
           <div className="hero-stats">
             <div className="stat-cell">
               <span className="stat-num">46</span>
-              <span className="stat-lbl">IP tracks mapped</span>
+              <span className="stat-lbl">capabilities bound</span>
             </div>
             <div className="stat-cell">
-              <span className="stat-num">20.9K</span>
+              <span className="stat-num">4.9K</span>
               <span className="stat-lbl">lines of Rust</span>
             </div>
             <div className="stat-cell">
-              <span className="stat-num">40</span>
-              <span className="stat-lbl">manifest types</span>
+              <span className="stat-num">97</span>
+              <span className="stat-lbl">fixtures · all pass</span>
             </div>
             <div className="stat-cell">
               <span className="stat-num">sub-ms</span>
               <span className="stat-lbl">per-op compile</span>
             </div>
             <div className="stat-cell">
-              <span className="stat-num">296</span>
-              <span className="stat-lbl">fixture battery</span>
+              <span className="stat-num">0.62MB</span>
+              <span className="stat-lbl">compiler binary</span>
             </div>
             <div className="stat-cell">
-              <span className="stat-num">1.6MB</span>
-              <span className="stat-lbl">compiler binary</span>
+              <span className="stat-num">sealed</span>
+              <span className="stat-lbl">bound lexicon</span>
             </div>
           </div>
           <div className="cta-row">
@@ -720,7 +719,7 @@ export default function Home() {
         <div className="terminal-wrap">
           <div className="term-header">
             <div className="term-dot td-r" /><div className="term-dot td-y" /><div className="term-dot td-g" />
-            <span className="term-title">aether v9.0.0 — GENXR_V9.0.0 / STRICT_MODE</span>
+            <span className="term-title">aether v10.2 — BOUND-LEXICON SPINE</span>
           </div>
           <div className="term-body" ref={termRef}>
             {lines.map((l, i) => (
@@ -808,7 +807,7 @@ export default function Home() {
             Plenty of tools claim to make software safer. What sets this apart: we took the compiler&rsquo;s own
             output, ran it on a real microcontroller (the kind inside a car or a drone), and measured the
             physical behaviour with lab instruments. The predictions the compiler made <b>up front</b> matched
-            what the hardware actually did. Aether is the Birth of Aether-Boundware, physically and lexiconly bound manifestations.
+            what the hardware actually did. This is the birth of Aether-Boundware: software bound to a sealed lexicon and to the physics of the chip.
           </p>
 
           {/* PROOF — plain english + technical figure underneath */}
@@ -954,6 +953,7 @@ export default function Home() {
       <section id="validation" style={{maxWidth:'none'}}>
         <div className="section-eyebrow">measured on silicon</div>
         <h2 className="section-title">The physical claims now have physical measurements — and the constant-time one is measured on the compiler's own output.</h2>
+        <p className="section-sub" style={{maxWidth:'none'}}><b style={{color:'#e8eef0'}}>v10 &middot; 2026-10-24.</b> On the rebuilt and verified v10 bound-lexicon engine, the compiler&rsquo;s charge predictions were checked against the meter on an STM32F411 (ARM Cortex-M4) with a Nordic Power Profiler Kit II several independent ways: the whole-mission charge loop (predicted vs measured within ~2%, with a correct over-budget refusal), a further confirmation (+1.55%), the active&harr;idle transition cost (measured negligible), the clock-halted current floor (a seven-point duty sweep, R&sup2;&nbsp;=&nbsp;0.9998, up to 59.5% saved), and a real application predicted and measured end to end (~3.9&nbsp;nC/keystroke) and reproduced on a second part. The earlier 2026-07 results below, on the prior engine, remain the first two-board proof of concept.</p>
         <p className="section-sub" style={{maxWidth:'none'}}>Beginning 2026-07-17 and continuing through 2026-07-20, the compiler's physical-domain outputs were measured on hardware — a Nordic Power Profiler Kit II in series with an STM32F411 (ARM Cortex-M4) on a NUCLEO-F411RE board, at the reset-default 16&nbsp;MHz clock. Most results below were first recorded as a single datapoint on one board of one silicon part, taken with AI assistance at the inventor's direction under a methodology fixed before the measurement. On 2026-07-24 the compiler-determined subset — constant-time (240&nbsp;cycles flat), the naive-C timing leak, and cycle-count flatness — was re-measured on a second, independent NUCLEO-F411RE board under pass/fail criteria fixed and wet-signed before the run, and those results replicated across the two parts; the absolute analog magnitudes (current, energy) still carry normal part-to-part variation and remain single-board for absolute value, and one energy comparison on the second board was method-limited. None is yet a certified measurement or a temperature-qualified multi-part characterization across parts. What began as four verbatim-compiler-emitted results has since been strengthened and extended: the constant-time property is now measured directly on the compiler's OWN emitted lookup, cycle-exact (240 cycles flat across all 20 query positions, no match-vs-absent leak) — the earlier hand-assembled caveat is retired — and a single program carrying six typed constraints at once (energy, WCET, power, interrupt-latency, constant-time, and a Secret classification) was accepted by the compiler in one pass and measured end-to-end on that one binary. A separate static audit further bounds the worst-case interrupt latency of every emitted program to 27&nbsp;cycles. The constant-time behaviour was further observed to hold as the supply was starved toward the part's brown-out floor and at elevated temperature, the declared power envelope tracked measured power to within 2%, and the emitted code was byte-identical across a major version bump — evidence that the numbers describe the compiler's own output rather than one lucky build. Each number is recorded with full chain of custody in a dated rig log; where a result is still bound only to a hand-assembled instance, it says so.</p>
         <div style={{display:'flex',flexDirection:'column',gap:'1.1rem',marginTop:'1.6rem'}}>
           {MEASUREMENTS.map(([name, desc]) => (
@@ -1046,7 +1046,7 @@ export default function Home() {
           <a href="/certified" style={{color:'var(--green)'}}>Certified access</a>
           <a href="/reports" style={{color:'var(--green)'}}>Reports</a>
         </span>
-          <span className="footer-copy" style={{flexBasis:'100%',textAlign:'center',fontSize:'20px',lineHeight:1.6,opacity:0.72}}>The very first attestation of ©Aether-Boundware, ©Beyond software. Bound to physics.     © 2026 Emilio R. Bruno  Aether-Lang.org Inc. (CBCA federal)  Kamloops, BC  Five US provisionals filed (USPTO 2026), CIPO in preparation  AI assistance (Claude/Anthropic)   Updated 2026-12-09</span>
+          <span className="footer-copy" style={{flexBasis:'100%',textAlign:'center',fontSize:'20px',lineHeight:1.6,opacity:0.72}}>The very first attestation of ©Aether-Boundware, ©Beyond software. Bound to physics.     © 2026 Emilio R. Bruno  Aether-Lang.org Inc. (CBCA federal)  Kamloops, BC  Five US provisionals filed (USPTO 2026), CIPO in preparation  AI assistance (Claude/Anthropic)   Updated 2026-10-24</span>
         </footer>
     </>
   )
