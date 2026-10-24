@@ -2,18 +2,18 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Aether — Compile-Time Certification for Safety-Critical Software',
-  description: 'Aether enforces safety, security, and reliability as structural invariants before a single byte of machine code is generated. 44 patent tracks. 39 certification manifests. Certified in milliseconds.',
-  keywords: 'compile-time certification, DO-178C, ISO 26262, safety-critical software, formal verification, Aether compiler',
+  title: 'Aether-Boundware — Compile-Time Certification for Safety-Critical Software',
+  description: 'Aether-Boundware enforces safety, security, and reliability as structural invariants before a single byte of machine code is generated: 46 bound capabilities, a sealed lexicon, and physical-cost budgets proven on silicon. The software is either certified or it does not compile.',
+  keywords: 'Aether-Boundware, compile-time certification, bound lexicon, DO-178C, ISO 26262, safety-critical software, formal verification, charge budget',
   icons: {
     icon: '/AE.png',
     apple: '/AE.png',
   },
   openGraph: {
-    title: 'Aether — Compile-Time Certification',
+    title: 'Aether-Boundware — Compile-Time Certification',
     description: 'The software is either certified or it does not compile.',
     url: 'https://aether-lang.org',
-    siteName: 'Aether',
+    siteName: 'Aether-Boundware',
     locale: 'en_CA',
     type: 'website',
   },
