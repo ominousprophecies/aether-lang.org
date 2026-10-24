@@ -835,7 +835,7 @@ export default function Home() {
               <ul style={{listStyle:'none',padding:0,margin:0}}>
                 {[
                   ['Provisional patents filed with the USPTO', ': five US provisional applications covering the core methods submitted across 2026, the latest a unifying umbrella application (Canadian filings to follow); the crown-jewel method is already demonstrated on real silicon.'],
-                  ['A working compiler', ', not a slide — roughly 21,000 lines of code producing the results above.'],
+                  ['A working compiler', ', not a slide — and the tenth major version to get here. v10.2 is a lean ~4,900-line bound-lexicon spine, distilled from the tens of thousands of lines written across its many predecessor engines, which now serve as its test oracles.'],
                   ['Honesty-first evidence trail', ': every claim ties to a dated lab log and a reproducible build — exactly what safety auditors and acquirers want to see.'],
                 ].map(([b,rest]) => (
                   <li key={b} style={{padding:'.55rem 0 .55rem 1.4rem',position:'relative',color:'#93a1a8',
