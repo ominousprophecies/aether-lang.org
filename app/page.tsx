@@ -1080,7 +1080,7 @@ export default function Home() {
           <a href="/certified" style={{color:'var(--green)'}}>Certified access</a>
           <a href="/reports" style={{color:'var(--green)'}}>Reports</a>
         </span>
-          <span className="footer-copy" style={{flexBasis:'100%',textAlign:'center',fontSize:'16.5px',lineHeight:1.6,opacity:0.72}}>The very first attestation of ©Aether-Boundware, ©Beyond software. Bound to physics.     © 2026 Emilio R. Bruno  Aether-Lang.org Inc. (CBCA federal)  Kamloops, BC  Five US provisionals filed (USPTO 2026), CIPO in preparation  AI assistance (Claude/Anthropic)   Updated 2026-10-24</span>
+          <span className="footer-copy" style={{flexBasis:'100%',textAlign:'center',fontSize:'16.5px',lineHeight:1.6,opacity:0.72}}>The very first attestation of ©Aether-Boundware, ©Beyond software. Bound to physics.     © 2026 Emilio R. Bruno  Aether-Lang.org Inc. (CBCA federal)  Kamloops, BC  Five US provisionals filed (USPTO 2026), CIPO in preparation  AI assistance (Claude/Anthropic)   Updated 2026-10-30</span>
         </footer>
     </>
   )
