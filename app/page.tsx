@@ -968,6 +968,40 @@ export default function Home() {
 
       <hr className="divider" />
 
+      {/* ───────────── WRIST TO DATACENTER (energy-scale narrative, added 2026-10-29) ───────────── */}
+      <section id="scale" style={{maxWidth:'980px',margin:'0 auto'}}>
+        <div className="section-eyebrow">energy at every scale</div>
+        <h2 className="section-title">From the wrist to the datacenter.</h2>
+        <p className="section-sub" style={{maxWidth:'820px'}}>
+          The arithmetic that drains a wearable&rsquo;s coin cell &mdash; the multiply-accumulate at the heart of a
+          filter or a neural-network layer &mdash; is the same arithmetic that dominates inference energy in a
+          datacenter. A compiler that can <em>certify</em> and <em>lower</em> that energy is useful at both ends:
+          longer battery on the wrist, a smaller power bill at scale.
+        </p>
+        <p className="section-sub" style={{maxWidth:'820px',marginTop:'.8rem'}}>
+          On 2026-10-29 we measured the compiler&rsquo;s own output for three always-on wearable kernels &mdash; a
+          PPG band-pass filter, a heart-rate detector, and a small quantized inference layer &mdash; on two
+          independent boards, ten runs each, against the same algorithms compiled with gcc&nbsp;-O2. The inference
+          layer and a 16-tap FIR filter (512 MACs) &mdash; the multiply-accumulate workloads that dominate inference
+          energy &mdash; drew <b style={{color:'#e8eef0'}}>about 2.3&ndash;2.5&times; less charge per call</b> than
+          gcc&nbsp;-O2 C on silicon; the recursive filters landed close to C, one modestly ahead and one modestly
+          behind. <b style={{color:'#e8eef0'}}>Honest scope:</b> this is versus bare gcc&nbsp;-O2 (not a hardened,
+          side-channel-safe C peer), on the compiler&rsquo;s strongest kernels, and it is two-board silicon &mdash;
+          not a temperature-qualified multi-part characterization.
+        </p>
+        <p className="section-sub" style={{maxWidth:'820px',marginTop:'.9rem',fontSize:'13.5px'}}>
+          <b style={{color:'#e8eef0'}}>Beachhead:</b> always-on wearable health, where every nanocoulomb is battery
+          life. <b style={{color:'#e8eef0'}}>Platform:</b> energy-bounded inference anywhere the same dense
+          multiply-accumulate runs &mdash; up to the datacenter, where energy <em>is</em> the cost.
+        </p>
+        <p className="section-sub" style={{maxWidth:'820px',marginTop:'.6rem',fontSize:'12px',color:'#7f9099',
+             font:'12px/1.5 ui-monospace,Menlo,Consolas,monospace'}}>
+          [2026-10-29 &middot; compiler-emitted vs gcc&nbsp;-O2 &middot; two independent boards &middot; x10, CV&nbsp;&lt;&nbsp;1%]
+        </p>
+      </section>
+
+      <hr className="divider" />
+
       {/* STANDARDS */}
       <section id="standards" style={{maxWidth:'none'}}>
         <div className="section-eyebrow">standards coverage</div>
