@@ -1066,7 +1066,6 @@ export default function Home() {
 
         <div style={{display:'flex',gap:'1rem',justifyContent:'center',flexWrap:'wrap',marginTop:'2rem'}}>
           <a href="mailto:contact@aether-lang.org" className="btn-primary">email us</a>
-          <a href="tel:7782205112" className="btn-ghost">778-220-5112</a>
         </div>
         <p style={{textAlign:'center',marginTop:'1.25rem',fontSize:'13px',color:'var(--dim,#93a1a8)'}}>
           <a href="mailto:contact@aether-lang.org" style={{color:'var(--green)'}}>contact@aether-lang.org</a>
